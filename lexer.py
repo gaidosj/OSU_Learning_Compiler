@@ -1,7 +1,7 @@
 # This is the lexer
 
 import sys
-
+import olc_token
 
 # import getopt
 
@@ -16,6 +16,7 @@ class Lexer:
 
         print("You've requested that I lex: ", sys.argv[1])
         self.filename = sys.argv[1]
+        print("I've imported the tokens, token INT is", olc_token.INT)
         # print(self.filename)
 
         with open(self.filename, "r") as input_file:
