@@ -1,41 +1,57 @@
-# This contains all the language tokens for use by the lexer
+#!/usr/bin/python3
 
-# Types
-INT = 'int'
-BOOL = 'bool'
-STRING = 'string'
-VAR = 'var'
+from enum import Enum
 
-# Math operators
-EQUALS = '='
-PLUS = '+'
-MINUS = '-'
-ASTERISK = '*'
-DIV = '/'
 
-# Logic operators
-LT = '<'
-GT = '>'
-EQUALITY = '=='
-INEQUALITY = '!='
+class OLCToken:
+    class Types(Enum):
+        # literals
+        INTEGER = 1
+        IDENTIFIER = 2
 
-# Bracket types
-LEFT_PAREN = '('
-RIGHT_PAREN = ')'
-LEFT_CURLY = '{'
-RIGHT_CURLY = '}'
+        # keywords
+        VAR = 101
+        FUNC = 102
+        RETURN = 103
+        IF = 104
+        ELSE = 105
+        WHILE = 106
+        SEMICOLON = 107
+        PRINT = 108
+        CLASS = 109
 
-# Keywords
-FUNCTION = 'func'
-RETURN = 'return'
-IF = 'if'
-ELSE = 'else'
-ELIF = 'elif'
-WHILE = 'while'
-COMMA = ','
-SEMICOLON = ';'
-PRINT = 'print'
+        # math operators
+        ASSIGNMENT = 201
+        ADDITION = 202
+        SUBTRACTION = 203
+        MULTIPLICATION = 204
+        DIVISION = 205
+        MODULO = 206
 
-# Macro objects
-EOF = 'EOF'
-INCLUDE = 'include'
+        # comparison operators
+        EQUALITY = 301
+        INEQUALITY = 302
+        LESS_THAN = 303
+        LESS_EQUAL = 304
+        GREATER_THAN = 305
+        GREATER_EQUAL = 306
+
+        # logical operators
+        AND = 401
+        OR = 402
+        NOT = 403
+
+        # enclosures
+        LEFT_PAREN = 501
+        RIGHT_PAREN = 502
+        LEFT_CURLY = 503
+        RIGHT_CURLY = 504
+        LEFT_SQUARE = 505
+        RIGHT_SQUARE = 506
+
+        EOF = 999
+
+    def __init__(self, tokenType, literal, line):
+        self.type = tokenType
+        self.literal = literal
+        self.line = line
