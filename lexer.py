@@ -1,5 +1,6 @@
 from tokens import Token, TokenType, \
-    single_token, disregarded_whitespace, double_token, end_of_line, reserved_words
+    single_token, disregarded_whitespace, double_token, end_of_line, reserved_words, \
+    string_literal
 
 
 class Lexer:
@@ -36,49 +37,28 @@ class Lexer:
 
     def _scan_token(self):
         char = self._advance()
+        self.current_source_line += char in end_of_line
 
         if char in disregarded_whitespace:
-            return
-
-        if char in end_of_line:
-            self.current_source_line += 1
-
-        if char in double_token:
-            expected_match = double_token[char]['match']
-            token1 = double_token[char]['yes']
-            token2 = double_token[char]['no']
-            self._add_token(token1 if self._match(expected_match) else token2)
-            return
-
-        if char in single_token:
+            pass
+        elif char in double_token:
+            self._add_double_token(char)
+        elif char in single_token:
             self._add_token(single_token[char])
-            return
-
-        # // comments
-        if char == '/':
-            if self._match('/'):
-                self._match_until('\n')
-                self._add_token(TokenType.COMMENT)
-            else:
-                self._add_token(TokenType.DIV)
-            return
-
-        # string literals
-        if char == "'" or char == '"':
+        elif char == '/':
+            self._add_token_comment_or_division()
+        elif char in string_literal:
             self._add_token_string_literal(closing_char=char)
-            return
-
-        # number literals
-        if char.isdigit():
+        elif char.isdigit():
             self._add_token_number_literal()
-            return
-
-        # identifiers and reserved words
-        if char.isalpha() or char == '_':
+        elif char.isalpha() or char == '_':
             self._add_token_identifier_or_reserved_word()
-            return
+        else:
+            self._add_unexpected_token_error()
 
-        # at this point no valid tokens are possible
+    # ---------------------------------------------------
+
+    def _add_unexpected_token_error(self):
         if self.tokens and self.tokens[-1].type == TokenType.ERROR:
             # if last token is ERROR -> extend its lexeme
             self.tokens[-1].lexeme += self.source[self.start: self.current]
@@ -86,6 +66,58 @@ class Lexer:
             # otherwise -> start new ERROR token
             self._add_token(TokenType.ERROR, 'Unexpected token')
 
+    def _add_double_token(self, first_char):
+        expected_match = double_token[first_char]['match']
+        token1 = double_token[first_char]['yes']
+        token2 = double_token[first_char]['no']
+        self._add_token(token1 if self._match(expected_match) else token2)
+
+    def _add_token_comment_or_division(self):
+        if self._match('/'):
+            self._match_until('\n')
+            self._add_token(TokenType.COMMENT)
+        else:
+            self._add_token(TokenType.DIV)
+
+    def _add_token_string_literal(self, closing_char):
+        while self._peek() != closing_char and not self._is_at_end():
+            if self._peek() in end_of_line:
+                self.current_source_line += 1
+            self._advance()
+
+        if self._is_at_end():
+            self._add_token(TokenType.ERROR, 'Unterminated string')
+            return
+
+        # skip over string closing symbol
+        self._advance()
+
+        string_value = self.source[self.start + 1: self.current - 1]
+        self._add_token(TokenType.STRING, string_value)
+
+    def _add_token_number_literal(self):
+        while self._peek() and self._peek().isdigit():
+            self._advance()
+
+        if self._peek() == '.' and self._peek_next().isdigit():
+            self._advance()
+            while self._peek() and self._peek().isdigit():
+                self._advance()
+            value = float(self.source[self.start: self.current])
+            self._add_token(TokenType.FLOAT, value)
+        else:
+            value = int(self.source[self.start: self.current])
+            self._add_token(TokenType.INT, value)
+
+    def _add_token_identifier_or_reserved_word(self):
+        while self._peek() and self._peek().isalpha() or self._peek() == '_':
+            self._advance()
+
+        lexeme = self.source[self.start: self.current]
+        if lexeme in reserved_words:
+            self._add_token(reserved_words[lexeme])
+        else:
+            self._add_token(TokenType.IDENTIFIER)
 
     # ---------------------------------------------------
 
@@ -121,46 +153,6 @@ class Lexer:
     def _add_token(self, token_type, literal=None):
         lexeme = self.source[self.start: self.current]
         self.tokens.append(Token(token_type, lexeme, literal))
-
-    def _add_token_string_literal(self, closing_char):
-        while self._peek() != closing_char and not self._is_at_end():
-            if self._peek() in end_of_line:
-                self.current_source_line += 1
-            self._advance()
-
-        if self._is_at_end():
-            self._add_token(TokenType.ERROR, 'Unterminated string')
-            return
-
-        # skip over string closing symbol
-        self._advance()
-
-        string_value = self.source[self.start + 1: self.current -1]
-        self._add_token(TokenType.STRING, string_value)
-
-    def _add_token_number_literal(self):
-        while self._peek() and self._peek().isdigit():
-            self._advance()
-
-        if self._peek() == '.' and self._peek_next().isdigit():
-            self._advance()
-            while self._peek() and self._peek().isdigit():
-                self._advance()
-            value = float(self.source[self.start: self.current])
-            self._add_token(TokenType.FLOAT, value)
-        else:
-            value = int(self.source[self.start: self.current])
-            self._add_token(TokenType.INT, value)
-
-    def _add_token_identifier_or_reserved_word(self):
-        while self._peek() and self._peek().isalpha() or self._peek() == '_':
-            self._advance()
-
-        lexeme = self.source[self.start: self.current]
-        if lexeme in reserved_words:
-            self._add_token(reserved_words[lexeme])
-        else:
-            self._add_token(TokenType.IDENTIFIER)
 
 
 if __name__ == '__main__':
