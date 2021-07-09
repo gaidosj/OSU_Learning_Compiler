@@ -73,6 +73,7 @@ class TokenType(Enum):
     WHILE = 'while'
     PRINT = 'print'
     INCLUDE = 'include'
+    CLASS = 'class'
 
     # internal tokens
     EOL = 'EOL'             # single
@@ -85,13 +86,14 @@ class TokenType(Enum):
 reserved_words = {
     'var': TokenType.VAR,
     'function': TokenType.FUNCTION,
-    'return' : TokenType.RETURN,
+    'return': TokenType.RETURN,
     'if': TokenType.IF,
     'else': TokenType.ELSE,
     'elif': TokenType.ELIF,
     'while': TokenType.WHILE,
     'print': TokenType.PRINT,
     'include': TokenType.INCLUDE,
+    'class': TokenType.CLASS,
 }
 
 single_token = {
