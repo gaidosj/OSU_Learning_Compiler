@@ -51,7 +51,7 @@ class OLCToken:
 
         EOF = 999
 
-    def __init__(self, tokenType, literal, line):
-        self.type = tokenType
+    def __init__(self, token_type, literal, line):
+        self.type = token_type
         self.literal = literal
         self.line = line

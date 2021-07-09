@@ -11,90 +11,90 @@ class Parser:
         return self.equality()
 
     def equality(self):
-        leftSide = self.comparison()
+        left_side = self.comparison()
 
-        equalityTypes = [
+        equality_types = [
             OLCToken.Types.EQUALITY,
             OLCToken.Types.INEQUALITY
         ]
 
-        while self.isOneOfTypes(equalityTypes):
-            operator = self.peekPrev()
-            rightSide = self.comparison()
-            leftSide = Expression.Binary(leftSide, operator, rightSide)
+        while self.is_one_of_types(equality_types):
+            operator = self.peek_prev()
+            right_side = self.comparison()
+            left_side = Expression.Binary(left_side, operator, right_side)
 
-        return leftSide
+        return left_side
 
     def comparison(self):
-        leftSide = self.term()
+        left_side = self.term()
 
-        comparisonTypes = [
+        comparison_types = [
             OLCToken.Types.GREATER_THAN,
             OLCToken.Types.GREATER_EQUAL,
             OLCToken.Types.LESS_THAN,
             OLCToken.Types.LESS_EQUAL
         ]
 
-        while self.isOneOfTypes(comparisonTypes):
-            operator = self.peekPrev()
-            rightSide = self.term()
-            leftSide = Expression.Binary(leftSide, operator, rightSide)
+        while self.is_one_of_types(comparison_types):
+            operator = self.peek_prev()
+            right_side = self.term()
+            left_side = Expression.Binary(left_side, operator, right_side)
 
         return self.term
 
     def term(self):
-        leftSide = self.factor()
+        left_side = self.factor()
 
-        termTypes = [
+        term_types = [
             OLCToken.Types.ADDITION,
             OLCToken.Types.SUBTRACTION
         ]
 
-        while self.isOneOfTypes(termTypes):
-            operator = self.peekPrev()
-            rightSide = self.factor()
-            leftSide = Expression.Binary(leftSide, operator, rightSide)
+        while self.is_one_of_types(term_types):
+            operator = self.peek_prev()
+            right_side = self.factor()
+            left_side = Expression.Binary(left_side, operator, right_side)
 
-        return leftSide
+        return left_side
 
     def factor(self):
-        leftSide = self.unary()
+        left_side = self.unary()
 
-        factorTypes = [
+        factor_types = [
             OLCToken.Types.Multiplication,
             OLCToken.Types.Division
         ]
 
-        while self.isOneOfTypes(factorTypes):
-            operator = self.peekPrev()
-            rightSide = self.unary()
-            leftSide = Expression.Binary(leftSide, operator, rightSide)
+        while self.is_one_of_types(factor_types):
+            operator = self.peek_prev()
+            right_side = self.unary()
+            left_side = Expression.Binary(left_side, operator, right_side)
 
-        return leftSide
+        return left_side
 
     def unary(self):
-        unaryTypes = [
+        unary_types = [
             OLCToken.Types.NOT,
             OLCToken.Types.SUBTRACTION
         ]
 
-        if self.isOneOfTypes(unaryTypes):
-            operator = self.peekPrev()
-            rightSide = self.unary()
-            return Expression.Unary(operator, rightSide)
+        if self.is_one_of_types(unary_types):
+            operator = self.peek_prev()
+            right_side = self.unary()
+            return Expression.Unary(operator, right_side)
 
         return self.primary()
 
     def primary(self):
-        primaryTypes = [
+        primary_types = [
             OLCToken.Types.INTEGER,
             OLCToken.Types.IDENTIFIER
         ]
 
-        if self.isOneOfTypes(primaryTypes):
-            return Expression.Literal(self.peekPrev().literal)
+        if self.is_one_of_types(primary_types):
+            return Expression.Literal(self.peek_prev().literal)
 
-        if self.isOneOfTypes(OLCToken.Types.LEFT_PAREN):
+        if self.is_one_of_types(OLCToken.Types.LEFT_PAREN):
             expr = self.expression()
             self.closeGroup(OLCToken.Types.RIGHT_PAREN)
             return Expression.Grouping(expr)
@@ -102,22 +102,22 @@ class Parser:
     def peek(self):
         return self.tokens[self.index]
 
-    def peekPrev(self):
+    def peek_prev(self):
         return self.tokens[self.index - 1]
 
-    def endOfCode(self):
-        return self.peek().tokenType == OLCToken.OLCToken.Types.EOF
+    def end_of_code(self):
+        return self.peek().tokenType == OLCToken.Types.EOF
 
-    def nextToken(self):
+    def next_token(self):
         if not self.endOfCode():
             self.index += 1
 
-        return self.peekPrev()
+        return self.peek_prev()
 
-    def isSameType(self, tokenType):
+    def is_same_type(self, tokenType):
         return self.peek().tokenType == tokenType
 
-    def isOneOfTypes(self, tokenTypes):
+    def is_one_of_types(self, tokenTypes):
         for tokenType in tokenTypes:
             if self.isSameType(tokenType):
                 self.nextToken()
