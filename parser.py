@@ -1,4 +1,4 @@
-from olc_token import OLCToken
+from tokens import TokenType
 from expression import Expression
 
 
@@ -14,8 +14,8 @@ class Parser:
         left_side = self.comparison()
 
         equality_types = [
-            OLCToken.Types.EQUALITY,
-            OLCToken.Types.INEQUALITY
+            TokenType.EQUALITY,
+            TokenType.INEQUALITY
         ]
 
         while self.is_one_of_types(equality_types):
@@ -29,10 +29,10 @@ class Parser:
         left_side = self.term()
 
         comparison_types = [
-            OLCToken.Types.GREATER_THAN,
-            OLCToken.Types.GREATER_EQUAL,
-            OLCToken.Types.LESS_THAN,
-            OLCToken.Types.LESS_EQUAL
+            TokenType.LT,
+            TokenType.LTE,
+            TokenType.GT,
+            TokenType.GTE
         ]
 
         while self.is_one_of_types(comparison_types):
@@ -46,8 +46,8 @@ class Parser:
         left_side = self.factor()
 
         term_types = [
-            OLCToken.Types.ADDITION,
-            OLCToken.Types.SUBTRACTION
+            TokenType.PLUS,
+            TokenType.MINUS
         ]
 
         while self.is_one_of_types(term_types):
@@ -61,8 +61,8 @@ class Parser:
         left_side = self.unary()
 
         factor_types = [
-            OLCToken.Types.Multiplication,
-            OLCToken.Types.Division
+            TokenType.ASTERISK,
+            TokenType.DIV
         ]
 
         while self.is_one_of_types(factor_types):
@@ -74,8 +74,8 @@ class Parser:
 
     def unary(self):
         unary_types = [
-            OLCToken.Types.NOT,
-            OLCToken.Types.SUBTRACTION
+            TokenType.NOT,
+            TokenType.MINUS
         ]
 
         if self.is_one_of_types(unary_types):
@@ -87,16 +87,16 @@ class Parser:
 
     def primary(self):
         primary_types = [
-            OLCToken.Types.INTEGER,
-            OLCToken.Types.IDENTIFIER
+            TokenType.INT,
+            TokenType.IDENTIFIER
         ]
 
         if self.is_one_of_types(primary_types):
             return Expression.Literal(self.peek_prev().literal)
 
-        if self.is_one_of_types(OLCToken.Types.LEFT_PAREN):
+        if self.is_one_of_types(TokenType.LEFT_PAREN):
             expr = self.expression()
-            self.closeGroup(OLCToken.Types.RIGHT_PAREN)
+            self.closeGroup(TokenType.RIGHT_PAREN)
             return Expression.Grouping(expr)
 
     def peek(self):
@@ -106,7 +106,7 @@ class Parser:
         return self.tokens[self.index - 1]
 
     def end_of_code(self):
-        return self.peek().tokenType == OLCToken.Types.EOF
+        return self.peek().tokenType == TokenType.EOF
 
     def next_token(self):
         if not self.endOfCode():
