@@ -1,5 +1,7 @@
 from tokens import TokenType
 from expression import Expression
+from error_handler import ErrorHandler
+from error_handler import ParseError
 
 
 class Parser:
@@ -7,26 +9,33 @@ class Parser:
         self.tokens = tokens
         self.index = 0
 
-    def expression(self):
-        return self.equality()
+    def parse(self):
+        try:
+            return self._expression()
+        except ParseError as error:
+            ErrorHandler.report_error(error)
+            return None
 
-    def equality(self):
-        left_side = self.comparison()
+    def _expression(self):
+        return self._equality()
+
+    def _equality(self):
+        left_side = self._comparison()
 
         equality_types = [
             TokenType.EQUALITY,
             TokenType.INEQUALITY
         ]
 
-        while self.is_one_of_types(equality_types):
-            operator = self.peek_prev()
-            right_side = self.comparison()
+        while self._is_one_of_types(equality_types):
+            operator = self._peek_prev()
+            right_side = self._comparison()
             left_side = Expression.Binary(left_side, operator, right_side)
 
         return left_side
 
-    def comparison(self):
-        left_side = self.term()
+    def _comparison(self):
+        left_side = self._term()
 
         comparison_types = [
             TokenType.LT,
@@ -35,97 +44,121 @@ class Parser:
             TokenType.GTE
         ]
 
-        while self.is_one_of_types(comparison_types):
-            operator = self.peek_prev()
-            right_side = self.term()
+        while self._is_one_of_types(comparison_types):
+            operator = self._peek_prev()
+            right_side = self._term()
             left_side = Expression.Binary(left_side, operator, right_side)
 
         return self.term
 
-    def term(self):
-        left_side = self.factor()
+    def _term(self):
+        left_side = self._factor()
 
         term_types = [
             TokenType.PLUS,
             TokenType.MINUS
         ]
 
-        while self.is_one_of_types(term_types):
-            operator = self.peek_prev()
-            right_side = self.factor()
+        while self._is_one_of_types(term_types):
+            operator = self._peek_prev()
+            right_side = self._factor()
             left_side = Expression.Binary(left_side, operator, right_side)
 
         return left_side
 
-    def factor(self):
-        left_side = self.unary()
+    def _factor(self):
+        left_side = self._unary()
 
         factor_types = [
             TokenType.ASTERISK,
             TokenType.DIV
         ]
 
-        while self.is_one_of_types(factor_types):
-            operator = self.peek_prev()
-            right_side = self.unary()
+        while self._is_one_of_types(factor_types):
+            operator = self._peek_prev()
+            right_side = self._unary()
             left_side = Expression.Binary(left_side, operator, right_side)
 
         return left_side
 
-    def unary(self):
+    def _unary(self):
         unary_types = [
             TokenType.NOT,
             TokenType.MINUS
         ]
 
-        if self.is_one_of_types(unary_types):
-            operator = self.peek_prev()
-            right_side = self.unary()
-            return Expression.Unary(operator, right_side)
+        if self._is_one_of_types(unary_types):
+            operator = self._peek_prev()
+            right_side = self._unary()
+            return Expression._unary(operator, right_side)
 
-        return self.primary()
+        return self._primary()
 
-    def primary(self):
+    def _primary(self):
         primary_types = [
             TokenType.INT,
             TokenType.IDENTIFIER
         ]
 
-        if self.is_one_of_types(primary_types):
-            return Expression.Literal(self.peek_prev().literal)
+        if self._is_one_of_types(primary_types):
+            return Expression.Literal(self._peek_prev().literal)
 
-        if self.is_one_of_types(TokenType.LEFT_PAREN):
-            expr = self.expression()
-            self.closeGroup(TokenType.RIGHT_PAREN)
+        if self._is_one_of_types(TokenType.LEFT_PAREN):
+            expr = self._expression()
+            self._consume(TokenType.RIGHT_PAREN, 'Expected closing paren ")"')
             return Expression.Grouping(expr)
 
-    def peek(self):
+        raise ParseError(self._peek(), 'Expected start of expression')
+
+    def _peek(self):
         return self.tokens[self.index]
 
-    def peek_prev(self):
+    def _peek_prev(self):
         return self.tokens[self.index - 1]
 
-    def end_of_code(self):
-        return self.peek().tokenType == TokenType.EOF
+    def _end_of_code(self):
+        return self._peek().token_type == TokenType.EOF
 
-    def next_token(self):
+    def _next_token(self):
         if not self.endOfCode():
             self.index += 1
 
-        return self.peek_prev()
+        return self._peek_prev()
 
-    def is_same_type(self, tokenType):
-        return self.peek().tokenType == tokenType
+    def _is_same_type(self, token_type):
+        return self._peek().token_type == token_type
 
-    def is_one_of_types(self, tokenTypes):
-        for tokenType in tokenTypes:
-            if self.isSameType(tokenType):
-                self.nextToken()
+    def _is_one_of_types(self, token_type):
+        for tokenType in token_type:
+            if self._is_same_type(token_type):
+                self._next_token()
                 return True
         return False
 
-    def parse(self):
-        try:
-            return self.expression()
-        except Exception:
-            return None
+    def _consume(self, token_type, message):
+        if (self._is_same_type(token_type)):
+            return self._next_token()
+
+        raise ParseError(self._peek(), message)
+
+    def _synchronize(self):
+        self._next_token()
+
+        while not self._end_of_code():
+            if (self._peek_prev().type == TokenType.SEMICOLON):
+                return
+
+            starting_types = [
+                TokenType.CLASS,
+                TokenType.FUNCTION,
+                TokenType.VAR,
+                TokenType.IF,
+                TokenType.WHILE,
+                TokenType.PRINT,
+                TokenType.RETURN
+            ]
+
+            if self._peek().type in starting_types:
+                return
+
+            self._next_token()
