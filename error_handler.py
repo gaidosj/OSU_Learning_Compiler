@@ -1,5 +1,6 @@
 from sys import stderr
 
+
 class ErrorHandler:
     def __init__(self):
         self.output = stderr
