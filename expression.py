@@ -1,31 +1,41 @@
 class Expression:
-    class Binary():
-        def __init__(self, left_operand, operator, right_operand):
-            self.left_operand = left_operand
-            self.operator = operator
-            self.right_operand = right_operand
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
 
-        def accept(self, visitor):
-            visitor.visit_binary(self)
 
-    class Group():
-        def __init__(self, expression):
-            self.expression = expression
+class Binary(Expression):
+    def __init__(self, left_operand, operator, right_operand):
+        self.left_operand = left_operand
+        self.operator = operator
+        self.right_operand = right_operand
 
-        def accept(self, visitor):
-            visitor.visit_group(self)
+    def accept(self, visitor):
+        visitor.visit_binary(self)
 
-    class Literal():
-        def __init__(self, value):
-            self.value = value
 
-        def accept(self, visitor):
-            visitor.visit_literal(self)
+class Group(Expression):
+    def __init__(self, expression):
+        self.expression = expression
 
-    class Unary():
-        def __init__(self, operator, operand):
-            self.operator = operator
-            self.operand = operand
+    def accept(self, visitor):
+        visitor.visit_group(self)
 
-        def accept(self, visitor):
-            visitor.visit_unary(self)
+
+class Literal(Expression):
+    def __init__(self, value):
+        self.value = value
+
+    def accept(self, visitor):
+        visitor.visit_literal(self)
+
+
+class Unary(Expression):
+    def __init__(self, operator, operand):
+        self.operator = operator
+        self.operand = operand
+
+    def accept(self, visitor):
+        visitor.visit_unary(self)
