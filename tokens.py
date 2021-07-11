@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class Token:
-    def __init__(self, type, lexeme, literal, source_file_line_number=0):
-        self.type = type
+    def __init__(self, token_type, lexeme, literal, source_file_line_number=0):
+        self.token_type = token_type
         self.lexeme = lexeme
         self.literal = literal
         self.source_file_line_number = source_file_line_number
