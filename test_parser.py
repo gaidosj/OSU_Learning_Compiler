@@ -8,63 +8,124 @@ import expression
 class ParserTest(unittest.TestCase):
     def setUp(self):
         self.parser = Parser()
+        self.tokens = {
+            TokenType.IDENTIFIER: Token(
+                TokenType.IDENTIFIER, 'name', 'identifier', 1),
+            TokenType.INT: Token(TokenType.INT, '1', 1, 1),
+            TokenType.MINUS: Token(TokenType.MINUS, '-', '-', 1),
+            TokenType.ASTERISK: Token(TokenType.ASTERISK, '*', '*', 1),
+            TokenType.DIV: Token(TokenType.DIV, '/', '/', 1),
+            TokenType.PLUS: Token(TokenType.PLUS, '+', '+', 1)
+        }
 
     def test_empty_input(self):
-        result = self.parser.parse()
-        self.assertEqual(result, None)
+        self.assertEqual(self.parser.parse(), None)
 
     def test_int_statement(self):
-        token = Token(TokenType.INT, '0', 0, 1)
-        self.parser.tokens = [token]
-        result = self.parser.parse()
-        expectedResult = expression.Literal(token)
-        self.assertEqual(result, expectedResult)
+        self.parser.tokens = [self.tokens[TokenType.INT]]
+
+        self.assertEqual(
+            self.parser.parse(),
+            expression.Literal(self.tokens[TokenType.INT])
+        )
 
     def test_id_statement(self):
-        token = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
-        self.parser.tokens = [token]
-        result = self.parser.parse()
-        expectedResult = expression.Literal(token)
-        self.assertEqual(result, expectedResult)
+        self.parser.tokens = [self.tokens[TokenType.IDENTIFIER]]
+
+        self.assertEqual(
+            self.parser.parse(),
+            expression.Literal(self.tokens[TokenType.IDENTIFIER])
+        )
 
     def test_simple_unary(self):
-        minus = Token(TokenType.MINUS, '-', '-', 1)
-        one = Token(TokenType.INT, '1', 1, 1)
-        self.parser.tokens = [minus, one]
-        result = self.parser.parse()
+        self.parser.tokens = [
+            self.tokens[TokenType.MINUS],
+            self.tokens[TokenType.INT]
+        ]
+
         self.assertEqual(
-            result,
-            expression.Unary(minus, expression.Literal(one))
+            self.parser.parse(),
+            expression.Unary(
+                self.tokens[TokenType.MINUS],
+                expression.Literal(self.tokens[TokenType.INT])
+            )
         )
 
     def test_simple_factor(self):
-        left = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
-        asterisk = Token(TokenType.ASTERISK, '*', '*', 1)
-        right = Token(TokenType.INT, '2', 2, 1)
-        self.parser.tokens = [left, asterisk, right]
-        result = self.parser.parse()
+        self.parser.tokens = [
+            self.tokens[TokenType.IDENTIFIER],
+            self.tokens[TokenType.ASTERISK],
+            self.tokens[TokenType.INT]
+        ]
+
         self.assertEqual(
-            result,
+            self.parser.parse(),
             expression.Binary(
-                expression.Literal(left),
-                asterisk,
-                expression.Literal(right)
+                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+                self.tokens[TokenType.ASTERISK],
+                expression.Literal(self.tokens[TokenType.INT])
             )
         )
 
     def test_unary_inside_factor(self):
-        minus = Token(TokenType.MINUS, '-', '-', 1)
-        left = Token(TokenType.INT, '1', 1, 1)
-        div = Token(TokenType.DIV, '/', '/', 1)
-        right = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
-        self.parser.tokens = [minus, left, div, right]
-        result = self.parser.parse()
+        self.parser.tokens = [
+            self.tokens[TokenType.MINUS],
+            self.tokens[TokenType.INT],
+            self.tokens[TokenType.DIV],
+            self.tokens[TokenType.IDENTIFIER]
+        ]
+
         self.assertEqual(
-            result,
+            self.parser.parse(),
             expression.Binary(
-                expression.Unary(minus, expression.Literal(left)),
-                div,
-                expression.Literal(right)
+                expression.Unary(
+                    self.tokens[TokenType.MINUS],
+                    expression.Literal(self.tokens[TokenType.INT])
+                ),
+                self.tokens[TokenType.DIV],
+                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+            )
+        )
+
+    def test_simple_term(self):
+        self.parser.tokens = [
+            self.tokens[TokenType.IDENTIFIER],
+            self.tokens[TokenType.PLUS],
+            self.tokens[TokenType.IDENTIFIER]
+        ]
+
+        self.assertEqual(
+            self.parser.parse(),
+            expression.Binary(
+                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+                self.tokens[TokenType.PLUS],
+                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+            )
+        )
+
+    def test_term_then_factor(self):
+        self.parser.tokens = [
+            self.tokens[TokenType.INT],
+            self.tokens[TokenType.PLUS],
+            self.tokens[TokenType.MINUS],
+            self.tokens[TokenType.INT],
+            self.tokens[TokenType.ASTERISK],
+            self.tokens[TokenType.INT]
+        ]
+
+        self.assertEqual(
+            self.parser.parse(),
+            expression.Binary(
+                expression.Literal(self.tokens[TokenType.INT]),
+                self.tokens[TokenType.PLUS],
+                expression.Binary(
+                    expression.Unary(
+                        self.tokens[TokenType.MINUS],
+                        expression.Literal(self.tokens[TokenType.INT])
+                    ),
+                    self.tokens[TokenType.ASTERISK],
+                    expression.Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
