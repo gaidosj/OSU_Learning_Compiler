@@ -101,7 +101,7 @@ class Parser:
         if self._is_one_of_types(unary_types):
             operator = self._peek_prev()
             right_side = self._unary()
-            return expression._unary(operator, right_side)
+            return expression.Unary(operator, right_side)
 
         return self._primary()
 
@@ -113,7 +113,7 @@ class Parser:
         ]
 
         if self._is_one_of_types(primary_types):
-            return expression.Literal(self._peek_prev().literal)
+            return expression.Literal(self._peek_prev())
 
         closing_parens = [TokenType.LEFT_PAREN]
 
