@@ -38,9 +38,9 @@ class ParserTest(unittest.TestCase):
         )
 
     def test_simple_factor(self):
-        left = Token(TokenType.INT, '2', 2, 1)
+        left = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
         asterisk = Token(TokenType.ASTERISK, '*', '*', 1)
-        right = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
+        right = Token(TokenType.INT, '2', 2, 1)
         self.parser.tokens = [left, asterisk, right]
         result = self.parser.parse()
         self.assertEqual(
@@ -48,6 +48,22 @@ class ParserTest(unittest.TestCase):
             expression.Binary(
                 expression.Literal(left),
                 asterisk,
+                expression.Literal(right)
+            )
+        )
+
+    def test_unary_inside_factor(self):
+        minus = Token(TokenType.MINUS, '-', '-', 1)
+        left = Token(TokenType.INT, '1', 1, 1)
+        div = Token(TokenType.DIV, '/', '/', 1)
+        right = Token(TokenType.IDENTIFIER, 'name', 'identifier', 1)
+        self.parser.tokens = [minus, left, div, right]
+        result = self.parser.parse()
+        self.assertEqual(
+            result,
+            expression.Binary(
+                expression.Unary(minus, expression.Literal(left)),
+                div,
                 expression.Literal(right)
             )
         )
