@@ -1,7 +1,6 @@
 import unittest
 from parser import Parser
-from tokens import Token
-from tokens import TokenType
+from tokens import Token, TokenType
 from expression import Literal, Unary, Binary
 
 
