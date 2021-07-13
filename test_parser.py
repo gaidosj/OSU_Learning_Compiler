@@ -2,7 +2,7 @@ import unittest
 from parser import Parser
 from tokens import Token
 from tokens import TokenType
-import expression
+from expression import Literal, Unary, Binary
 
 
 class ParserTest(unittest.TestCase):
@@ -33,7 +33,7 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Literal(self.tokens[TokenType.INT])
+            Literal(self.tokens[TokenType.INT])
         )
 
     def test_id_statement(self):
@@ -41,7 +41,7 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Literal(self.tokens[TokenType.IDENTIFIER])
+            Literal(self.tokens[TokenType.IDENTIFIER])
         )
 
     def test_unary_minus(self):
@@ -52,9 +52,9 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Unary(
+            Unary(
                 self.tokens[TokenType.MINUS],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -66,9 +66,9 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Unary(
+            Unary(
                 self.tokens[TokenType.NOT],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -81,10 +81,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.ASTERISK],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -97,10 +97,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.INT]),
+            Binary(
+                Literal(self.tokens[TokenType.INT]),
                 self.tokens[TokenType.DIV],
-                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                Literal(self.tokens[TokenType.IDENTIFIER])
             )
         )
 
@@ -114,13 +114,13 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Unary(
+            Binary(
+                Unary(
                     self.tokens[TokenType.MINUS],
-                    expression.Literal(self.tokens[TokenType.INT])
+                    Literal(self.tokens[TokenType.INT])
                 ),
                 self.tokens[TokenType.DIV],
-                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                Literal(self.tokens[TokenType.IDENTIFIER])
             )
         )
 
@@ -133,10 +133,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.PLUS],
-                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                Literal(self.tokens[TokenType.IDENTIFIER])
             )
         )
 
@@ -149,10 +149,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.INT]),
+            Binary(
+                Literal(self.tokens[TokenType.INT]),
                 self.tokens[TokenType.MINUS],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -167,15 +167,15 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Unary(
+            Binary(
+                Unary(
                     self.tokens[TokenType.MINUS],
-                    expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                    Literal(self.tokens[TokenType.IDENTIFIER])
                 ),
                 self.tokens[TokenType.MINUS],
-                expression.Unary(
+                Unary(
                     self.tokens[TokenType.MINUS],
-                    expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                    Literal(self.tokens[TokenType.IDENTIFIER])
                 )
             )
         )
@@ -192,16 +192,16 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.INT]),
+            Binary(
+                Literal(self.tokens[TokenType.INT]),
                 self.tokens[TokenType.PLUS],
-                expression.Binary(
-                    expression.Unary(
+                Binary(
+                    Unary(
                         self.tokens[TokenType.MINUS],
-                        expression.Literal(self.tokens[TokenType.INT])
+                        Literal(self.tokens[TokenType.INT])
                     ),
                     self.tokens[TokenType.ASTERISK],
-                    expression.Literal(self.tokens[TokenType.INT])
+                    Literal(self.tokens[TokenType.INT])
                 )
             )
         )
@@ -215,10 +215,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.GTE],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -231,10 +231,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.GT],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -247,10 +247,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.LTE],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -263,10 +263,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.LT],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -281,14 +281,14 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Binary(
-                    expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
                     self.tokens[TokenType.PLUS],
-                    expression.Literal(self.tokens[TokenType.INT])
+                    Literal(self.tokens[TokenType.INT])
                 ),
                 self.tokens[TokenType.GT],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -301,10 +301,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.IDENTIFIER]),
+            Binary(
+                Literal(self.tokens[TokenType.IDENTIFIER]),
                 self.tokens[TokenType.EQUALITY],
-                expression.Literal(self.tokens[TokenType.INT])
+                Literal(self.tokens[TokenType.INT])
             )
         )
 
@@ -317,10 +317,10 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            expression.Binary(
-                expression.Literal(self.tokens[TokenType.INT]),
+            Binary(
+                Literal(self.tokens[TokenType.INT]),
                 self.tokens[TokenType.INEQUALITY],
-                expression.Literal(self.tokens[TokenType.IDENTIFIER])
+                Literal(self.tokens[TokenType.IDENTIFIER])
             )
         )
 
