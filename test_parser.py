@@ -2,6 +2,7 @@ import unittest
 from parser import Parser
 from tokens import Token, TokenType
 from expression import Literal, Unary, Binary
+from abstract_syntax_tree import AbstractSyntaxTree
 
 
 class ParserTest(unittest.TestCase):
@@ -32,7 +33,7 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(Literal(self.tokens[TokenType.INT]))
         )
 
     def test_id_statement(self):
@@ -40,7 +41,7 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Literal(self.tokens[TokenType.IDENTIFIER])
+            AbstractSyntaxTree(Literal(self.tokens[TokenType.IDENTIFIER]))
         )
 
     def test_unary_minus(self):
@@ -51,9 +52,11 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Unary(
-                self.tokens[TokenType.MINUS],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Unary(
+                    self.tokens[TokenType.MINUS],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -65,9 +68,11 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Unary(
-                self.tokens[TokenType.NOT],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Unary(
+                    self.tokens[TokenType.NOT],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -80,10 +85,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.ASTERISK],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.ASTERISK],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -96,10 +103,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.INT]),
-                self.tokens[TokenType.DIV],
-                Literal(self.tokens[TokenType.IDENTIFIER])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.INT]),
+                    self.tokens[TokenType.DIV],
+                    Literal(self.tokens[TokenType.IDENTIFIER])
+                )
             )
         )
 
@@ -113,13 +122,15 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Unary(
-                    self.tokens[TokenType.MINUS],
-                    Literal(self.tokens[TokenType.INT])
-                ),
-                self.tokens[TokenType.DIV],
-                Literal(self.tokens[TokenType.IDENTIFIER])
+            AbstractSyntaxTree(
+                Binary(
+                    Unary(
+                        self.tokens[TokenType.MINUS],
+                        Literal(self.tokens[TokenType.INT])
+                    ),
+                    self.tokens[TokenType.DIV],
+                    Literal(self.tokens[TokenType.IDENTIFIER])
+                )
             )
         )
 
@@ -132,10 +143,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.PLUS],
-                Literal(self.tokens[TokenType.IDENTIFIER])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.PLUS],
+                    Literal(self.tokens[TokenType.IDENTIFIER])
+                )
             )
         )
 
@@ -148,10 +161,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.INT]),
-                self.tokens[TokenType.MINUS],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.INT]),
+                    self.tokens[TokenType.MINUS],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -166,15 +181,17 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Unary(
+            AbstractSyntaxTree(
+                Binary(
+                    Unary(
+                        self.tokens[TokenType.MINUS],
+                        Literal(self.tokens[TokenType.IDENTIFIER])
+                    ),
                     self.tokens[TokenType.MINUS],
-                    Literal(self.tokens[TokenType.IDENTIFIER])
-                ),
-                self.tokens[TokenType.MINUS],
-                Unary(
-                    self.tokens[TokenType.MINUS],
-                    Literal(self.tokens[TokenType.IDENTIFIER])
+                    Unary(
+                        self.tokens[TokenType.MINUS],
+                        Literal(self.tokens[TokenType.IDENTIFIER])
+                    )
                 )
             )
         )
@@ -191,16 +208,18 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.INT]),
-                self.tokens[TokenType.PLUS],
+            AbstractSyntaxTree(
                 Binary(
-                    Unary(
-                        self.tokens[TokenType.MINUS],
+                    Literal(self.tokens[TokenType.INT]),
+                    self.tokens[TokenType.PLUS],
+                    Binary(
+                        Unary(
+                            self.tokens[TokenType.MINUS],
+                            Literal(self.tokens[TokenType.INT])
+                        ),
+                        self.tokens[TokenType.ASTERISK],
                         Literal(self.tokens[TokenType.INT])
-                    ),
-                    self.tokens[TokenType.ASTERISK],
-                    Literal(self.tokens[TokenType.INT])
+                    )
                 )
             )
         )
@@ -214,10 +233,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.GTE],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.GTE],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -230,10 +251,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.GT],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.GT],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -246,10 +269,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.LTE],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.LTE],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -262,10 +287,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.LT],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.LT],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -278,16 +305,20 @@ class ParserTest(unittest.TestCase):
             self.tokens[TokenType.INT]
         ]
 
+        result = self.parser.parse()
+        print(result)
         self.assertEqual(
-            self.parser.parse(),
-            Binary(
+            result,
+            AbstractSyntaxTree(
                 Binary(
-                    Literal(self.tokens[TokenType.IDENTIFIER]),
-                    self.tokens[TokenType.PLUS],
+                    Binary(
+                        Literal(self.tokens[TokenType.IDENTIFIER]),
+                        self.tokens[TokenType.PLUS],
+                        Literal(self.tokens[TokenType.INT])
+                    ),
+                    self.tokens[TokenType.GT],
                     Literal(self.tokens[TokenType.INT])
-                ),
-                self.tokens[TokenType.GT],
-                Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -300,10 +331,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.IDENTIFIER]),
-                self.tokens[TokenType.EQUALITY],
-                Literal(self.tokens[TokenType.INT])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.IDENTIFIER]),
+                    self.tokens[TokenType.EQUALITY],
+                    Literal(self.tokens[TokenType.INT])
+                )
             )
         )
 
@@ -316,10 +349,12 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(
             self.parser.parse(),
-            Binary(
-                Literal(self.tokens[TokenType.INT]),
-                self.tokens[TokenType.INEQUALITY],
-                Literal(self.tokens[TokenType.IDENTIFIER])
+            AbstractSyntaxTree(
+                Binary(
+                    Literal(self.tokens[TokenType.INT]),
+                    self.tokens[TokenType.INEQUALITY],
+                    Literal(self.tokens[TokenType.IDENTIFIER])
+                )
             )
         )
 
