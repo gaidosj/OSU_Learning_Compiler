@@ -13,7 +13,7 @@ class Binary(Expression):
         self.right_operand = right_operand
 
     def accept(self, visitor):
-        visitor.visit_binary(self)
+        return visitor.visit_binary(self)
 
 
 class Group(Expression):
@@ -21,7 +21,7 @@ class Group(Expression):
         self.expression = expression
 
     def accept(self, visitor):
-        visitor.visit_group(self)
+        return visitor.visit_group(self)
 
 
 class Literal(Expression):
@@ -29,7 +29,7 @@ class Literal(Expression):
         self.value = value
 
     def accept(self, visitor):
-        visitor.visit_literal(self)
+        return visitor.visit_literal(self)
 
 
 class Unary(Expression):
@@ -38,4 +38,4 @@ class Unary(Expression):
         self.operand = operand
 
     def accept(self, visitor):
-        visitor.visit_unary(self)
+        return visitor.visit_unary(self)

@@ -25,3 +25,9 @@ class ParseError(Exception):
     def __init__(self, token, message):
         self.token = token
         self.message = message
+
+
+class InterpretError(Exception):
+    def __init__(self, token, message):
+        self.token = token
+        self.message = message
