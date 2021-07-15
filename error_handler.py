@@ -19,6 +19,19 @@ class ErrorHandler:
                 + ": "
                 + error.message
             )
+        elif type(error) == type(InterpretError):
+            self.output.write(
+                "Runtime error on line "
+                + error.token.source_file_line_number
+                + " for token type "
+                + error.token.type
+                + " literal "
+                + error.token.literal
+                + " lexeme "
+                + error.token.lexeme
+                + ": "
+                + error.message
+            )
 
 
 class ParseError(Exception):
