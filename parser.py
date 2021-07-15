@@ -2,6 +2,7 @@ from tokens import TokenType
 import expression
 from error_handler import ErrorHandler
 from error_handler import ParseError
+from abstract_syntax_tree import AbstractSyntaxTree
 
 
 class Parser:
@@ -16,7 +17,7 @@ class Parser:
             return None
 
         try:
-            return self._expression()
+            return AbstractSyntaxTree(self._expression())
         except ParseError as error:
             self.error_handler.report_error(error)
             return None

@@ -9,10 +9,10 @@ class Token:
         self.source_file_line_number = source_file_line_number
 
     def __str__(self):
-        return '{} {} {}'.format(self.type, self.lexeme, self.literal)
+        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
 
     def __repr__(self):
-        return '{} {} {}'.format(self.type, self.lexeme, self.literal)
+        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
 
 
 class DataType(Enum):
