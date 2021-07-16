@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Token:
+class TokenOsu:
     def __init__(self, token_type, lexeme, literal, source_file_line_number=0):
         self.token_type = token_type
         self.lexeme = lexeme

@@ -1,32 +1,32 @@
 import unittest
 from src.interpreter import Interpreter
 from src.expression import Binary, Literal, Unary
-from src.tokens import Token, TokenType
+from src.tokens import TokenOsu, TokenType
 
 
 class TestInterpreter(unittest.TestCase):
     def setUp(self):
         self.interpreter = Interpreter()
         self.ints = [
-            Token(TokenType.INT, '0', 0, 1),
-            Token(TokenType.INT, '1', 1, 1),
-            Token(TokenType.INT, '2', 2, 1),
-            Token(TokenType.INT, '3', 3, 1),
-            Token(TokenType.INT, '4', 4, 1),
-            Token(TokenType.INT, '5', 5, 1)
+            TokenOsu(TokenType.INT, '0', 0, 1),
+            TokenOsu(TokenType.INT, '1', 1, 1),
+            TokenOsu(TokenType.INT, '2', 2, 1),
+            TokenOsu(TokenType.INT, '3', 3, 1),
+            TokenOsu(TokenType.INT, '4', 4, 1),
+            TokenOsu(TokenType.INT, '5', 5, 1)
         ]
         self.operators = {
-            '-': Token(TokenType.MINUS, '-', '-', 1),
-            '!': Token(TokenType.NOT, '!', '!', 1),
-            '*': Token(TokenType.ASTERISK, '*', '*', 1),
-            '/': Token(TokenType.DIV, '/', '/', 1),
-            '+': Token(TokenType.PLUS, '+', '+', 1),
-            '>=': Token(TokenType.GTE, '>=', '>=', 1),
-            '>': Token(TokenType.GT, '>', '>', 1),
-            '<=': Token(TokenType.LTE, '<=', '<=', 1),
-            '<': Token(TokenType.LT, '<', '<', 1),
-            '==': Token(TokenType.EQUALITY, '==', '==', 1),
-            '!=': Token(TokenType.INEQUALITY, '!=', '!=', 1)
+            '-': TokenOsu(TokenType.MINUS, '-', '-', 1),
+            '!': TokenOsu(TokenType.NOT, '!', '!', 1),
+            '*': TokenOsu(TokenType.ASTERISK, '*', '*', 1),
+            '/': TokenOsu(TokenType.DIV, '/', '/', 1),
+            '+': TokenOsu(TokenType.PLUS, '+', '+', 1),
+            '>=': TokenOsu(TokenType.GTE, '>=', '>=', 1),
+            '>': TokenOsu(TokenType.GT, '>', '>', 1),
+            '<=': TokenOsu(TokenType.LTE, '<=', '<=', 1),
+            '<': TokenOsu(TokenType.LT, '<', '<', 1),
+            '==': TokenOsu(TokenType.EQUALITY, '==', '==', 1),
+            '!=': TokenOsu(TokenType.INEQUALITY, '!=', '!=', 1)
         }
 
     def test_one_plus_one(self):

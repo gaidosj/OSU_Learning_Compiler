@@ -1,4 +1,4 @@
-from tokens import Token, TokenType, \
+from tokens import TokenOsu, TokenType, \
     single_token, disregarded_whitespace, double_token, end_of_line, reserved_words, \
     string_literal
 
@@ -152,7 +152,7 @@ class Lexer:
 
     def _add_token(self, token_type, literal=None):
         lexeme = self.source[self.start: self.current]
-        self.tokens.append(Token(token_type, lexeme, literal))
+        self.tokens.append(TokenOsu(token_type, lexeme, literal))
 
 
 if __name__ == '__main__':
