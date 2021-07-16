@@ -1,8 +1,8 @@
-from tokens import TokenType
-import expression
-from error_handler import ErrorHandler
-from error_handler import ParseError
-from abstract_syntax_tree import AbstractSyntaxTree
+from src.tokens import TokenType
+from src.expression import *
+from src.error_handler import ErrorHandler
+from src.error_handler import ParseError
+from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class Parser:
@@ -38,7 +38,7 @@ class Parser:
         while self._is_one_of_types(equality_types):
             operator = self._peek_prev()
             right_side = self._comparison()
-            left_side = expression.Binary(left_side, operator, right_side)
+            left_side = Binary(left_side, operator, right_side)
 
         return left_side
 
@@ -56,7 +56,7 @@ class Parser:
         while self._is_one_of_types(comparison_types):
             operator = self._peek_prev()
             right_side = self._term()
-            left_side = expression.Binary(left_side, operator, right_side)
+            left_side = Binary(left_side, operator, right_side)
 
         return left_side
 
@@ -72,7 +72,7 @@ class Parser:
         while self._is_one_of_types(term_types):
             operator = self._peek_prev()
             right_side = self._factor()
-            left_side = expression.Binary(left_side, operator, right_side)
+            left_side = Binary(left_side, operator, right_side)
 
         return left_side
 
@@ -88,7 +88,7 @@ class Parser:
         while self._is_one_of_types(factor_types):
             operator = self._peek_prev()
             right_side = self._unary()
-            left_side = expression.Binary(left_side, operator, right_side)
+            left_side = Binary(left_side, operator, right_side)
 
         return left_side
 
@@ -102,7 +102,7 @@ class Parser:
         if self._is_one_of_types(unary_types):
             operator = self._peek_prev()
             right_side = self._unary()
-            return expression.Unary(operator, right_side)
+            return Unary(operator, right_side)
 
         return self._primary()
 
@@ -114,14 +114,14 @@ class Parser:
         ]
 
         if self._is_one_of_types(primary_types):
-            return expression.Literal(self._peek_prev())
+            return Literal(self._peek_prev())
 
         closing_parens = [TokenType.LEFT_PAREN]
 
         if self._is_one_of_types(closing_parens):
             expr = self._expression()
             self._consume(TokenType.RIGHT_PAREN, 'Expected closing paren ")"')
-            return expression.Grouping(expr)
+            return Group(expr)
 
         raise ParseError(self._peek(), 'Expected start of expression')
 
