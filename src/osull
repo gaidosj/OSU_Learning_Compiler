@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+import sys
+
+
+class Orchestrator:
+    def __init__(self):
+        pass
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        sys.stderr.write('Usage: osull [filename]')
+        sys.exit(1)
+
+    orchestrator = Orchestrator()
+
+    if len(sys.argv) == 1:
+        orchestrator.interpret_file(sys.argv[0])
+    else:
+        orchestrator.run_repl()
