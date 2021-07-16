@@ -72,18 +72,18 @@ $(function() {
 <div class="title">parser.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="parser_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceparser.html">    1</a></span>&#160;<span class="keyword">from</span> tokens <span class="keyword">import</span> TokenType</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> expression</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">from</span> error_handler <span class="keyword">import</span> ErrorHandler</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">from</span> error_handler <span class="keyword">import</span> ParseError</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">from</span> abstract_syntax_tree <span class="keyword">import</span> AbstractSyntaxTree</div>
+<a href="parser_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceparser.html">    1</a></span>&#160;<span class="keyword">from</span> src.tokens <span class="keyword">import</span> TokenType</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> src.expression <span class="keyword">import</span> Binary, Group, Literal, Unary</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">from</span> src.error_handler <span class="keyword">import</span> ErrorHandler</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">from</span> src.error_handler <span class="keyword">import</span> ParseError</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">from</span> src.abstract_syntax_tree <span class="keyword">import</span> AbstractSyntaxTree</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classparser_1_1Parser.html">Parser</a>:</div>
 <div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#a4fd2c29145f3f0cac93b4e37b8bc77c0">    9</a></span>&#160;    <span class="keyword">def </span><a class="code" href="classparser_1_1Parser.html#a4fd2c29145f3f0cac93b4e37b8bc77c0">__init__</a>(self, tokens=[]):</div>
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#a6abd87f7504f09ae94765ed1a85a179a">   10</a></span>&#160;        self.<a class="code" href="classparser_1_1Parser.html#a6abd87f7504f09ae94765ed1a85a179a">tokens</a> = tokens</div>
 <div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#a98a9c6eba2fc04f47aedeb252fbdbcc0">   11</a></span>&#160;        self.<a class="code" href="classparser_1_1Parser.html#a98a9c6eba2fc04f47aedeb252fbdbcc0">index</a> = 0</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">   12</a></span>&#160;        self.<a class="code" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">error_handler</a> = <a class="code" href="classerror__handler_1_1ErrorHandler.html">ErrorHandler</a>()</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">   12</a></span>&#160;        self.<a class="code" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">error_handler</a> = ErrorHandler()</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#a40f8fbbd00980a586139479c0523506a">   14</a></span>&#160;    <span class="keyword">def </span><a class="code" href="classparser_1_1Parser.html#a40f8fbbd00980a586139479c0523506a">parse</a>(self):</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Parses a list of tokens and returns an abstract syntax tree&quot;&quot;&quot;</span></div>
@@ -91,7 +91,7 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classabstract__syntax__tree_1_1AbstractSyntaxTree.html">AbstractSyntaxTree</a>(self.<a class="code" href="classparser_1_1Parser.html#a9b3532830fd46d5a7aeb31a6317bc998">_expression</a>())</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> AbstractSyntaxTree(self.<a class="code" href="classparser_1_1Parser.html#a9b3532830fd46d5a7aeb31a6317bc998">_expression</a>())</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">except</span> ParseError <span class="keyword">as</span> error:</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            self.<a class="code" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">error_handler</a>.report_error(error)</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
@@ -112,7 +112,7 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">while</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(equality_types):</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            operator = self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>()</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            right_side = self.<a class="code" href="classparser_1_1Parser.html#aa8fd1d98d0ebabec22729613b714c0e2">_comparison</a>()</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            left_side = <a class="code" href="classexpression_1_1Binary.html">expression.Binary</a>(left_side, operator, right_side)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            left_side = Binary(left_side, operator, right_side)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">return</span> left_side</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
@@ -130,7 +130,7 @@ $(function() {
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">while</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(comparison_types):</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            operator = self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>()</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            right_side = self.<a class="code" href="classparser_1_1Parser.html#a0bba580357055eb29ae82a908f87c7f9">_term</a>()</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            left_side = <a class="code" href="classexpression_1_1Binary.html">expression.Binary</a>(left_side, operator, right_side)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            left_side = Binary(left_side, operator, right_side)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> left_side</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -146,7 +146,7 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">while</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(term_types):</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            operator = self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>()</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            right_side = self.<a class="code" href="classparser_1_1Parser.html#a3557d27afab0d5b09235e2be9c205cb9">_factor</a>()</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            left_side = <a class="code" href="classexpression_1_1Binary.html">expression.Binary</a>(left_side, operator, right_side)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            left_side = Binary(left_side, operator, right_side)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> left_side</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
@@ -162,7 +162,7 @@ $(function() {
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">while</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(factor_types):</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            operator = self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>()</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            right_side = self.<a class="code" href="classparser_1_1Parser.html#a99a0010f64795b24d2cc7a343fcb5036">_unary</a>()</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            left_side = <a class="code" href="classexpression_1_1Binary.html">expression.Binary</a>(left_side, operator, right_side)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            left_side = Binary(left_side, operator, right_side)</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">return</span> left_side</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
@@ -176,7 +176,7 @@ $(function() {
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">if</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(unary_types):</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            operator = self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>()</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            right_side = self.<a class="code" href="classparser_1_1Parser.html#a99a0010f64795b24d2cc7a343fcb5036">_unary</a>()</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classexpression_1_1Unary.html">expression.Unary</a>(operator, right_side)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">return</span> Unary(operator, right_side)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">return</span> self.<a class="code" href="classparser_1_1Parser.html#aafbc6e11ab6c751f6a0b47bfcacf3a93">_primary</a>()</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
@@ -188,16 +188,16 @@ $(function() {
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        ]</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">if</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(primary_types):</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classexpression_1_1Literal.html">expression.Literal</a>(self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>())</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="keywordflow">return</span> Literal(self.<a class="code" href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">_peek_prev</a>())</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        closing_parens = [TokenType.LEFT_PAREN]</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keywordflow">if</span> self.<a class="code" href="classparser_1_1Parser.html#ab781474dd9550ea91533e3229a58eb10">_is_one_of_types</a>(closing_parens):</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            expr = self.<a class="code" href="classparser_1_1Parser.html#a9b3532830fd46d5a7aeb31a6317bc998">_expression</a>()</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            self.<a class="code" href="classparser_1_1Parser.html#a2fd9126dfdb364236ad7b69ee4d5887d">_consume</a>(TokenType.RIGHT_PAREN, <span class="stringliteral">&#39;Expected closing paren &quot;)&quot;&#39;</span>)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">return</span> expression.Grouping(expr)</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="keywordflow">return</span> Group(expr)</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">raise</span> <a class="code" href="classerror__handler_1_1ParseError.html">ParseError</a>(self.<a class="code" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">_peek</a>(), <span class="stringliteral">&#39;Expected start of expression&#39;</span>)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">raise</span> ParseError(self.<a class="code" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">_peek</a>(), <span class="stringliteral">&#39;Expected start of expression&#39;</span>)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">  128</a></span>&#160;    <span class="keyword">def </span><a class="code" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">_peek</a>(self):</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Look at the next token&quot;&quot;&quot;</span></div>
@@ -247,7 +247,7 @@ $(function() {
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">if</span> (self.<a class="code" href="classparser_1_1Parser.html#ae111aa7a338d93539d57b29ff5c6ef3b">_is_same_type</a>(token_type)):</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordflow">return</span> self.<a class="code" href="classparser_1_1Parser.html#afb86e5898d75e62ad990c01e35bfb8d3">_next_token</a>()</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">raise</span> <a class="code" href="classerror__handler_1_1ParseError.html">ParseError</a>(self.<a class="code" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">_peek</a>(), message)</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">raise</span> ParseError(self.<a class="code" href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">_peek</a>(), message)</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
 <div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="classparser_1_1Parser.html#af0c0131057cd39854ecb1f866e65752c">  178</a></span>&#160;    <span class="keyword">def </span><a class="code" href="classparser_1_1Parser.html#af0c0131057cd39854ecb1f866e65752c">_synchronize</a>(self):</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Finds the next valid token that can start an expression&quot;&quot;&quot;</span></div>
@@ -279,7 +279,6 @@ $(function() {
 <div class="ttc" id="aclassparser_1_1Parser_html_ae1a6efbf82546f9c588a9df22063593a"><div class="ttname"><a href="classparser_1_1Parser.html#ae1a6efbf82546f9c588a9df22063593a">parser.Parser._out_of_bounds</a></div><div class="ttdeci">def _out_of_bounds(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00138">parser.py:138</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a3557d27afab0d5b09235e2be9c205cb9"><div class="ttname"><a href="classparser_1_1Parser.html#a3557d27afab0d5b09235e2be9c205cb9">parser.Parser._factor</a></div><div class="ttdeci">def _factor(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00079">parser.py:79</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a4fd2c29145f3f0cac93b4e37b8bc77c0"><div class="ttname"><a href="classparser_1_1Parser.html#a4fd2c29145f3f0cac93b4e37b8bc77c0">parser.Parser.__init__</a></div><div class="ttdeci">def __init__(self, tokens=[])</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00009">parser.py:9</a></div></div>
-<div class="ttc" id="aclassexpression_1_1Unary_html"><div class="ttname"><a href="classexpression_1_1Unary.html">expression.Unary</a></div><div class="ttdef"><b>Definition:</b> <a href="expression_8py_source.html#l00035">expression.py:35</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a361a867f6d63af208ec61299ae0f61f9"><div class="ttname"><a href="classparser_1_1Parser.html#a361a867f6d63af208ec61299ae0f61f9">parser.Parser._end_of_code</a></div><div class="ttdeci">def _end_of_code(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00142">parser.py:142</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a95db40dd6ee27e602250abc38288ee48"><div class="ttname"><a href="classparser_1_1Parser.html#a95db40dd6ee27e602250abc38288ee48">parser.Parser._peek</a></div><div class="ttdeci">def _peek(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00128">parser.py:128</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a2fd9126dfdb364236ad7b69ee4d5887d"><div class="ttname"><a href="classparser_1_1Parser.html#a2fd9126dfdb364236ad7b69ee4d5887d">parser.Parser._consume</a></div><div class="ttdeci">def _consume(self, token_type, message)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00171">parser.py:171</a></div></div>
@@ -287,19 +286,14 @@ $(function() {
 <div class="ttc" id="aclassparser_1_1Parser_html_afb86e5898d75e62ad990c01e35bfb8d3"><div class="ttname"><a href="classparser_1_1Parser.html#afb86e5898d75e62ad990c01e35bfb8d3">parser.Parser._next_token</a></div><div class="ttdeci">def _next_token(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00150">parser.py:150</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a9b3532830fd46d5a7aeb31a6317bc998"><div class="ttname"><a href="classparser_1_1Parser.html#a9b3532830fd46d5a7aeb31a6317bc998">parser.Parser._expression</a></div><div class="ttdeci">def _expression(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00025">parser.py:25</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_ac19732fce125f0710289d6e053b54047"><div class="ttname"><a href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">parser.Parser.error_handler</a></div><div class="ttdeci">error_handler</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00012">parser.py:12</a></div></div>
-<div class="ttc" id="aclasserror__handler_1_1ErrorHandler_html"><div class="ttname"><a href="classerror__handler_1_1ErrorHandler.html">error_handler.ErrorHandler</a></div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8py_source.html#l00004">error_handler.py:4</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a0bba580357055eb29ae82a908f87c7f9"><div class="ttname"><a href="classparser_1_1Parser.html#a0bba580357055eb29ae82a908f87c7f9">parser.Parser._term</a></div><div class="ttdeci">def _term(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00063">parser.py:63</a></div></div>
-<div class="ttc" id="aclassexpression_1_1Literal_html"><div class="ttname"><a href="classexpression_1_1Literal.html">expression.Literal</a></div><div class="ttdef"><b>Definition:</b> <a href="expression_8py_source.html#l00027">expression.py:27</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a99a0010f64795b24d2cc7a343fcb5036"><div class="ttname"><a href="classparser_1_1Parser.html#a99a0010f64795b24d2cc7a343fcb5036">parser.Parser._unary</a></div><div class="ttdeci">def _unary(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00095">parser.py:95</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a5cf5d4f14206e406bf615e9219aff481"><div class="ttname"><a href="classparser_1_1Parser.html#a5cf5d4f14206e406bf615e9219aff481">parser.Parser._peek_prev</a></div><div class="ttdeci">def _peek_prev(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00134">parser.py:134</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_ae111aa7a338d93539d57b29ff5c6ef3b"><div class="ttname"><a href="classparser_1_1Parser.html#ae111aa7a338d93539d57b29ff5c6ef3b">parser.Parser._is_same_type</a></div><div class="ttdeci">def _is_same_type(self, token_type)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00157">parser.py:157</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a98a9c6eba2fc04f47aedeb252fbdbcc0"><div class="ttname"><a href="classparser_1_1Parser.html#a98a9c6eba2fc04f47aedeb252fbdbcc0">parser.Parser.index</a></div><div class="ttdeci">index</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00011">parser.py:11</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html"><div class="ttname"><a href="classparser_1_1Parser.html">parser.Parser</a></div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00008">parser.py:8</a></div></div>
-<div class="ttc" id="aclassexpression_1_1Binary_html"><div class="ttname"><a href="classexpression_1_1Binary.html">expression.Binary</a></div><div class="ttdef"><b>Definition:</b> <a href="expression_8py_source.html#l00009">expression.py:9</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_a899a0f2fbf7dd2d44a13a2e4a15fe87c"><div class="ttname"><a href="classparser_1_1Parser.html#a899a0f2fbf7dd2d44a13a2e4a15fe87c">parser.Parser._equality</a></div><div class="ttdeci">def _equality(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00029">parser.py:29</a></div></div>
 <div class="ttc" id="aclassparser_1_1Parser_html_aa8fd1d98d0ebabec22729613b714c0e2"><div class="ttname"><a href="classparser_1_1Parser.html#aa8fd1d98d0ebabec22729613b714c0e2">parser.Parser._comparison</a></div><div class="ttdeci">def _comparison(self)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8py_source.html#l00045">parser.py:45</a></div></div>
-<div class="ttc" id="aclasserror__handler_1_1ParseError_html"><div class="ttname"><a href="classerror__handler_1_1ParseError.html">error_handler.ParseError</a></div><div class="ttdef"><b>Definition:</b> <a href="error__handler_8py_source.html#l00037">error_handler.py:37</a></div></div>
-<div class="ttc" id="aclassabstract__syntax__tree_1_1AbstractSyntaxTree_html"><div class="ttname"><a href="classabstract__syntax__tree_1_1AbstractSyntaxTree.html">abstract_syntax_tree.AbstractSyntaxTree</a></div><div class="ttdef"><b>Definition:</b> <a href="abstract__syntax__tree_8py_source.html#l00001">abstract_syntax_tree.py:1</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
