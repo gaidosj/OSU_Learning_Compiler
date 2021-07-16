@@ -1,0 +1,9 @@
+<map id="pip._internal.cli.progress_bars.DownloadProgressSpinner" name="pip._internal.cli.progress_bars.DownloadProgressSpinner">
+<area shape="rect" id="node1" title=" " alt="" coords="429,136,660,177"/>
+<area shape="rect" id="node2" href="$classpip_1_1__internal_1_1cli_1_1progress__bars_1_1WindowsMixin.html" title=" " alt="" coords="139,5,322,47"/>
+<area shape="rect" id="node3" href="$classpip_1_1__internal_1_1cli_1_1progress__bars_1_1InterruptibleMixin.html" title=" " alt="" coords="139,71,322,112"/>
+<area shape="rect" id="node4" href="$classpip_1_1__internal_1_1cli_1_1progress__bars_1_1DownloadProgressMixin.html" title=" " alt="" coords="121,136,340,177"/>
+<area shape="rect" id="node5" href="$classpip_1_1__vendor_1_1progress_1_1spinner_1_1Spinner.html" title=" " alt="" coords="125,201,337,243"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,209,72,235"/>
+<area shape="rect" id="node7" title=" " alt="" coords="201,267,260,294"/>
+</map>

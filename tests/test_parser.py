@@ -1,7 +1,7 @@
 import unittest
-from parser import Parser
-from tokens import Token, TokenType
-from expression import Literal, Unary, Binary
+from src.parser import Parser
+from src.tokens import Token, TokenType
+from src.expression import Literal, Unary, Binary
 
 
 class ParserTest(unittest.TestCase):

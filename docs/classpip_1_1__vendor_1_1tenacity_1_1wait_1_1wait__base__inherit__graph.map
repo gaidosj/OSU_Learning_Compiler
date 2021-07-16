@@ -1,0 +1,12 @@
+<map id="pip._vendor.tenacity.wait.wait_base" name="pip._vendor.tenacity.wait.wait_base">
+<area shape="rect" id="node1" title=" " alt="" coords="116,177,371,203"/>
+<area shape="rect" id="node3" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__chain.html" title=" " alt="" coords="419,5,635,47"/>
+<area shape="rect" id="node4" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__combine.html" title=" " alt="" coords="419,71,635,112"/>
+<area shape="rect" id="node5" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__exponential.html" title=" " alt="" coords="419,136,635,177"/>
+<area shape="rect" id="node7" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__fixed.html" title=" " alt="" coords="419,201,635,243"/>
+<area shape="rect" id="node9" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__incrementing.html" title=" " alt="" coords="419,267,635,308"/>
+<area shape="rect" id="node10" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__random.html" title=" " alt="" coords="419,332,635,373"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,177,68,203"/>
+<area shape="rect" id="node6" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__random__exponential.html" title=" " alt="" coords="702,136,918,177"/>
+<area shape="rect" id="node8" href="$classpip_1_1__vendor_1_1tenacity_1_1wait_1_1wait__none.html" title=" " alt="" coords="683,209,937,235"/>
+</map>

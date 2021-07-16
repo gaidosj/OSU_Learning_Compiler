@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['readme_2emd_169',['README.md',['../README_8md.html',1,'']]],
-  ['requirements_2etxt_170',['requirements.txt',['../requirements_8txt.html',1,'']]]
+  ['parser_2epy_168',['parser.py',['../parser_8py.html',1,'']]]
 ];

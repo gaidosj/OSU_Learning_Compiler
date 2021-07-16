@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['osu_5flearning_5fcompiler_95',['OSU_Learning_Compiler',['../md_README.html',1,'']]],
   ['object_96',['OBJECT',['../classtokens_1_1DataType.html#a3734b7ebf30fc01ee19ca967a3ee47e5',1,'tokens::DataType']]],
   ['olc_97',['Olc',['../classolc_1_1Olc.html',1,'olc.Olc'],['../namespaceolc.html',1,'olc']]],
   ['olc_2epy_98',['olc.py',['../olc_8py.html',1,'']]],

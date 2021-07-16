@@ -1,5 +1,5 @@
 import unittest
-import hello
+from src import hello
 
 
 class TestCase(unittest.TestCase):

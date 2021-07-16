@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['datatype_142',['DataType',['../classtokens_1_1DataType.html',1,'tokens']]]
+  ['datatype_141',['DataType',['../classtokens_1_1DataType.html',1,'tokens']]]
 ];
