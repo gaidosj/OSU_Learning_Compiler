@@ -34,9 +34,3 @@ jobs:
     - name: Test with unittest
       run: |
         python -m unittest discover -s tests
-    - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.3.1
-      with:
-          doxyfile-path: ./Doxyfile
-          working-directory: .
-        
