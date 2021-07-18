@@ -1,3 +1,4 @@
+import parent_dir
 import unittest
 from src.interpreter import Interpreter
 from src.expression import Binary, Literal, Unary
