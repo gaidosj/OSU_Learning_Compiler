@@ -1,26 +1,41 @@
 from src.tokens import TokenType
-from src.expression import Binary, Group, Literal, Unary
+from src.parser_expression import Binary, Group, Literal, Unary
 from src.error_handler import ErrorHandler
 from src.error_handler import ParseError
 from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class Parser:
-    def __init__(self, tokens=[]):
-        self.tokens = tokens
+    def __init__(self, tokens=None):
+        self.tokens = tokens.copy() if tokens else []
         self.index = 0
         self.error_handler = ErrorHandler()
 
     def parse(self):
-        """Parses a list of tokens and returns an abstract syntax tree"""
-        if len(self.tokens) == 0:
-            return None
+        """
+        Parses a list of tokens and returns an abstract syntax tree
+        """
+        if not self.tokens:
+            return
 
         try:
             return AbstractSyntaxTree(self._expression())
         except ParseError as error:
             self.error_handler.report_error(error)
-            return None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def _expression(self):
         """Any type of expression in the language"""
