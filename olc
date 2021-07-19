@@ -14,12 +14,13 @@ class Orchestrator:
 
     def execute(self, code):
         self.lexer.load_source_code(code)
-        self.lexer.process_source_code(code)
+        self.lexer.process_source_code()
 
         self.parser.tokens = self.lexer.tokens
         ast = self.parser.parse()
 
-        self.interpreter.interpret(ast)
+        if (ast is not None):
+            print(self.interpreter.interpret(ast.root))
 
     def interpret_file(self, filename):
         pass
@@ -34,13 +35,15 @@ class Orchestrator:
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        sys.stderr.write('Usage: osull [filename]')
+    if len(sys.argv) > 2:
+        sys.stderr.write('Usage: ' + sys.argv[0] + ' [filename]\n')
         sys.exit(1)
 
     orchestrator = Orchestrator()
 
-    if len(sys.argv) == 1:
-        orchestrator.interpret_file(sys.argv[0])
+    if len(sys.argv) == 2:
+        orchestrator.interpret_file(sys.argv[1])
     else:
         orchestrator.run_repl()
+
+    sys.exit(0)

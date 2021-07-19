@@ -16,6 +16,7 @@ class Parser:
             return None
 
         try:
+            self.index = 0
             return AbstractSyntaxTree(self._expression())
         except ParseError as error:
             self.error_handler.report_error(error)

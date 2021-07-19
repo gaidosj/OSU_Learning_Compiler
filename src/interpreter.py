@@ -14,8 +14,10 @@ class Interpreter:
             TokenType.GT: lambda left, right: left > right,
             TokenType.LTE: lambda left, right: left <= right,
             TokenType.LT: lambda left, right: left < right,
-            TokenType.EQUALITY: lambda left, right: self.are_equal(left, right),
-            TokenType.INEQUALITY: lambda left, right: not self.are_equal(left, right)
+            TokenType.EQUALITY: lambda left, right: self.are_equal(
+                left, right),
+            TokenType.INEQUALITY: lambda left, right: not self.are_equal(
+                left, right)
         }
 
     def interpret(self, expression):
