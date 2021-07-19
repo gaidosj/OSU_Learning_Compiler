@@ -1,7 +1,7 @@
 import unittest
 from src.parser import Parser
 from src.tokens import TokenOsu, TokenType
-from src.expression import Literal, Unary, Binary
+from src.parser_expression import Literal, Unary, Binary
 from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
@@ -306,7 +306,6 @@ class ParserTest(unittest.TestCase):
         ]
 
         result = self.parser.parse()
-        print(result)
         self.assertEqual(
             result,
             AbstractSyntaxTree(

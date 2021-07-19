@@ -35,13 +35,13 @@ class Interpreter:
     def evaluate(self, expression):
         return expression.accept(self)
 
-    def visit_literal(self, literal):
+    def visit_literal_expression(self, literal):
         return literal.value.literal
 
-    def visit_group(self, group):
+    def visit_group_expression(self, group):
         return self.evaluate(group.expression)
 
-    def visit_unary(self, unary):
+    def visit_unary_expression(self, unary):
         operand = self.evaluate(unary.operand)
 
         if (unary.operator.token_type == TokenType.MINUS):
@@ -49,7 +49,7 @@ class Interpreter:
         elif (unary.operator.token_type == TokenType.NOT):
             return not self.is_truthy(operand)
 
-    def visit_binary(self, binary):
+    def visit_binary_expression(self, binary):
         left = self.evaluate(binary.left_operand)
         right = self.evaluate(binary.right_operand)
 

@@ -1,6 +1,6 @@
 import unittest
 from src.interpreter import Interpreter
-from src.expression import Binary, Literal, Unary
+from src.parser_expression import Binary, Literal, Unary
 from src.tokens import TokenOsu, TokenType
 
 
