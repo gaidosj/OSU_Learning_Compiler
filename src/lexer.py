@@ -1,4 +1,4 @@
-from tokens import TokenOsu, TokenType, \
+from src.tokens import TokenOsu, TokenType, \
     single_token, disregarded_whitespace, double_token, end_of_line, reserved_words, \
     string_literal
 
