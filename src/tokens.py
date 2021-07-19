@@ -2,17 +2,26 @@ from enum import Enum
 
 
 class TokenOsu:
-    def __init__(self, token_type, lexeme, literal, source_file_line_number=0):
+    def __init__(self, token_type, lexeme, literal=None, source_file_line_number=0):
         self.token_type = token_type
         self.lexeme = lexeme
         self.literal = literal
         self.source_file_line_number = source_file_line_number
 
     def __str__(self):
-        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
+        if self.token_type in (TokenType.EOL, TokenType.EOF):
+            return 'TOKEN.{}\n'.format(self.token_type.name)
+        else:
+            out = 'TOKEN.{} \'{}\''.format(self.token_type.name, self.lexeme)
+            if self.literal is not None:
+                out += ' val={}'.format(self.literal)
+            return out
 
     def __repr__(self):
-        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
+        if self.token_type in (TokenType.EOL, TokenType.EOF):
+            return '{}\n'.format(self.token_type.name)
+        else:
+            return '{} (lexeme=\'{}\' literal=\'{}\')'.format(self.token_type.name, self.lexeme, self.literal)
 
 
 class DataType(Enum):
