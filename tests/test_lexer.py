@@ -44,14 +44,14 @@ class LexerTest(unittest.TestCase):
         """
         for filename in ('program_01',):
             # read OLC source code and convert to the list of tokens
-            with open('olc_programs/{}.olc'.format(filename), 'r') as input_handle:
+            with open('./olc_programs/{}.olc'.format(filename), 'r') as input_handle:
                 source_code = ''.join(input_handle.readlines())
                 lexer = Lexer(source_code)
                 lexer.process_source_code()
                 token_string = LexerTest._get_tokens_as_string(lexer.get_tokens())
 
             # read expected list of tokens
-            with open('olc_programs/{}.lex'.format(filename), 'r') as input_handle:
+            with open('./olc_programs/{}.lex'.format(filename), 'r') as input_handle:
                 expected_token_string = ''.join(input_handle.readlines())
 
             # print(source_code)
