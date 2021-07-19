@@ -1,5 +1,5 @@
-from tokens import TokenType
-from error_handler import ErrorHandler, InterpretError
+from src.tokens import TokenType
+from src.error_handler import ErrorHandler, InterpretError
 
 
 class Interpreter:
