@@ -1,4 +1,5 @@
 import unittest
+import os
 from src.lexer import Lexer
 from src.tokens import TokenType
 
@@ -44,15 +45,16 @@ class LexerTest(unittest.TestCase):
         """
         for filename in ('program_01',):
             # read OLC source code and convert to the list of tokens
-            with open('./olc_programs/{}.olc'.format(filename), 'r') as input_handle:
-                source_code = ''.join(input_handle.readlines())
-                lexer = Lexer(source_code)
+            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.olc'.format(filename))
+            with open(full_name, 'r') as input_handle:
+                lexer = Lexer(input_handle.read())
                 lexer.process_source_code()
                 token_string = LexerTest._get_tokens_as_string(lexer.get_tokens())
 
             # read expected list of tokens
-            with open('./olc_programs/{}.lex'.format(filename), 'r') as input_handle:
-                expected_token_string = ''.join(input_handle.readlines())
+            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.lex'.format(filename))
+            with open(full_name, 'r') as input_handle:
+                expected_token_string = input_handle.read()
 
             # print(source_code)
             # print(token_string)
