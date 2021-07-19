@@ -23,20 +23,6 @@ class Parser:
         except ParseError as error:
             self.error_handler.report_error(error)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def _expression(self):
         """Any type of expression in the language"""
         return self._equality()

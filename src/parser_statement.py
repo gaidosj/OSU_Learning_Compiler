@@ -30,7 +30,7 @@ class Print(ParserStatement):
 
 class Block(ParserStatement):
     def __init__(self, statements: [ParserStatement]):
-        self.statements = statements.copy() #TODO need this copy or mutable is OK?
+        self.statements = statements.copy()  # TODO need this copy or mutable is OK?
 
     def accept(self, visitor):
         return visitor.visit_block_statement(self)
