@@ -1,3 +1,4 @@
+import parent_dir
 import unittest
 from src import hello
 
@@ -19,3 +20,4 @@ class TestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    parent_dir

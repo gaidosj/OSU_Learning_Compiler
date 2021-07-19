@@ -1,3 +1,4 @@
+import parent_dir
 import unittest
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.tokens import TokenOsu, TokenType
@@ -85,3 +86,4 @@ class AstTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    parent_dir

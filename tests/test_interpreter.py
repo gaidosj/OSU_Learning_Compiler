@@ -1,3 +1,4 @@
+import parent_dir
 import unittest
 from src.interpreter import Interpreter
 from src.expression import Binary, Literal, Unary
@@ -75,3 +76,4 @@ class TestInterpreter(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    parent_dir

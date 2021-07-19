@@ -1,3 +1,4 @@
+import parent_dir
 import unittest
 from src.parser import Parser
 from src.tokens import TokenOsu, TokenType
@@ -305,10 +306,8 @@ class ParserTest(unittest.TestCase):
             self.tokens[TokenType.INT]
         ]
 
-        result = self.parser.parse()
-        print(result)
         self.assertEqual(
-            result,
+            self.parser.parse(),
             AbstractSyntaxTree(
                 Binary(
                     Binary(
@@ -361,3 +360,4 @@ class ParserTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+    parent_dir
