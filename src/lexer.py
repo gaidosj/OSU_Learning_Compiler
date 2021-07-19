@@ -1,6 +1,7 @@
-from src.tokens import TokenOsu, TokenType, \
-    single_token, disregarded_whitespace, double_token, end_of_line, reserved_words, \
-    string_literal
+from src.tokens import TokenOsu, TokenType
+from src.lexer_constants import SINGLE_TOKENS, DOUBLE_TOKENS, \
+    DISREGARDED_WHITESPACES, RESERVED_WORDS, END_OF_LINE, \
+    STRING_LITERALS, NUMBER_LITERALS, IDENTIFIER_LITERALS
 
 
 class Lexer:
@@ -32,31 +33,30 @@ class Lexer:
         self.start = self.current
         self._add_token(TokenType.EOF)
 
-    # ---------------------------------------------------
-    # private methods
-
     def _scan_token(self):
         char = self._advance()
-        self.current_source_line += char in end_of_line
+        self.current_source_line += char == END_OF_LINE
 
-        if char in disregarded_whitespace:
+        if char in DISREGARDED_WHITESPACES:
             pass
-        elif char in double_token:
+        elif char in DOUBLE_TOKENS:
             self._add_double_token(char)
-        elif char in single_token:
-            self._add_token(single_token[char])
+        elif char in SINGLE_TOKENS:
+            self._add_token(SINGLE_TOKENS[char])
         elif char == '/':
             self._add_token_comment_or_division()
-        elif char in string_literal:
+        elif char in STRING_LITERALS:
             self._add_token_string_literal(closing_char=char)
-        elif char.isdigit():
+        elif char in NUMBER_LITERALS:
             self._add_token_number_literal()
-        elif char.isalpha() or char == '_':
+        elif char in IDENTIFIER_LITERALS:
             self._add_token_identifier_or_reserved_word()
         else:
             self._add_unexpected_token_error()
 
-    # ---------------------------------------------------
+    def _add_token(self, token_type, literal=None):
+        lexeme = self.source[self.start: self.current]
+        self.tokens.append(TokenOsu(token_type, lexeme, literal))
 
     def _add_unexpected_token_error(self):
         if self.tokens and self.tokens[-1].token_type == TokenType.ERROR:
@@ -67,22 +67,21 @@ class Lexer:
             self._add_token(TokenType.ERROR, 'Unexpected token')
 
     def _add_double_token(self, first_char):
-        expected_match = double_token[first_char]['match']
-        token1 = double_token[first_char]['yes']
-        token2 = double_token[first_char]['no']
+        expected_match = DOUBLE_TOKENS[first_char]['match']
+        token1 = DOUBLE_TOKENS[first_char]['yes']
+        token2 = DOUBLE_TOKENS[first_char]['no']
         self._add_token(token1 if self._match(expected_match) else token2)
 
     def _add_token_comment_or_division(self):
         if self._match('/'):
-            self._match_until('\n')
+            self._match_until(END_OF_LINE)
             self._add_token(TokenType.COMMENT)
         else:
             self._add_token(TokenType.DIV)
 
     def _add_token_string_literal(self, closing_char):
         while self._peek() != closing_char and not self._is_at_end():
-            if self._peek() in end_of_line:
-                self.current_source_line += 1
+            self.current_source_line += self._peek() == END_OF_LINE
             self._advance()
 
         if self._is_at_end():
@@ -110,35 +109,44 @@ class Lexer:
             self._add_token(TokenType.INT, value)
 
     def _add_token_identifier_or_reserved_word(self):
-        while self._peek() and self._peek().isalpha() or self._peek() == '_':
+        while self._peek() and self._peek() in IDENTIFIER_LITERALS:
             self._advance()
 
         lexeme = self.source[self.start: self.current]
-        if lexeme in reserved_words:
-            self._add_token(reserved_words[lexeme])
+        if lexeme in RESERVED_WORDS:
+            self._add_token(RESERVED_WORDS[lexeme])
         else:
             self._add_token(TokenType.IDENTIFIER)
-
-    # ---------------------------------------------------
 
     def _match_until(self, expected_char):
         while self._peek() != expected_char and not self._is_at_end():
             self._advance()
 
     def _is_at_end(self):
+        """
+        Return True if the cursor is at the end of the source code
+        """
         return self.current >= len(self.source)
 
     def _peek(self):
-        if self._is_at_end():
-            return None
-        return self.source[self.current]
+        """
+        Return source code character from the current cursor position
+        without advancing the cursor
+        """
+        return self.source[self.current] if not self._is_at_end() else None
 
     def _peek_next(self):
-        if self.current + 1 > len(self.source):
-            return None
-        return self.source[self.current + 1]
+        """
+        Return source code character from the position immedeately after
+        the current cursor without advancing the cursor
+        """
+        return self.source[self.current + 1] if not self.current + 1 > len(self.source) else None
 
     def _advance(self):
+        """
+        Return source code charater from the current cursor position
+        and advance the cursor one character forward
+        """
         if self._is_at_end():
             return None
         self.current += 1
@@ -149,28 +157,3 @@ class Lexer:
             return False
         self.current += 1
         return True
-
-    def _add_token(self, token_type, literal=None):
-        lexeme = self.source[self.start: self.current]
-        self.tokens.append(TokenOsu(token_type, lexeme, literal))
-
-
-if __name__ == '__main__':
-    test_cases = (
-        '() {} * ==\n = != =//! // hello',
-        '+ "WELCOME" \'HELLO\' 123 123.1 123.0 0 0.0',
-        'hello = 20; print 30 && || & | ! 25.0 * _some_string"'
-    )
-
-    lexer = Lexer()
-    for source_code in test_cases:
-        lexer.load_source_code(source_code)
-        lexer.process_source_code()
-
-        print('\nSOURCE CODE:\n', source_code)
-        print('\nTOKENS:')
-        for token in lexer.get_tokens():
-            if token.type in (TokenType.EOL, TokenType.EOF):
-                print(token.type.name)
-            else:
-                print('{} \'{}\'     '.format(token.type.name, token.lexeme), end='')

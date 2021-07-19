@@ -2,25 +2,26 @@ from enum import Enum
 
 
 class TokenOsu:
-    def __init__(self, token_type, lexeme, literal, source_file_line_number=0):
+    def __init__(self, token_type, lexeme, literal=None, source_file_line_number=0):
         self.token_type = token_type
         self.lexeme = lexeme
         self.literal = literal
         self.source_file_line_number = source_file_line_number
 
     def __str__(self):
-        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
+        if self.token_type in (TokenType.EOL, TokenType.EOF):
+            return 'TOKEN.{}\n'.format(self.token_type.name)
+        else:
+            out = 'TOKEN.{} \'{}\''.format(self.token_type.name, self.lexeme)
+            if self.literal is not None:
+                out += ' val={}'.format(self.literal)
+            return out
 
     def __repr__(self):
-        return '{} {} {}'.format(self.token_type, self.lexeme, self.literal)
-
-
-class DataType(Enum):
-    INT = 'int'
-    FLOAT = 'float'
-    STRING = 'string'
-    BOOL = 'bool'
-    OBJECT = 'object'
+        if self.token_type in (TokenType.EOL, TokenType.EOF):
+            return 'TOKEN.{}\n'.format(self.token_type.name)
+        else:
+            return 'TOKEN.{} (lexeme=\'{}\' literal=\'{}\')'.format(self.token_type.name, self.lexeme, self.literal)
 
 
 class TokenType(Enum):
@@ -81,59 +82,3 @@ class TokenType(Enum):
     ERROR = 'ERROR'
     COMMENT = '//'          # double with DIV
     BLOCK_COMMENT = '/*'
-
-
-reserved_words = {
-    'var': TokenType.VAR,
-    'function': TokenType.FUNCTION,
-    'return': TokenType.RETURN,
-    'if': TokenType.IF,
-    'else': TokenType.ELSE,
-    'elif': TokenType.ELIF,
-    'while': TokenType.WHILE,
-    'print': TokenType.PRINT,
-    'include': TokenType.INCLUDE,
-    'class': TokenType.CLASS,
-}
-
-single_token = {
-    '(': TokenType.LEFT_PAREN,
-    ')': TokenType.RIGHT_PAREN,
-    '{': TokenType.LEFT_CURLY,
-    '}': TokenType.RIGHT_CURLY,
-    '[': TokenType.LEFT_SQUARE,
-    ']': TokenType.RIGHT_SQUARE,
-    ',': TokenType.COMMA,
-    '.': TokenType.DOT,
-    '-': TokenType.MINUS,
-    '+': TokenType.PLUS,
-    ';': TokenType.SEMICOLON,
-    '*': TokenType.ASTERISK,
-    '^': TokenType.NOT,
-    '\n': TokenType.EOL,
-}
-
-double_token = {
-    '=': {'match': '=', 'yes': TokenType.EQUALITY, 'no': TokenType.EQUALS},
-    '!': {'match': '=', 'yes': TokenType.INEQUALITY, 'no': TokenType.NOT},
-    '>': {'match': '=', 'yes': TokenType.GTE, 'no': TokenType.GT},
-    '<': {'match': '=', 'yes': TokenType.LTE, 'no': TokenType.LT},
-    '&': {'match': '&', 'yes': TokenType.AND, 'no': TokenType.ERROR},
-    '|': {'match': '|', 'yes': TokenType.OR, 'no': TokenType.ERROR},
-}
-
-disregarded_whitespace = {
-    ' ', '\r', '\t'
-}
-
-end_of_line = {
-    '\n'
-}
-
-string_literal = {
-    '"', "'"
-}
-
-number_literal = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-}
