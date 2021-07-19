@@ -71,7 +71,6 @@ class TokenTestCase(unittest.TestCase):
             (TokenOsu(TokenType.BLOCK_COMMENT, '/* block cmnt */'), "TOKEN.BLOCK_COMMENT '/* block cmnt */'"),
         )
         for token, expected_string_representation in test_cases:
-            print('"' + str(token) + '"')
             self.assertEqual('{}'.format(token), expected_string_representation)
 
 
