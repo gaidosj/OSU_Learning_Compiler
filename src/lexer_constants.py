@@ -50,6 +50,6 @@ STRING_LITERALS = {
 
 NUMBER_LITERALS = set(digits)
 
-IDENTIFIER_LITERALS = set(ascii_lowercase).union({'_'})
+IDENTIFIER_LITERALS = set(ascii_lowercase) | {'_'}
 
 END_OF_LINE = '\n'
