@@ -9,19 +9,41 @@ class TokenOsu:
         self.source_file_line_number = source_file_line_number
 
     def __str__(self):
-        if self.token_type in (TokenType.EOL, TokenType.EOF):
-            return 'TOKEN.{}\n'.format(self.token_type.name)
-        else:
-            out = 'TOKEN.{} \'{}\''.format(self.token_type.name, self.lexeme)
-            if self.literal is not None:
-                out += ' val={}'.format(self.literal)
-            return out
+        """
+        Return string representation of the token
+        """
+        if self.token_type == TokenType.EOL:
+            return '{}\n'.format(self.token_type.name)
+        if self.token_type == TokenType.EOF:
+            return '{}'.format(self.token_type.name)
+
+        out = '{} \'{}\''.format(self.token_type.name, self.lexeme)
+        if self.literal is not None:
+            out += ' val={}'.format(self.literal)
+        return out
 
     def __repr__(self):
         if self.token_type in (TokenType.EOL, TokenType.EOF):
             return 'TOKEN.{}\n'.format(self.token_type.name)
         else:
             return 'TOKEN.{} (lexeme=\'{}\' literal=\'{}\')'.format(self.token_type.name, self.lexeme, self.literal)
+
+    def get_token_constructor(self):
+        """
+        Helper method that returns a string with the Python expression which, when evaluated,
+        will construct identical token. Used to generate test cases.
+        """
+        if self.literal is None:
+            # all tokens except strings and numbers
+            literal = ''
+        elif self.token_type == TokenType.STRING:
+            # strings - need to escape double quotes and add quotes around
+            literal = ', "{}"'.format(self.literal.replace('"', '\\\"'))
+        else:
+            # numbers - ints and float
+            literal = ', {}'.format(self.literal)
+        lexeme = self.lexeme.replace('"', '\\\"')
+        return 'TokenOsu({}, "{}"{})'.format(self.token_type, lexeme, literal)
 
 
 class TokenType(Enum):

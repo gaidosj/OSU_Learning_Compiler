@@ -1,5 +1,5 @@
-from string import ascii_lowercase, digits
-from tokens import TokenType
+from string import digits, ascii_letters
+from src.tokens import TokenType
 
 RESERVED_WORDS = {
     'var': TokenType.VAR,
@@ -50,6 +50,6 @@ STRING_LITERALS = {
 
 NUMBER_LITERALS = set(digits)
 
-IDENTIFIER_LITERALS = set(ascii_lowercase) | {'_'}
+IDENTIFIER_LITERALS = set(ascii_letters) | {'_'}
 
 END_OF_LINE = '\n'
