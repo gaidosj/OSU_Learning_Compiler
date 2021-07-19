@@ -1,8 +1,7 @@
-from src.tokens import TokenType
-from src.expression import Binary, Group, Literal, Unary
-from src.error_handler import ErrorHandler
-from src.error_handler import ParseError
-from src.abstract_syntax_tree import AbstractSyntaxTree
+from tokens import TokenType
+from expression import Binary, Group, Literal, Unary
+from error_handler import ErrorHandler, ParseError
+from abstract_syntax_tree import AbstractSyntaxTree
 
 
 class Parser:
