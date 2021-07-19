@@ -153,24 +153,3 @@ class Lexer:
     def _add_token(self, token_type, literal=None):
         lexeme = self.source[self.start: self.current]
         self.tokens.append(TokenOsu(token_type, lexeme, literal))
-
-
-if __name__ == '__main__':
-    test_cases = (
-        '() {} * ==\n = != =//! // hello',
-        '+ "WELCOME" \'HELLO\' 123 123.1 123.0 0 0.0',
-        'hello = 20; print 30 && || & | ! 25.0 * _some_string"'
-    )
-
-    lexer = Lexer()
-    for source_code in test_cases:
-        lexer.load_source_code(source_code)
-        lexer.process_source_code()
-
-        print('\nSOURCE CODE:\n', source_code)
-        print('\nTOKENS:')
-        for token in lexer.get_tokens():
-            if token.type in (TokenType.EOL, TokenType.EOF):
-                print(token.type.name)
-            else:
-                print('{} \'{}\'     '.format(token.type.name, token.lexeme), end='')
