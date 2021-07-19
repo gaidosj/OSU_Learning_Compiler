@@ -2,6 +2,7 @@ import unittest
 from src.lexer import Lexer
 from src.tokens import TokenType
 
+
 class LexerTest(unittest.TestCase):
     @classmethod
     def _get_tokens_as_string(self, tokens_list):
@@ -57,11 +58,6 @@ class LexerTest(unittest.TestCase):
             # print(token_string)
             # print(expected_token_string)
             self.assertEqual(token_string, expected_token_string)
-
-
-
-
-
 
 
 if __name__ == '__main__':
