@@ -59,7 +59,7 @@ class Lexer:
     # ---------------------------------------------------
 
     def _add_unexpected_token_error(self):
-        if self.tokens and self.tokens[-1].type == TokenType.ERROR:
+        if self.tokens and self.tokens[-1].token_type == TokenType.ERROR:
             # if last token is ERROR -> extend its lexeme
             self.tokens[-1].lexeme += self.source[self.start: self.current]
         else:

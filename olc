@@ -27,11 +27,18 @@ class Orchestrator:
 
     def run_repl(self):
         while True:
-            sys.stdout.write('$ ')
-            line = input()
-            if line is None:
+            try:
+                sys.stdout.write('$ ')
+                line = input()
+                if line is None:
+                    break
+                result = self.execute(line)
+                if result is not None:
+                    print(result)
+            except (EOFError, KeyboardInterrupt):
                 break
-            print(self.execute(line))
+
+        print()
 
 
 if __name__ == '__main__':
