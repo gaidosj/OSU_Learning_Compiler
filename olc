@@ -20,7 +20,7 @@ class Orchestrator:
         ast = self.parser.parse()
 
         if (ast is not None):
-            print(self.interpreter.interpret(ast.root))
+            return self.interpreter.interpret(ast.root)
 
     def interpret_file(self, filename):
         pass
@@ -31,7 +31,7 @@ class Orchestrator:
             line = input()
             if line is None:
                 break
-            self.execute(line)
+            print(self.execute(line))
 
 
 if __name__ == '__main__':
