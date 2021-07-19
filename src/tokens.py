@@ -19,17 +19,9 @@ class TokenOsu:
 
     def __repr__(self):
         if self.token_type in (TokenType.EOL, TokenType.EOF):
-            return '{}\n'.format(self.token_type.name)
+            return 'TOKEN.{}\n'.format(self.token_type.name)
         else:
-            return '{} (lexeme=\'{}\' literal=\'{}\')'.format(self.token_type.name, self.lexeme, self.literal)
-
-
-class DataType(Enum):
-    INT = 'int'
-    FLOAT = 'float'
-    STRING = 'string'
-    BOOL = 'bool'
-    OBJECT = 'object'
+            return 'TOKEN.{} (lexeme=\'{}\' literal=\'{}\')'.format(self.token_type.name, self.lexeme, self.literal)
 
 
 class TokenType(Enum):
@@ -90,59 +82,3 @@ class TokenType(Enum):
     ERROR = 'ERROR'
     COMMENT = '//'          # double with DIV
     BLOCK_COMMENT = '/*'
-
-
-reserved_words = {
-    'var': TokenType.VAR,
-    'function': TokenType.FUNCTION,
-    'return': TokenType.RETURN,
-    'if': TokenType.IF,
-    'else': TokenType.ELSE,
-    'elif': TokenType.ELIF,
-    'while': TokenType.WHILE,
-    'print': TokenType.PRINT,
-    'include': TokenType.INCLUDE,
-    'class': TokenType.CLASS,
-}
-
-single_token = {
-    '(': TokenType.LEFT_PAREN,
-    ')': TokenType.RIGHT_PAREN,
-    '{': TokenType.LEFT_CURLY,
-    '}': TokenType.RIGHT_CURLY,
-    '[': TokenType.LEFT_SQUARE,
-    ']': TokenType.RIGHT_SQUARE,
-    ',': TokenType.COMMA,
-    '.': TokenType.DOT,
-    '-': TokenType.MINUS,
-    '+': TokenType.PLUS,
-    ';': TokenType.SEMICOLON,
-    '*': TokenType.ASTERISK,
-    '^': TokenType.NOT,
-    '\n': TokenType.EOL,
-}
-
-double_token = {
-    '=': {'match': '=', 'yes': TokenType.EQUALITY, 'no': TokenType.EQUALS},
-    '!': {'match': '=', 'yes': TokenType.INEQUALITY, 'no': TokenType.NOT},
-    '>': {'match': '=', 'yes': TokenType.GTE, 'no': TokenType.GT},
-    '<': {'match': '=', 'yes': TokenType.LTE, 'no': TokenType.LT},
-    '&': {'match': '&', 'yes': TokenType.AND, 'no': TokenType.ERROR},
-    '|': {'match': '|', 'yes': TokenType.OR, 'no': TokenType.ERROR},
-}
-
-disregarded_whitespace = {
-    ' ', '\r', '\t'
-}
-
-end_of_line = {
-    '\n'
-}
-
-string_literal = {
-    '"', "'"
-}
-
-number_literal = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-}
