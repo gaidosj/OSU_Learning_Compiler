@@ -1,9 +1,10 @@
 from src.tokens import TokenOsu
-from src.parser_expression import ParserExpression
+from src.parser_expression import ParserExpression, Variable
 
 
 class ParserStatement:
     def __eq__(self, other):
+        # TODO: Do we need deep compare here?
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
 
@@ -25,7 +26,11 @@ class Expression(ParserStatement):
 
 
 class Print(ParserStatement):
-    pass
+    def __init__(self, expression: ParserExpression):
+        self.expression = expression
+
+    def accept(self, visitor):
+        return visitor.visit_print_statement(self)
 
 
 class Block(ParserStatement):
@@ -37,20 +42,48 @@ class Block(ParserStatement):
 
 
 class If(ParserStatement):
-    pass
+    def __init__(self, condition: ParserExpression, then_branch: ParserStatement, else_branch: ParserStatement):
+        self.condition = condition
+        self.then_branch = then_branch
+        self.else_branch = else_branch
+
+    def accept(self, visitor):
+        return visitor.visit_if_statement(self)
 
 
 class While(ParserStatement):
-    pass
+    def __init__(self, condition: ParserExpression, body: ParserStatement):
+        self.condition = condition
+        self.body = body
+
+    def accept(self, visitor):
+        return visitor.visit_while_statement(self)
 
 
 class Function(ParserStatement):
-    pass
+    def __init__(self, name: TokenOsu, parameters: [TokenOsu], body: [ParserStatement]):
+        self.name = name
+        self.parameters = parameters.copy()  # TODO: Need copy?
+        self.body = body.copy()  # TODO: Need list of single stm?
+
+    def accept(self, visitor):
+        return visitor.visit_function_statement(self)
 
 
 class Return(ParserStatement):
-    pass
+    def __init__(self, keyword: TokenOsu, value: ParserExpression):
+        self.keyword = keyword
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visit_return_statement(self)
 
 
 class Class(ParserStatement):
-    pass
+    def __init__(self, name: TokenOsu, super_class: Variable, methods: [Function]):
+        self.name = name
+        self.super_class = super_class
+        self.methods = methods.copy()  # TODO: copy() or mutable?
+
+    def accept(self, visitor):
+        return visitor.visit_class_statement(self)

@@ -72,3 +72,23 @@ class LogicalUnary(ParserExpression):
 
     def accept(self, visitor):
         return visitor.visit_logical_unary_expression(self)
+
+
+class Call(ParserExpression):
+    pass
+
+
+class Get(ParserExpression):
+    pass
+
+
+class This(ParserExpression):
+    pass
+
+
+class Set(ParserExpression):
+    pass
+
+
+class Super(ParserExpression):
+    pass

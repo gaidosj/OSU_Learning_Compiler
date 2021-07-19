@@ -46,5 +46,23 @@ class AbstractSyntaxTree:
     def visit_expression_statement(self, expression_statement):
         pass
 
+    def visit_print_statement(self, print_statement):
+        pass
+
     def visit_block_statement(self, block_statement):
+        pass
+
+    def visit_if_statement(self, if_statement):
+        pass
+
+    def visit_while_statement(self, while_statement):
+        pass
+
+    def visit_function_statement(self, function_statement):
+        pass
+
+    def visit_return_statement(self, return_statement):
+        pass
+
+    def visit_class_stateement(self, class_statement):
         pass
