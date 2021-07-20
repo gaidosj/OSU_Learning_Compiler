@@ -1,7 +1,6 @@
 from src.tokens import TokenType
 from src.parser_expression import Binary, Group, Literal, Unary
-from src.error_handler import ErrorHandler
-from src.error_handler import ParseError
+from src.error_handler import ErrorHandler, ParseError
 from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
@@ -19,6 +18,7 @@ class Parser:
             return
 
         try:
+            self.index = 0
             return AbstractSyntaxTree(self._expression())
         except ParseError as error:
             self.error_handler.report_error(error)
