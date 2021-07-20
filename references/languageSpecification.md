@@ -4,7 +4,7 @@
 
 **Purpose of the Document:**
 
-This document summarizes the features supported by the OLL. For each group of features, implementation success criteria is split into &#39;threshold&#39; and &#39;objective&#39; levels. Threshold is the minimum acceptable implementation level and Objective is the desired implementation level.
+This document summarizes the features supported by the OLL. For each group of features, implementation success criteria is split into threshold and objective levels. Threshold is the minimum acceptable implementation level and Objective is the desired implementation level.
 
 **General Design Consideration**
 
