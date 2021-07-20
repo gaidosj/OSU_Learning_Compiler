@@ -38,7 +38,7 @@ class ParserIntegrationTest(unittest.TestCase):
             # print(tokens)
             # print(actual_ast_string)
             # print(expected_ast_string)
-            self.assertEqual(actual_ast_string, expected_ast_string)
+            self.assertEqual(expected_ast_string, actual_ast_string)
 
 
 if __name__ == '__main__':
