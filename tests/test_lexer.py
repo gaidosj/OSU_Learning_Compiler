@@ -1,5 +1,4 @@
 import unittest
-import os
 from src.lexer import Lexer
 from src.tokens import TokenType
 
@@ -35,30 +34,8 @@ class LexerTest(unittest.TestCase):
         for source_code, expected_token_string in test_cases:
             lexer = Lexer(source_code)
             lexer.process_source_code()
-            token_string = LexerTest._get_tokens_as_string(lexer.get_tokens())
+            token_string = lexer.get_tokens_as_string()
             # print(token_string)
-            self.assertEqual(token_string, expected_token_string)
-
-    def test_with_olc_source_files(self):
-        """
-        Testing with .olc source files. Comparing output with the prepared .lex files
-        """
-        for filename in ('program_01',):
-            # read OLC source code and convert to the list of tokens
-            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.olc'.format(filename))
-            with open(full_name, 'r') as input_handle:
-                lexer = Lexer(input_handle.read())
-                lexer.process_source_code()
-                token_string = LexerTest._get_tokens_as_string(lexer.get_tokens())
-
-            # read expected list of tokens
-            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.lex'.format(filename))
-            with open(full_name, 'r') as input_handle:
-                expected_token_string = input_handle.read()
-
-            # print(source_code)
-            # print(token_string)
-            # print(expected_token_string)
             self.assertEqual(token_string, expected_token_string)
 
 
