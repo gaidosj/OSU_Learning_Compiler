@@ -14,7 +14,7 @@ class AbstractSyntaxTree:
     def visit_binary_expression(self, binary):
         return ''.join(['(', ' '.join([
             binary.left_operand.accept(self),
-            str(binary.operator.literal),
+            binary.operator.lexeme,
             binary.right_operand.accept(self),
         ]), ')'])
 
@@ -26,7 +26,7 @@ class AbstractSyntaxTree:
 
     def visit_unary_expression(self, unary):
         return ''.join([
-            '(', str(unary.operator.literal), unary.operand.accept(self), ')'])
+            '(', unary.operator.lexeme, unary.operand.accept(self), ')'])
 
     def visit_assign_expression(self, assign_expression):
         pass
