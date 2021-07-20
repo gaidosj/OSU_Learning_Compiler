@@ -6,38 +6,55 @@ class AbstractSyntaxTree:
         return self.root.accept(self)
 
     def __eq__(self, other):
-        if isinstance(other, self.__class__):           # TODO: does this do deep comparison?
-            return self.__dict__ == other.__dict__
-        else:
-            return False
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
-    def visit_binary_expression(self, binary):
-        return ''.join(['(', ' '.join([
-            binary.left_operand.accept(self),
-            binary.operator.lexeme,
-            binary.right_operand.accept(self),
-        ]), ')'])
+    def visit_binary_expression(self, binary_expression):
+        return '({} {} {})'.format(
+            binary_expression.left_operand.accept(self),
+            binary_expression.operator.lexeme,
+            binary_expression.right_operand.accept(self),
+        )
 
-    def visit_group_expression(self, group):
-        return ''.join(['Paren(', group.expression.accept(self), ')'])
+    def visit_group_expression(self, group_expression):
+        return 'Paren({})'.format(
+            group_expression.expression.accept(self),
+        )
 
-    def visit_literal_expression(self, literal):
-        return str(literal.value.literal)
+    def visit_literal_expression(self, literal_expression):
+        return '{}'.format(
+            literal_expression.value.literal,
+        )
 
-    def visit_unary_expression(self, unary):
-        return ''.join([
-            '(', unary.operator.lexeme, unary.operand.accept(self), ')'])
+    def visit_unary_expression(self, unary_expression):
+        return '({}{})'.format(
+            unary_expression.operator.lexeme,
+            unary_expression.operand.accept(self),
+        )
 
     def visit_assign_expression(self, assign_expression):
-        pass
+        return '({} = {})'.format(
+            assign_expression.name.literal,
+            assign_expression.value.accept(self),
+        )
 
     def visit_variable_expression(self, variable_expression):
+        return '{}'.format(
+            variable_expression.name.literal,
+        )
+
+    def visit_call_expression(self, call_expression):
         pass
 
-    def visit_logical_binary_expression(self, logical_binary_expression):
+    def visit_get_expression(self, get_expression):
         pass
 
-    def visit_logical_unary_expression(self, logical_unary_expression):
+    def visit_this_exression(self, this_expression):
+        pass
+
+    def visit_set_expression(self, set_expression):
+        pass
+
+    def visit_super_expression(self, super_expression):
         pass
 
     def visit_var_statement(self, var_statement):
