@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+import sys
+from src.lexer import Lexer
+from src.parser import Parser
+from src.interpreter import Interpreter
+
+
+class Orchestrator:
+    def __init__(self):
+        self.lexer = Lexer()
+        self.parser = Parser()
+        self.interpreter = Interpreter()
+
+    def execute(self, code):
+        self.lexer.load_source_code(code)
+        self.lexer.process_source_code()
+
+        self.parser.tokens = self.lexer.tokens
+        ast = self.parser.parse()
+
+        if ast:
+            return self.interpreter.interpret(ast.root)
+
+    def interpret_file(self, filename):
+        pass
+
+    def run_repl(self):
+        while True:
+            try:
+                sys.stdout.write('$ ')
+                line = input()
+                if line is None:
+                    break
+                result = self.execute(line)
+                if result:
+                    print(result)
+            except (EOFError, KeyboardInterrupt):
+                break
+
+        print()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 2:
+        sys.stderr.write('Usage: ' + sys.argv[0] + ' [filename]\n')
+        sys.exit(1)
+
+    orchestrator = Orchestrator()
+
+    if len(sys.argv) == 2:
+        orchestrator.interpret_file(sys.argv[1])
+    else:
+        orchestrator.run_repl()
+
+    sys.exit(0)
