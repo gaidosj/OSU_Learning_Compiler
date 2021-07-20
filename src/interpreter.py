@@ -8,14 +8,16 @@ class Interpreter:
         self.binary_operators = {
             TokenType.MINUS: lambda left, right: left - right,
             TokenType.ASTERISK: lambda left, right: left * right,
-            TokenType.DIV: lambda left, right: left / right,
+            TokenType.DIV: lambda left, right: left // right,
             TokenType.PLUS: lambda left, right: left + right,
             TokenType.GTE: lambda left, right: left >= right,
             TokenType.GT: lambda left, right: left > right,
             TokenType.LTE: lambda left, right: left <= right,
             TokenType.LT: lambda left, right: left < right,
-            TokenType.EQUALITY: lambda left, right: self.are_equal(left, right),
-            TokenType.INEQUALITY: lambda left, right: not self.are_equal(left, right)
+            TokenType.EQUALITY: lambda left, right: self.are_equal(
+                left, right),
+            TokenType.INEQUALITY: lambda left, right: not self.are_equal(
+                left, right)
         }
 
     def interpret(self, expression):
