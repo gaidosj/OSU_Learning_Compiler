@@ -24,7 +24,7 @@ The OLL will be compiled using the OSU Learning Compiler (OLC). Based on our pre
 
 **Libraries, Languages, APIs, and Development Tools**
 
-Python 3.8.1 will be our primary language for this project, with the built-in unittest library for writing tests. We like Python for this project because we're all familiar with the language and it will allow us to iterate quickly during the accelerated quarter.
+Python 3.6.8 will be our primary language for this project, with the built-in unittest library for writing tests. We like Python for this project because we're all familiar with the language and it will allow us to iterate quickly during the accelerated quarter.
 
 We discussed using third-party tools such as Flex to generate the lexer and Bison to generate the parser.  However, we believe there will be a better learning experience to build a hands-on implementation from scratch. Currently. we don't have any intention of using third-party tools or APIs.  We anticipate this may change for building out the back-end of the compiler if the requirements flex due to time constraints.  
 
