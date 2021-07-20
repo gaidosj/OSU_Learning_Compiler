@@ -4,7 +4,7 @@
 
 **Purpose of the Document:**
 
-This document summarizes the features supported by the OLL. For each group of features, implementation success criteria is split into &#39;threshold&#39; and &#39;objective&#39; levels. &#39;Threshold&#39; is the minimum acceptable implementation level and &#39;objective&#39; is the desired implementation level.
+This document summarizes the features supported by the OLL. For each group of features, implementation success criteria is split into &#39;threshold&#39; and &#39;objective&#39; levels. Threshold is the minimum acceptable implementation level and Objective is the desired implementation level.
 
 **General Design Consideration**
 
@@ -52,21 +52,21 @@ Objective: Support block-scoped variables. Variables declared inside blocks desi
 
 Threshold: OLC supports two primary control structures - if-else statement and a while loop. The syntax is as follows:
 
-if (condition) {
+    if (condition) {
 
-// some code
+        // some code
 
-} else {
+        } else {
 
-// some other code
+        // some other code
 
-}
+      }
 
-while (condition) {
+    while (condition) {
 
-// some code
+        // some code
 
-}
+    }
 
 Objective: Support if-elif-else, for-loop, while-else loops.
 
@@ -78,7 +78,7 @@ Objective: Boolean operators also support xor. All of the above operators should
 
 **Functions:**
 
-Threshold: Functions are declared by using function () { }. Functions always return a value. If there&#39;s no return statement inside the function, it implicitly returns 0. Functions only support positional parameters. Parameters only exist within the scope of the function and are garbage collected when it returns.
+Threshold: Functions are declared by using function () { }. Functions always return a value. If there\'s no return statement inside the function, it implicitly returns 0. Functions only support positional parameters. Parameters only exist within the scope of the function and are garbage collected when it returns.
 
 Objective: Same as the Threshold
 
