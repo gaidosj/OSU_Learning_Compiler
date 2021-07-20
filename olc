@@ -19,7 +19,7 @@ class Orchestrator:
         self.parser.tokens = self.lexer.tokens
         ast = self.parser.parse()
 
-        if (ast is not None):
+        if ast:
             return self.interpreter.interpret(ast.root)
 
     def interpret_file(self, filename):
