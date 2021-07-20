@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['value_319',['value',['../classexpression_1_1Literal.html#abad404f118e8b26b45e3f34c404dd945',1,'expression::Literal']]],
-  ['var_320',['VAR',['../classtokens_1_1TokenType.html#a2d14901ace4a4ba68111df5f3be71487',1,'tokens.TokenType.VAR()'],['../namespaceolc__token.html#aeaa205a5f39ff0d577cef58971e3310c',1,'olc_token.VAR()']]]
+  ['then_5fbranch_401',['then_branch',['../classparser__statement_1_1If.html#aba9425ada5005b4e2d8d25425f221ecf',1,'parser_statement::If']]],
+  ['token_402',['token',['../classerror__handler_1_1ParseError.html#a89d892290d55e4b4d7f3e8e1d62309e2',1,'error_handler.ParseError.token()'],['../classerror__handler_1_1InterpretError.html#a29a6da97177cfd3f5fb004b029a91daa',1,'error_handler.InterpretError.token()']]],
+  ['token_5ftype_403',['token_type',['../classtokens_1_1TokenOsu.html#ad0daee89639a821d341239f1a01ef19b',1,'tokens::TokenOsu']]],
+  ['tokens_404',['tokens',['../classlexer_1_1Lexer.html#a1436e1e08b26f4f091bf4a4d02f91866',1,'lexer.Lexer.tokens()'],['../classparser_1_1Parser.html#a6abd87f7504f09ae94765ed1a85a179a',1,'parser.Parser.tokens()']]]
 ];

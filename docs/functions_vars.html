@@ -69,7 +69,8 @@ $(function() {
 <h3><a id="index__5F"></a>- _ -</h3><ul>
 <li>__dict__
 : <a class="el" href="classabstract__syntax__tree_1_1AbstractSyntaxTree.html#ac6e7e5bcb89114fa2f9dd434f5fb562a">abstract_syntax_tree.AbstractSyntaxTree</a>
-, <a class="el" href="classexpression_1_1Expression.html#a80615b4cdadd341168920892bf783cbd">expression.Expression</a>
+, <a class="el" href="classparser__expression_1_1ParserExpression.html#abe44e44577ecdb514627ac46f21b74e3">parser_expression.ParserExpression</a>
+, <a class="el" href="classparser__statement_1_1ParserStatement.html#ac52b0b66f6f837d8565c28883065c62e">parser_statement.ParserStatement</a>
 </li>
 </ul>
 
@@ -91,8 +92,9 @@ $(function() {
 <li>BLOCK_COMMENT
 : <a class="el" href="classtokens_1_1TokenType.html#a095bcdc55657a0aa11557f3eb24832b6">tokens.TokenType</a>
 </li>
-<li>BOOL
-: <a class="el" href="classtokens_1_1DataType.html#a948425f1c4c8a7bd311d412be7e360f9">tokens.DataType</a>
+<li>body
+: <a class="el" href="classparser__statement_1_1Function.html#a7a1c0fa15576b9bba94de97c8469a69e">parser_statement.Function</a>
+, <a class="el" href="classparser__statement_1_1While.html#ac2e2eda72bc0a61e0ef5ddd7ba97bd2a">parser_statement.While</a>
 </li>
 </ul>
 
@@ -106,6 +108,10 @@ $(function() {
 </li>
 <li>COMMENT
 : <a class="el" href="classtokens_1_1TokenType.html#a57e0c5685456be0782f7293c88246b3b">tokens.TokenType</a>
+</li>
+<li>condition
+: <a class="el" href="classparser__statement_1_1If.html#a114c5b5a2690d7ab513ec6ea809d2da8">parser_statement.If</a>
+, <a class="el" href="classparser__statement_1_1While.html#a18f1a64a8004a4b0b3e37ff705b755b9">parser_statement.While</a>
 </li>
 <li>current
 : <a class="el" href="classlexer_1_1Lexer.html#ab0c93fefa39bc071571c2d11f377edbb">lexer.Lexer</a>
@@ -133,6 +139,9 @@ $(function() {
 <li>ELSE
 : <a class="el" href="classtokens_1_1TokenType.html#a7c358513dee66c61e3d17ee55f13527f">tokens.TokenType</a>
 </li>
+<li>else_branch
+: <a class="el" href="classparser__statement_1_1If.html#a603228efa3f3a904b911eee9f7ca1220">parser_statement.If</a>
+</li>
 <li>EOF
 : <a class="el" href="classtokens_1_1TokenType.html#a835bae43dfab2b426cd92485fd54a9db">tokens.TokenType</a>
 </li>
@@ -153,7 +162,9 @@ $(function() {
 , <a class="el" href="classparser_1_1Parser.html#ac19732fce125f0710289d6e053b54047">parser.Parser</a>
 </li>
 <li>expression
-: <a class="el" href="classexpression_1_1Group.html#ab5ccfc97fb0c00f3bc5ace89d3a6c72c">expression.Group</a>
+: <a class="el" href="classparser__expression_1_1Group.html#a15a99162ef45b3e43c73167b35471901">parser_expression.Group</a>
+, <a class="el" href="classparser__statement_1_1Expression.html#ac05de417a9087816256285df2fb98156">parser_statement.Expression</a>
+, <a class="el" href="classparser__statement_1_1Print.html#af30e6dbaa916349eff4f065d224ad38c">parser_statement.Print</a>
 </li>
 </ul>
 
@@ -163,8 +174,7 @@ $(function() {
 : <a class="el" href="classolc_1_1Lexer.html#a6343c59dbf1cf8ec98c8b7e708d40abf">olc.Lexer</a>
 </li>
 <li>FLOAT
-: <a class="el" href="classtokens_1_1DataType.html#a5dbc3e23a718cc507dbaa54fd12cab5a">tokens.DataType</a>
-, <a class="el" href="classtokens_1_1TokenType.html#ad1ea8d94ed2eaa4b691a4bee71a4ba0b">tokens.TokenType</a>
+: <a class="el" href="classtokens_1_1TokenType.html#ad1ea8d94ed2eaa4b691a4bee71a4ba0b">tokens.TokenType</a>
 </li>
 <li>FUNCTION
 : <a class="el" href="classtokens_1_1TokenType.html#aabbe80ac864b94feba3833e816a77fe3">tokens.TokenType</a>
@@ -198,9 +208,18 @@ $(function() {
 <li>INEQUALITY
 : <a class="el" href="classtokens_1_1TokenType.html#a6cf37f31ed94c0d9136142c8d0529edf">tokens.TokenType</a>
 </li>
+<li>initializer
+: <a class="el" href="classparser__statement_1_1Var.html#ae4b6b25c05bb6c1d4c2879b43008d8f7">parser_statement.Var</a>
+</li>
 <li>INT
-: <a class="el" href="classtokens_1_1DataType.html#ac76142057e12cd253951ae770d2c9af6">tokens.DataType</a>
-, <a class="el" href="classtokens_1_1TokenType.html#a134db582f6300cfd468857565e9a6666">tokens.TokenType</a>
+: <a class="el" href="classtokens_1_1TokenType.html#a134db582f6300cfd468857565e9a6666">tokens.TokenType</a>
+</li>
+</ul>
+
+
+<h3><a id="index_k"></a>- k -</h3><ul>
+<li>keyword
+: <a class="el" href="classparser__statement_1_1Return.html#ada3dce93482089a3a77edb6aab20fb1a">parser_statement.Return</a>
 </li>
 </ul>
 
@@ -210,7 +229,8 @@ $(function() {
 : <a class="el" href="classtokens_1_1TokenType.html#a464ecfb43bf801f2620e5601716d37e3">tokens.TokenType</a>
 </li>
 <li>left_operand
-: <a class="el" href="classexpression_1_1Binary.html#a76d45a1cef33c32ab1bb066feae92876">expression.Binary</a>
+: <a class="el" href="classparser__expression_1_1Binary.html#a591b8baa9b434a7a38be4172320d5b47">parser_expression.Binary</a>
+, <a class="el" href="classparser__expression_1_1LogicalBinary.html#a7b7d0da13a815b626fc755eb4886e4eb">parser_expression.LogicalBinary</a>
 </li>
 <li>LEFT_PAREN
 : <a class="el" href="classtokens_1_1TokenType.html#a4ecae96ccec972e48d671f3d31f254f5">tokens.TokenType</a>
@@ -238,6 +258,9 @@ $(function() {
 : <a class="el" href="classerror__handler_1_1InterpretError.html#a8e80898ba37b9174319f095db6b325bd">error_handler.InterpretError</a>
 , <a class="el" href="classerror__handler_1_1ParseError.html#ad34a5440236b0af82ca9305d25aa7d4a">error_handler.ParseError</a>
 </li>
+<li>methods
+: <a class="el" href="classparser__statement_1_1Class.html#acf4d24b18fbbc282dfcddcd2ea6f462b">parser_statement.Class</a>
+</li>
 <li>MINUS
 : <a class="el" href="classtokens_1_1TokenType.html#a18a3bf97bb1ac4ff693d4109ec92b36c">tokens.TokenType</a>
 </li>
@@ -245,6 +268,13 @@ $(function() {
 
 
 <h3><a id="index_n"></a>- n -</h3><ul>
+<li>name
+: <a class="el" href="classparser__expression_1_1Assign.html#ac45ec32cb2489183da2ad3ec15b5e9ed">parser_expression.Assign</a>
+, <a class="el" href="classparser__expression_1_1Variable.html#a3589f9ae8a009284aaa9787f0945ef3b">parser_expression.Variable</a>
+, <a class="el" href="classparser__statement_1_1Class.html#aa6579082503c16138f1865a669e89109">parser_statement.Class</a>
+, <a class="el" href="classparser__statement_1_1Function.html#a6678d5c39c6e339cd43b23b235376edf">parser_statement.Function</a>
+, <a class="el" href="classparser__statement_1_1Var.html#ab6122f197b9cebaca7afca0b30e2b710">parser_statement.Var</a>
+</li>
 <li>NOT
 : <a class="el" href="classtokens_1_1TokenType.html#ac545adad041f4231784df853205ab9b8">tokens.TokenType</a>
 </li>
@@ -252,15 +282,15 @@ $(function() {
 
 
 <h3><a id="index_o"></a>- o -</h3><ul>
-<li>OBJECT
-: <a class="el" href="classtokens_1_1DataType.html#a3734b7ebf30fc01ee19ca967a3ee47e5">tokens.DataType</a>
-</li>
 <li>operand
-: <a class="el" href="classexpression_1_1Unary.html#aea20c451cc9555f99025890625921e6b">expression.Unary</a>
+: <a class="el" href="classparser__expression_1_1LogicalUnary.html#a08c57fbaa8a69d443a5e4438b7cd4072">parser_expression.LogicalUnary</a>
+, <a class="el" href="classparser__expression_1_1Unary.html#afbb93689ff7d92a27f5842998d3e4811">parser_expression.Unary</a>
 </li>
 <li>operator
-: <a class="el" href="classexpression_1_1Binary.html#af28056db0fcedc96939caac2c3c86412">expression.Binary</a>
-, <a class="el" href="classexpression_1_1Unary.html#a3f7ea5f0c0b541d46f4c88aa82a1c4ed">expression.Unary</a>
+: <a class="el" href="classparser__expression_1_1Binary.html#a7a8b09d830e1bb8d58b6d88543dca1e9">parser_expression.Binary</a>
+, <a class="el" href="classparser__expression_1_1LogicalBinary.html#aa3272681791126f8d2c5853ac65a8cfd">parser_expression.LogicalBinary</a>
+, <a class="el" href="classparser__expression_1_1LogicalUnary.html#a03181a9b7165b4000c6ebd545c1f9842">parser_expression.LogicalUnary</a>
+, <a class="el" href="classparser__expression_1_1Unary.html#af1cb339b36b83dd24105ba6702116102">parser_expression.Unary</a>
 </li>
 <li>OR
 : <a class="el" href="classtokens_1_1TokenType.html#a569688aa9ced80e24fef8afbb2e26ab3">tokens.TokenType</a>
@@ -272,6 +302,9 @@ $(function() {
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
+<li>parameters
+: <a class="el" href="classparser__statement_1_1Function.html#a47df347a5bbd410644d07ac472c6369c">parser_statement.Function</a>
+</li>
 <li>PLUS
 : <a class="el" href="classtokens_1_1TokenType.html#a3698c6c3def7b2de4eefda82e245eb15">tokens.TokenType</a>
 </li>
@@ -289,7 +322,8 @@ $(function() {
 : <a class="el" href="classtokens_1_1TokenType.html#a29cc79728185fd8fd0faa6eebbae1e2c">tokens.TokenType</a>
 </li>
 <li>right_operand
-: <a class="el" href="classexpression_1_1Binary.html#a0f8033ee028ed12ac4c7ed559a3ad53a">expression.Binary</a>
+: <a class="el" href="classparser__expression_1_1Binary.html#a4495ea68d070fe1aa0ac45c45c77bc19">parser_expression.Binary</a>
+, <a class="el" href="classparser__expression_1_1LogicalBinary.html#ab6244e619876f43f63f0b71599df416c">parser_expression.LogicalBinary</a>
 </li>
 <li>RIGHT_PAREN
 : <a class="el" href="classtokens_1_1TokenType.html#abb03f0174983a9b2bae434d24335adec">tokens.TokenType</a>
@@ -316,14 +350,22 @@ $(function() {
 <li>start
 : <a class="el" href="classlexer_1_1Lexer.html#a822b930021d74e5b4865bb38ab226c15">lexer.Lexer</a>
 </li>
+<li>statements
+: <a class="el" href="classparser__statement_1_1Block.html#a3fbee359a67528be132d2b546a069dfb">parser_statement.Block</a>
+</li>
 <li>STRING
-: <a class="el" href="classtokens_1_1DataType.html#a60f50048539ed64d58cf5e29180eb8a6">tokens.DataType</a>
-, <a class="el" href="classtokens_1_1TokenType.html#aa8cd8fb306d342a0c7ed07b000be18db">tokens.TokenType</a>
+: <a class="el" href="classtokens_1_1TokenType.html#aa8cd8fb306d342a0c7ed07b000be18db">tokens.TokenType</a>
+</li>
+<li>super_class
+: <a class="el" href="classparser__statement_1_1Class.html#a653c76ef04e857c776653b1db64ae278">parser_statement.Class</a>
 </li>
 </ul>
 
 
 <h3><a id="index_t"></a>- t -</h3><ul>
+<li>then_branch
+: <a class="el" href="classparser__statement_1_1If.html#aba9425ada5005b4e2d8d25425f221ecf">parser_statement.If</a>
+</li>
 <li>token
 : <a class="el" href="classerror__handler_1_1InterpretError.html#a29a6da97177cfd3f5fb004b029a91daa">error_handler.InterpretError</a>
 , <a class="el" href="classerror__handler_1_1ParseError.html#a89d892290d55e4b4d7f3e8e1d62309e2">error_handler.ParseError</a>
@@ -340,7 +382,9 @@ $(function() {
 
 <h3><a id="index_v"></a>- v -</h3><ul>
 <li>value
-: <a class="el" href="classexpression_1_1Literal.html#abad404f118e8b26b45e3f34c404dd945">expression.Literal</a>
+: <a class="el" href="classparser__expression_1_1Assign.html#ac0e9909495dbc263db9fa84671ca42e0">parser_expression.Assign</a>
+, <a class="el" href="classparser__expression_1_1Literal.html#aa01b8c6556bbec4bd42bbae82783cb41">parser_expression.Literal</a>
+, <a class="el" href="classparser__statement_1_1Return.html#adda8d2a2034470b1db096d010ed632b4">parser_statement.Return</a>
 </li>
 <li>VAR
 : <a class="el" href="classtokens_1_1TokenType.html#a2d14901ace4a4ba68111df5f3be71487">tokens.TokenType</a>
