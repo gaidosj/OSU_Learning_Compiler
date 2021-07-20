@@ -33,7 +33,7 @@ class Orchestrator:
                 if line is None:
                     break
                 result = self.execute(line)
-                if result is not None:
+                if result:
                     print(result)
             except (EOFError, KeyboardInterrupt):
                 break
