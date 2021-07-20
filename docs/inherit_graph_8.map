@@ -1,5 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,64,57"/>
-<area shape="rect" id="node2" href="$classtokens_1_1DataType.html" title=" " alt="" coords="115,5,245,32"/>
-<area shape="rect" id="node3" href="$classtokens_1_1TokenType.html" title=" " alt="" coords="112,56,248,83"/>
+<area shape="rect" id="node1" href="$classparser__statement_1_1ParserStatement.html" title=" " alt="" coords="5,208,255,235"/>
+<area shape="rect" id="node2" href="$classparser__statement_1_1Block.html" title=" " alt="" coords="320,5,497,32"/>
+<area shape="rect" id="node3" href="$classparser__statement_1_1Class.html" title=" " alt="" coords="321,56,497,83"/>
+<area shape="rect" id="node4" href="$classparser__statement_1_1Expression.html" title=" " alt="" coords="303,107,515,133"/>
+<area shape="rect" id="node5" href="$classparser__statement_1_1Function.html" title=" " alt="" coords="311,157,507,184"/>
+<area shape="rect" id="node6" href="$classparser__statement_1_1If.html" title=" " alt="" coords="333,208,484,235"/>
+<area shape="rect" id="node7" href="$classparser__statement_1_1Print.html" title=" " alt="" coords="323,259,494,285"/>
+<area shape="rect" id="node8" href="$classparser__statement_1_1Return.html" title=" " alt="" coords="317,309,501,336"/>
+<area shape="rect" id="node9" href="$classparser__statement_1_1Var.html" title=" " alt="" coords="327,360,490,387"/>
+<area shape="rect" id="node10" href="$classparser__statement_1_1While.html" title=" " alt="" coords="319,411,498,437"/>
 </map>

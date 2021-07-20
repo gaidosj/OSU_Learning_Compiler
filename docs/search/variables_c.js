@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['object_293',['OBJECT',['../classtokens_1_1DataType.html#a3734b7ebf30fc01ee19ca967a3ee47e5',1,'tokens::DataType']]],
-  ['oll_5flexer_294',['OLL_lexer',['../namespaceolc.html#a77905074301f44d633bd99a300b07d49',1,'olc']]],
-  ['operand_295',['operand',['../classexpression_1_1Unary.html#aea20c451cc9555f99025890625921e6b',1,'expression::Unary']]],
-  ['operator_296',['operator',['../classexpression_1_1Binary.html#af28056db0fcedc96939caac2c3c86412',1,'expression.Binary.operator()'],['../classexpression_1_1Unary.html#a3f7ea5f0c0b541d46f4c88aa82a1c4ed',1,'expression.Unary.operator()']]],
-  ['or_297',['OR',['../classtokens_1_1TokenType.html#a569688aa9ced80e24fef8afbb2e26ab3',1,'tokens::TokenType']]],
-  ['output_298',['output',['../classerror__handler_1_1ErrorHandler.html#a78e613eaf0b534f18d33beddb53c8446',1,'error_handler::ErrorHandler']]]
+  ['name_374',['name',['../classparser__expression_1_1Assign.html#ac45ec32cb2489183da2ad3ec15b5e9ed',1,'parser_expression.Assign.name()'],['../classparser__expression_1_1Variable.html#a3589f9ae8a009284aaa9787f0945ef3b',1,'parser_expression.Variable.name()'],['../classparser__statement_1_1Var.html#ab6122f197b9cebaca7afca0b30e2b710',1,'parser_statement.Var.name()'],['../classparser__statement_1_1Function.html#a6678d5c39c6e339cd43b23b235376edf',1,'parser_statement.Function.name()'],['../classparser__statement_1_1Class.html#aa6579082503c16138f1865a669e89109',1,'parser_statement.Class.name()']]],
+  ['not_375',['NOT',['../classtokens_1_1TokenType.html#ac545adad041f4231784df853205ab9b8',1,'tokens::TokenType']]],
+  ['number_5fliterals_376',['NUMBER_LITERALS',['../namespacelexer__constants.html#a3bc438e83b5c8e5d5c742f66aaa074ea',1,'lexer_constants']]]
 ];

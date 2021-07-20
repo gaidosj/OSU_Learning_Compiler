@@ -86,6 +86,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa69356a071fd6be6a1d681a2b54281c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68ec0df91ee2ff24d199347a2fa61ee4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#a68ec0df91ee2ff24d199347a2fa61ee4">get_tokens</a> (self)</td></tr>
 <tr class="separator:a68ec0df91ee2ff24d199347a2fa61ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133f83c4a9d4f4581a7bace633619df2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#a133f83c4a9d4f4581a7bace633619df2">get_tokens_as_string</a> (self)</td></tr>
+<tr class="separator:a133f83c4a9d4f4581a7bace633619df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7efc268593ccb747f9c4e496f60154f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#aa7efc268593ccb747f9c4e496f60154f">load_source_code</a> (self, source_code)</td></tr>
 <tr class="separator:aa7efc268593ccb747f9c4e496f60154f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c366097b595bde0087388c0ecd529e5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#a2c366097b595bde0087388c0ecd529e5">process_source_code</a> (self)</td></tr>
@@ -108,6 +110,8 @@ Public Attributes</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aaa09567be247ebf2a2f5b36b224b98db"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#aaa09567be247ebf2a2f5b36b224b98db">_scan_token</a> (self)</td></tr>
 <tr class="separator:aaa09567be247ebf2a2f5b36b224b98db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4abbba65a8c254843cfaca7b148b9d3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#aa4abbba65a8c254843cfaca7b148b9d3">_add_token</a> (self, token_type, literal=None)</td></tr>
+<tr class="separator:aa4abbba65a8c254843cfaca7b148b9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72eb9eddf70ba881de7bd8584a8559b8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#a72eb9eddf70ba881de7bd8584a8559b8">_add_unexpected_token_error</a> (self)</td></tr>
 <tr class="separator:a72eb9eddf70ba881de7bd8584a8559b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb453923a388e4c3ad6b73666245e73"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#addb453923a388e4c3ad6b73666245e73">_add_double_token</a> (self, first_char)</td></tr>
@@ -132,8 +136,6 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a5fc43407714593233bee8def08bb913a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a473228f7086b282c3b4fa0c8683d43"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#a9a473228f7086b282c3b4fa0c8683d43">_match</a> (self, expected_char)</td></tr>
 <tr class="separator:a9a473228f7086b282c3b4fa0c8683d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4abbba65a8c254843cfaca7b148b9d3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlexer_1_1Lexer.html#aa4abbba65a8c254843cfaca7b148b9d3">_add_token</a> (self, token_type, literal=None)</td></tr>
-<tr class="separator:aa4abbba65a8c254843cfaca7b148b9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -204,7 +206,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00069">69</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00071">71</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -248,7 +250,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00153">153</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00059">59</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -276,7 +278,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00075">75</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00077">77</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -304,7 +306,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00112">112</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00113">113</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -332,7 +334,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00098">98</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00099">99</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -370,7 +372,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00082">82</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00084">84</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -398,7 +400,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00061">61</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00063">63</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -425,8 +427,10 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00141">141</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<pre class="fragment">Return source code charater from the current cursor position
+and advance the cursor one character forward
+</pre> 
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00147">147</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -453,8 +457,9 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00128">128</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<pre class="fragment">Return True if the cursor is at the end of the source code
+</pre> 
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00127">127</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -492,7 +497,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00147">147</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00157">157</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -530,7 +535,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00124">124</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00123">123</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -557,8 +562,10 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00131">131</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<pre class="fragment">Return source code character from the current cursor position
+without advancing the cursor
+</pre> 
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00133">133</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -585,8 +592,10 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00136">136</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<pre class="fragment">Return source code character from the position immedeately after the current cursor
+without advancing the cursor
+</pre> 
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00140">140</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -658,6 +667,26 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a133f83c4a9d4f4581a7bace633619df2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a133f83c4a9d4f4581a7bace633619df2">&#9670;&nbsp;</a></span>get_tokens_as_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lexer.Lexer.get_tokens_as_string </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00020">20</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+
+</div>
+</div>
 <a id="aa7efc268593ccb747f9c4e496f60154f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7efc268593ccb747f9c4e496f60154f">&#9670;&nbsp;</a></span>load_source_code()</h2>
 
@@ -684,7 +713,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00020">20</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00023">23</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>
@@ -704,7 +733,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00027">27</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lexer_8py_source.html#l00030">30</a> of file <a class="el" href="lexer_8py_source.html">lexer.py</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['interpret_232',['interpret',['../classinterpreter_1_1Interpreter.html#ae465f6bb481274cc9d6ee5b4da02bf2f',1,'interpreter::Interpreter']]],
-  ['is_5ftruthy_233',['is_truthy',['../classinterpreter_1_1Interpreter.html#a6150249eab1c00e95eee74a7c4b8d804',1,'interpreter::Interpreter']]]
+  ['load_5fsource_5fcode_299',['load_source_code',['../classlexer_1_1Lexer.html#aa7efc268593ccb747f9c4e496f60154f',1,'lexer::Lexer']]]
 ];
