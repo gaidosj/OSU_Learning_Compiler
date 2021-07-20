@@ -34,3 +34,17 @@ jobs:
     - name: Test with unittest
       run: |
         python -m unittest discover -s tests
+    - name: Create Doxygen documentation
+      uses: mattnotmitt/doxygen-action@v1.3.1
+      with:
+        doxyfile-path: ./Doxyfile
+        working-directory: .
+    - name: Deploy GitHub Pages branch
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        enable_jekyll: false
+        allow_empty_commit: false
+        force_orphan: true
+        publish_dir: ./docs/
+        publish_branch: gh-pages
