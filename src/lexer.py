@@ -17,6 +17,9 @@ class Lexer:
     def get_tokens(self):
         return self.tokens
 
+    def get_tokens_as_string(self):
+        return ''.join([str(tkn) + '; ' * (tkn.token_type not in (TokenType.EOL, TokenType.EOF)) for tkn in self.tokens])
+
     def load_source_code(self, source_code):
         self.source = source_code
         self.tokens = []

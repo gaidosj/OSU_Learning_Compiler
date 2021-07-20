@@ -1,13 +1,12 @@
 import unittest
 import os
 from src.lexer import Lexer
-from src.parser import Parser
 
 
-class ParserIntegrationTest(unittest.TestCase):
+class LexerIntegrationTest(unittest.TestCase):
     def test_with_olc_source_files(self):
         """
-        Testing with .olc source files. Comparing output with the prepared .ast files
+        Testing with .olc source files. Comparing output with the prepared .lex files
         """
         test_programs = (
             'program_01',
@@ -21,24 +20,19 @@ class ParserIntegrationTest(unittest.TestCase):
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.olc'.format(filename))
             with open(full_name, 'r') as input_handle:
                 source_code = input_handle.read()
-
                 lexer = Lexer(source_code)
                 lexer.process_source_code()
-                tokens = lexer.get_tokens()
+                token_string = lexer.get_tokens_as_string()
 
-                parser = Parser(tokens)
-                actual_ast_string = str(parser.parse())
-
-            # read expected representation of the AST
-            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.ast'.format(filename))
+            # read expected list of tokens
+            full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.lex'.format(filename))
             with open(full_name, 'r') as input_handle:
-                expected_ast_string = input_handle.read()
+                expected_token_string = input_handle.read()
 
             # print(source_code)
-            # print(tokens)
-            # print(actual_ast_string)
-            # print(expected_ast_string)
-            self.assertEqual(actual_ast_string, expected_ast_string)
+            # print(token_string)
+            # print(expected_token_string)
+            self.assertEqual(token_string, expected_token_string)
 
 
 if __name__ == '__main__':

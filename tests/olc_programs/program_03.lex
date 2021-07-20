@@ -1,0 +1,1 @@
+MINUS '-'; INT '1' val=1; ASTERISK '*'; MINUS '-'; INT '5' val=5; PLUS '+'; INT '20' val=20; ASTERISK '*'; LEFT_PAREN '('; MINUS '-'; INT '1' val=1; MINUS '-'; INT '50' val=50; MINUS '-'; MINUS '-'; INT '40' val=40; RIGHT_PAREN ')'; EOF
