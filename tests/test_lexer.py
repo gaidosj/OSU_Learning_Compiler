@@ -1,5 +1,4 @@
 import unittest
-import os
 from src.lexer import Lexer
 from src.tokens import TokenType
 
