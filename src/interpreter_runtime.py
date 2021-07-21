@@ -72,7 +72,7 @@ class RuntimeValue:
 
 class RuntimeOperators:
     """
-    Collection of methods for working with LITERAL tokens
+    Collection of methods implementing behavior of operators on RuntimeValue objects
     """
     @staticmethod
     def get_runtime_value_for_literal_token(token: TokenOsu):
