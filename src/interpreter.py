@@ -1,4 +1,3 @@
-from src.tokens import TokenType
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeOperators
 
@@ -16,7 +15,7 @@ class Interpreter:
     def evaluate(self, expression) -> RuntimeValue:
         return expression.accept(self)
 
-    def visit_literal_expression(self, literal_expression):
+    def visit_literal_expression(self, literal_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_literal_token(
             token=literal_expression.value
         )

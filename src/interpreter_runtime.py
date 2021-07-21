@@ -2,6 +2,7 @@ from enum import Enum
 from src.tokens import TokenType, TokenOsu
 from src.error_handler import InterpretError
 
+
 class RuntimeDataType(Enum):
     """
     Different data types supported by OLC runtime environment
@@ -36,7 +37,6 @@ class RuntimeValue:
     def __eq__(self, other):
         # TODO: Hacky in order to pass tests. Need to change tests
         return str(self.value) == str(other)
-
 
     def is_same_type(self, other):
         return other and other.data_type == self.data_type
@@ -135,7 +135,7 @@ class RuntimeOperators:
 
     @staticmethod
     def _unary_not(operand: RuntimeValue):
-        RuntimeValue(not operand.value, operand.data_type) # TODO - remove - here for compatibility with prior interp
+        RuntimeValue(not operand.value, operand.data_type)  # TODO - remove - here for compatibility with prior interp
         if operand.is_bool():
             return RuntimeValue(not operand.value, operand.data_type)
         raise Exception('not implemented')
@@ -147,12 +147,12 @@ class RuntimeOperators:
         print('BINARY MINUS')
         print('LEFT  :', left)
         print('RIGHT :', right)
-        return RuntimeValue(left.value - right.value, left.data_type) # TODO - remove - here for compatbility
+        return RuntimeValue(left.value - right.value, left.data_type)  # TODO - remove - here for compatbility
         raise Exception('not implemented')
 
     @staticmethod
     def _binary_asterisk(left: RuntimeValue, right: RuntimeValue):
-        return RuntimeValue(left.value * right.value, left.data_type)  # TODO - remove - here for compatbility
+        return RuntimeValue(left.value * right.value, left.data_type)   # TODO - remove - here for compatbility
         raise Exception('not implemented')
 
     @staticmethod
