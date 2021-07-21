@@ -25,8 +25,8 @@ class Group(ParserExpression):
 
 
 class Literal(ParserExpression):
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, token: TokenOsu):
+        self.value = token
 
     def accept(self, visitor):
         return visitor.visit_literal_expression(self)

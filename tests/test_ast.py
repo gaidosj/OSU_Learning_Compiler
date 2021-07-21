@@ -1,7 +1,7 @@
 import unittest
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.tokens import TokenOsu, TokenType
-from src.parser_expression import Literal, Unary, Binary
+from src.ast_node_expression import Literal, Unary, Binary
 
 
 class AstTest(unittest.TestCase):

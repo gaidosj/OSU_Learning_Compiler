@@ -1,5 +1,5 @@
 from src.tokens import TokenOsu
-from src.parser_expression import ParserExpression, Variable
+from src.ast_node_expression import ParserExpression, Variable
 
 
 class ParserStatement:
