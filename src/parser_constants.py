@@ -46,7 +46,7 @@ PAREN_OPENING = {
     TokenType.LEFT_PAREN,
 }
 
-PAREN_CLOSING= {
+PAREN_CLOSING = {
     TokenType.RIGHT_PAREN,
 }
 
