@@ -4,7 +4,7 @@ from src.tokens import TokenType, TokenOsu
 
 class RuntimeDataType(Enum):
     """
-    Different types of data stored in the RuntimeValue object (used by the interpreter)
+    Different data types supported by OLC runtime environment
     """
     INT = 'int'
     FLOAT = 'float'
@@ -16,7 +16,7 @@ class RuntimeDataType(Enum):
 
 class Environment:
     """
-    Bidning of variable names and their values (for a given scope)
+    Binding of variable names and their values (for a given scope)
     """
     def __init__(self):
         pass
@@ -24,7 +24,7 @@ class Environment:
 
 class RuntimeValue:
     """
-    Stores values (and associated data type) computed during interpretation of the program
+    Stores values (and associated data types) computed during interpretation of the program
     """
     def __init__(self, value=None, data_type=RuntimeDataType.NULL):
         self.value = value
@@ -32,7 +32,7 @@ class RuntimeValue:
 
     def is_truthy(self):
         """
-        This method determines if current RuntimeValue evaluates to TRUE or FALSE
+        This method determines if given RuntimeValue evaluates to TRUE or FALSE
         """
         if self.data_type == RuntimeDataType.NULL:
             return False
@@ -42,6 +42,9 @@ class RuntimeValue:
 
 
 class LiteralTokenHelper:
+    """
+    Collection of methods for working with LITERAL tokens
+    """
     @staticmethod
     def get_runtime_value_for_token(token: TokenOsu):
         if token.token_type == TokenType.INT:
