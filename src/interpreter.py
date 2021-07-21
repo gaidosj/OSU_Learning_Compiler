@@ -15,6 +15,10 @@ class Interpreter:
     def evaluate_expression(self, expression) -> RuntimeValue:
         return expression.accept(self)
 
+    # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
+
+    # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
+
     def visit_literal_expression(self, literal_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_literal_token(
             token=literal_expression.value

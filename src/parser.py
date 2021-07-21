@@ -1,5 +1,5 @@
 from src.tokens import TokenType
-from src.parser_expression import Binary, Group, Literal, Unary
+from src.ast_node_expression import Binary, Group, Literal, Unary
 from src.error_handler import ErrorHandler, ParseError
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
