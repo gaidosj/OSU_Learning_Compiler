@@ -41,9 +41,9 @@ class RuntimeValue:
     def is_same_type(self, other):
         return other and other.data_type == self.data_type
 
-    def is_equal(self, other):
+    def is_strictly_equal(self, other):
         """
-        Compares two RuntimeValue objects
+        Compares two RuntimeValue objects (both values and types have to match)
         """
         return self.is_same_type(other) and other.value == self.value
 
@@ -100,7 +100,7 @@ class RuntimeOperators:
             TokenType.NOT: RuntimeOperators._unary_not,
         }
         if operator.token_type in UNARY_OPERATORS:
-            return UNARY_OPERATORS[operator.token_type](operand)
+            return UNARY_OPERATORS[operator.token_type](operator, operand)
         raise InterpretError(token=operator, message='Unary operator is exprected')
 
     @staticmethod
@@ -121,76 +121,69 @@ class RuntimeOperators:
             TokenType.INEQUALITY: RuntimeOperators._binary_inequality,
         }
         if operator.token_type in BINARY_OPERATORS:
-            return BINARY_OPERATORS[operator.token_type](left, right)
+            return BINARY_OPERATORS[operator.token_type](left, operator, right)
         raise InterpretError(token=operator, message='Binary operator is expected')
 
     # IMPLEMENTATION OF UNARY OPERATORS -----------------------------------------------------------
 
     @staticmethod
-    def _unary_minus(operand: RuntimeValue):
-        RuntimeValue(-operand.value, operand.data_type)  # TODO - remove - here for compatibility with prior interp
+    def _unary_minus(operator: TokenOsu, operand: RuntimeValue):
         if operand.is_number():
             return RuntimeValue(-operand.value, operand.data_type)
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Minus operator is only implemented for numbers')
 
     @staticmethod
-    def _unary_not(operand: RuntimeValue):
-        RuntimeValue(not operand.value, operand.data_type)  # TODO - remove - here for compatibility with prior interp
+    def _unary_not(operator: TokenOsu, operand: RuntimeValue):
         if operand.is_bool():
             return RuntimeValue(not operand.value, operand.data_type)
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, message='Logical NOT is only implemented for booleans')
 
     # IMPLEMENTATION OF BINARY OPERATORS ----------------------------------------------------------
 
     @staticmethod
-    def _binary_minus(left: RuntimeValue, right: RuntimeValue):
-        print('BINARY MINUS')
-        print('LEFT  :', left)
-        print('RIGHT :', right)
+    def _binary_minus(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value - right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_asterisk(left: RuntimeValue, right: RuntimeValue):
+    def _binary_asterisk(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value * right.value, left.data_type)   # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_div(left: RuntimeValue, right: RuntimeValue):
+    def _binary_div(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value // right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_plus(left: RuntimeValue, right: RuntimeValue):
+    def _binary_plus(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value + right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_gte(left: RuntimeValue, right: RuntimeValue):
+    def _binary_gte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value >= right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_gt(left: RuntimeValue, right: RuntimeValue):
+    def _binary_gt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value > right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_lte(left: RuntimeValue, right: RuntimeValue):
+    def _binary_lte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value <= right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_lt(left: RuntimeValue, right: RuntimeValue):
+    def _binary_lt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(left.value < right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_equality(left: RuntimeValue, right: RuntimeValue):
-        return RuntimeValue(left.value == right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+    def _binary_equality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        return RuntimeValue(left.is_strictly_equal(right), RuntimeDataType.BOOL)
 
     @staticmethod
-    def _binary_inequality(left: RuntimeValue, right: RuntimeValue):
-        return RuntimeValue(left.value != right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise Exception('not implemented')
+    def _binary_inequality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        return RuntimeValue(not left.is_strictly_equal(right), RuntimeDataType.BOOL)

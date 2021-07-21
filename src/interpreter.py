@@ -8,11 +8,11 @@ class Interpreter:
 
     def interpret(self, expression):
         try:
-            return self.evaluate(expression)
+            return self.evaluate_expression(expression)
         except InterpretError as error:
             self.error_handler.report_error(error)
 
-    def evaluate(self, expression) -> RuntimeValue:
+    def evaluate_expression(self, expression) -> RuntimeValue:
         return expression.accept(self)
 
     def visit_literal_expression(self, literal_expression) -> RuntimeValue:
@@ -26,12 +26,12 @@ class Interpreter:
     def visit_unary_expression(self, unary_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_unary_operator(
             operator=unary_expression.operator,
-            operand=self.evaluate(unary_expression.operand)
+            operand=self.evaluate_expression(unary_expression.operand)
         )
 
     def visit_binary_expression(self, binary_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_binary_operator(
-            left=self.evaluate(binary_expression.left_operand),
+            left=self.evaluate_expression(binary_expression.left_operand),
             operator=binary_expression.operator,
-            right=self.evaluate(binary_expression.right_operand)
+            right=self.evaluate_expression(binary_expression.right_operand)
         )
