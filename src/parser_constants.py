@@ -73,7 +73,6 @@ UNCLASSIFIED_TOKENS = {
     TokenType.AND,
     TokenType.XOR,
     TokenType.OR,
-    'TRUE',
-    'FALSE',
-    'NULL'
+    TokenType.NULL,
+    TokenType.BOOL,
 }
