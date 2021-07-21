@@ -7,6 +7,11 @@ class TokenOsu:
         self.lexeme = lexeme
         self.literal = literal
         self.source_file_line_number = source_file_line_number
+        """
+        TODO: We should refactor to get rid of literal. Just keep the lexeme. This is enough
+        until the interpreter stage, and for the interpreter it is better to derive the values
+        of literals from the lexemes at that time
+        """
 
     def __str__(self):
         """
@@ -86,6 +91,8 @@ class TokenType(Enum):
     STRING = 'string'
     INT = 'int'
     FLOAT = 'float'
+    BOOL = 'bool'
+    NULL = 'null'
 
     VAR = 'var'
     FUNCTION = 'func'
