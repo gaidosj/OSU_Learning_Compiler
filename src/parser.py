@@ -3,7 +3,8 @@ from src.parser_expression import Binary, Group, Literal, Unary
 from src.error_handler import ErrorHandler, ParseError
 from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
-    UNARY_TOKENS, PRIMARY_TOKENS, STARTING_TOKENS, IGNORED_TOKENS, PAREN_OPENING, PAREN_CLOSING
+    UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING, GROUP_CLOSING, \
+    STATEMENT_START_TOKENS, STATEMENT_END_TOKENS
 
 
 class Parser:
@@ -16,14 +17,17 @@ class Parser:
         """
         Parses a list of tokens and returns an abstract syntax tree
         """
-        if not self.tokens:
-            return
+        if self.tokens:
+            try:
+                self.index = 0
+                return AbstractSyntaxTree(self._expression())
+            except ParseError as error:
+                self.error_handler.report_error(error)
 
-        try:
-            self.index = 0
-            return AbstractSyntaxTree(self._expression())
-        except ParseError as error:
-            self.error_handler.report_error(error)
+    # STATEMENTS -----------------------------------------------------------------------------------
+
+
+    # EXPRESSIONS -----------------------------------------------------------------------------------
 
     def _expression(self):
         """
@@ -91,19 +95,19 @@ class Parser:
     def _primary(self):
         """
         A literal type
-        Grammar: primary → INT | FLOAT | STRING | "TRUE" | "FALSE" | "NULL" | "(" expression ")" ;
+        Grammar: primary → INT | FLOAT | STRING | BOOL | "NULL" | "(" expression ")" ;
         """
-        if self._is_one_of_types(PRIMARY_TOKENS):
+        if self._is_one_of_types(LITERAL_TOKENS):
             return Literal(self._peek_prev())
 
-        if self._is_one_of_types(PAREN_OPENING):
+        if self._is_one_of_types(GROUP_OPENING):
             expression = self._expression()
-            self._consume(PAREN_CLOSING, 'Expected closing parenthese')
+            self._consume(GROUP_CLOSING, 'Expected closing parenthese')
             return Group(expression)
 
         raise ParseError(self._peek(), 'Expected start of expression')
 
-    # ----------- HELPER METHODS ------------------------
+    # HELPER METHODS -----------------------------------------------------------------------------------
 
     def _peek(self):
         """
@@ -166,13 +170,11 @@ class Parser:
 
     def _synchronize(self):
         """
-        Finds the next valid token that can start an expression
+        Panic mode recovery - find the likely start of the next statement
         """
         self._next_token()
 
         while not self._end_of_code():
-            if self._peek_prev().type == TokenType.SEMICOLON:
-                return
-            if self._peek().type in STARTING_TOKENS:
+            if self._peek_prev().type in STATEMENT_END_TOKENS or self._peek().type in STATEMENT_START_TOKENS:
                 return
             self._next_token()

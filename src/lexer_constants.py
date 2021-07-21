@@ -12,6 +12,9 @@ RESERVED_WORDS = {
     'print': TokenType.PRINT,
     'include': TokenType.INCLUDE,
     'class': TokenType.CLASS,
+    'TRUE': TokenType.BOOL,
+    'FALSE': TokenType.BOOL,
+    'NULL': TokenType.NULL,
 }
 
 SINGLE_TOKENS = {

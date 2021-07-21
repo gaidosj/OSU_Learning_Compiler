@@ -29,6 +29,7 @@ class LexerTest(unittest.TestCase):
                 "IDENTIFIER '_private_var'; EQUALS '='; INT '10' val=10; DIV '/'; IDENTIFIER 'cA'; EOF"
             ),
             ("// comment to end of line", "COMMENT '// comment to end of line'; EOF"),
+            ("TRUE FALSE NULL", "BOOL 'TRUE'; BOOL 'FALSE'; NULL 'NULL'; EOF"),
         )
 
         for source_code, expected_token_string in test_cases:

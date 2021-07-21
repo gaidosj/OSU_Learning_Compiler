@@ -35,22 +35,28 @@ UNARY_TOKENS = {
     TokenType.MINUS,
 }
 
-PRIMARY_TOKENS = {
+LITERAL_TOKENS = {
     TokenType.INT,
     TokenType.FLOAT,
     TokenType.STRING,
     TokenType.IDENTIFIER,
+    TokenType.BOOL,
+    TokenType.NULL,
 }
 
-PAREN_OPENING = {
+GROUP_OPENING = {
     TokenType.LEFT_PAREN,
 }
 
-PAREN_CLOSING = {
+GROUP_CLOSING = {
     TokenType.RIGHT_PAREN,
 }
 
-STARTING_TOKENS = {
+STATEMENT_END_TOKENS = {
+    TokenType.SEMICOLON
+}
+
+STATEMENT_START_TOKENS = {
     TokenType.CLASS,
     TokenType.FUNCTION,
     TokenType.VAR,
