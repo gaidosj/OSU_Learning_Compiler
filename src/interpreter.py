@@ -6,16 +6,53 @@ class Interpreter:
     def __init__(self):
         self.error_handler = ErrorHandler()
 
-    def interpret(self, expression):
+    def interpret(self, statements):
         try:
-            return self.evaluate_expression(expression)
-        except InterpretError as error:
+            for statement in statements:
+                self.execute_statement(statement)
+        except Exception as error:
             self.error_handler.report_error(error)
+
+        # try:
+        #     return self.evaluate_expression(expression)
+        # except InterpretError as error:
+        #     self.error_handler.report_error(error)
+
+    def execute_statement(self, statement) -> None:
+        statement.accept(self)
 
     def evaluate_expression(self, expression) -> RuntimeValue:
         return expression.accept(self)
 
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
+
+    def visit_var_statement(self, var_statement) -> None:
+        pass
+
+    def visit_expression_statement(self, expression_statement) -> None:
+        self.evaluate_expression(expression_statement.expression)
+
+    def visit_print_statement(self, print_statement) -> None:
+        print_value = self.evaluate_expression(print_statement.expression)  # TODO: Refactor pretty?
+        print(print_value)
+
+    def visit_block_statement(self, block_statement) -> None:
+        pass
+
+    def visit_if_statement(self, if_statement) -> None:
+        pass
+
+    def visit_while_statement(self, while_statement) -> None:
+        pass
+
+    def visit_function_statement(self, function_statement) -> None:
+        pass
+
+    def visit_return_statement(self, return_statement) -> None:
+        pass
+
+    def visit_class_statement(self, class_statement) -> None:
+        pass
 
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
 

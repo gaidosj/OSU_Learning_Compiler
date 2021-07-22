@@ -1,5 +1,23 @@
 from src.tokens import TokenType
 
+
+STATEMENT_PROCESSORS = {
+    TokenType.PRINT: 1
+}
+
+
+PRINT_STATEMENT_TOKENS = {TokenType.PRINT}
+
+
+
+
+
+
+
+
+
+
+
 IGNORED_TOKENS = {
     TokenType.EOF,
     TokenType.EOL,
@@ -73,6 +91,4 @@ UNCLASSIFIED_TOKENS = {
     TokenType.AND,
     TokenType.XOR,
     TokenType.OR,
-    TokenType.NULL,
-    TokenType.BOOL,
 }

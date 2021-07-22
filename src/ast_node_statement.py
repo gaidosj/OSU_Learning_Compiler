@@ -8,7 +8,7 @@ class ParserStatement:
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
 
 
-class Var(ParserStatement):
+class VarStatement(ParserStatement):
     def __init__(self, name: TokenOsu, initializer: ParserExpression):
         self.name = name
         self.initializer = initializer
@@ -17,7 +17,7 @@ class Var(ParserStatement):
         return visitor.visit_var_statement(self)
 
 
-class Expression(ParserStatement):
+class ExpressionStatement(ParserStatement):
     def __init__(self, expression: ParserExpression):
         self.expression = expression
 
@@ -25,7 +25,7 @@ class Expression(ParserStatement):
         return visitor.visit_expression_statement(self)
 
 
-class Print(ParserStatement):
+class PrintStatement(ParserStatement):
     def __init__(self, expression: ParserExpression):
         self.expression = expression
 
@@ -33,7 +33,7 @@ class Print(ParserStatement):
         return visitor.visit_print_statement(self)
 
 
-class Block(ParserStatement):
+class BlockStatement(ParserStatement):
     def __init__(self, statements: [ParserStatement]):
         self.statements = statements.copy()  # TODO need this copy or mutable is OK?
 
@@ -41,7 +41,7 @@ class Block(ParserStatement):
         return visitor.visit_block_statement(self)
 
 
-class If(ParserStatement):
+class IfStatement(ParserStatement):
     def __init__(self, condition: ParserExpression, then_branch: ParserStatement, else_branch: ParserStatement):
         self.condition = condition
         self.then_branch = then_branch
@@ -51,7 +51,7 @@ class If(ParserStatement):
         return visitor.visit_if_statement(self)
 
 
-class While(ParserStatement):
+class WhileStatement(ParserStatement):
     def __init__(self, condition: ParserExpression, body: ParserStatement):
         self.condition = condition
         self.body = body
@@ -60,7 +60,7 @@ class While(ParserStatement):
         return visitor.visit_while_statement(self)
 
 
-class Function(ParserStatement):
+class FunctionStatement(ParserStatement):
     def __init__(self, name: TokenOsu, parameters: [TokenOsu], body: [ParserStatement]):
         self.name = name
         self.parameters = parameters.copy()  # TODO: Need copy?
@@ -70,7 +70,7 @@ class Function(ParserStatement):
         return visitor.visit_function_statement(self)
 
 
-class Return(ParserStatement):
+class ReturnStatement(ParserStatement):
     def __init__(self, keyword: TokenOsu, value: ParserExpression):
         self.keyword = keyword
         self.value = value
@@ -79,8 +79,8 @@ class Return(ParserStatement):
         return visitor.visit_return_statement(self)
 
 
-class Class(ParserStatement):
-    def __init__(self, name: TokenOsu, super_class: Variable, methods: [Function]):
+class ClassStatement(ParserStatement):
+    def __init__(self, name: TokenOsu, super_class: Variable, methods: []):
         self.name = name
         self.super_class = super_class
         self.methods = methods.copy()  # TODO: copy() or mutable?

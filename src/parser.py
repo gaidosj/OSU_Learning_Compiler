@@ -1,10 +1,15 @@
 from src.tokens import TokenType
-from src.ast_node_expression import Binary, Group, Literal, Unary
 from src.error_handler import ErrorHandler, ParseError
-from src.abstract_syntax_tree import AbstractSyntaxTree
+
+from src.ast_node_expression import Binary, Group, Literal, Unary
+
+from src.ast_node_statement import VarStatement, ExpressionStatement, PrintStatement, \
+    BlockStatement, IfStatement, WhileStatement, FunctionStatement, ReturnStatement, \
+    ClassStatement
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING, GROUP_CLOSING, \
-    STATEMENT_START_TOKENS, STATEMENT_END_TOKENS
+    STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, \
+    PRINT_STATEMENT_TOKENS
 
 
 class Parser:
@@ -17,14 +22,48 @@ class Parser:
         """
         Parses a list of tokens and returns an abstract syntax tree
         """
-        if self.tokens:
-            try:
-                self.index = 0
-                return AbstractSyntaxTree(self._expression())
-            except ParseError as error:
-                self.error_handler.report_error(error)
+        statements = []
+        while not self._end_of_code():
+            statements.append(self._statement())
+
+        return statements
+
+        # if self.tokens:
+        #     try:
+        #         self.index = 0
+        #         return AbstractSyntaxTree(self._expression())
+        #     except ParseError as error:
+        #         self.error_handler.report_error(error)
 
     # STATEMENTS -----------------------------------------------------------------------------------
+
+    def _statement(self):
+        """
+        Find next statmemt and return the AST of it
+        """
+        if self._is_one_of_types(PRINT_STATEMENT_TOKENS):
+            return self._print_statement()
+
+        return self._expression_statement()
+
+
+
+
+
+    def _print_statement(self) -> PrintStatement:
+        print_value = self._expression()
+        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after value')
+        return PrintStatement(print_value)
+
+    def _expression_statement(self) -> ExpressionStatement:
+        expression = self._expression()
+        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after expression')
+        return ExpressionStatement(expression)
+
+
+
+
+
 
     # EXPRESSIONS -----------------------------------------------------------------------------------
 
@@ -101,7 +140,7 @@ class Parser:
 
         if self._is_one_of_types(GROUP_OPENING):
             expression = self._expression()
-            self._consume(GROUP_CLOSING, 'Expected closing parenthese')
+            self._consume_or_raise(GROUP_CLOSING, 'Expected closing parenthese')
             return Group(expression)
 
         raise ParseError(self._peek(), 'Expected start of expression')
@@ -159,13 +198,13 @@ class Parser:
             return True
         return False
 
-    def _consume(self, token_types, message):
+    def _consume_or_raise(self, token_types, exception_description):
         """
         Consumes the expected token or throws an error
         """
         if any([self._is_same_type(token_type) for token_type in token_types]):
             return self._next_token()
-        raise ParseError(self._peek(), message)
+        raise ParseError(token=self._peek(), message=exception_description)
 
     def _synchronize(self):
         """

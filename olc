@@ -17,10 +17,13 @@ class Orchestrator:
         self.lexer.process_source_code()
 
         self.parser.tokens = self.lexer.tokens
-        ast = self.parser.parse()
+        # ast = self.parser.parse()
+        statements = self.parser.parse()
 
-        if ast:
-            return self.interpreter.interpret(ast.root)
+        if statements:
+            self.interpreter.interpret(statements)
+        # if ast:
+        #     return self.interpreter.interpret(ast.root)
 
     def interpret_file(self, filename):
         pass
@@ -33,6 +36,7 @@ class Orchestrator:
                 if line is None:
                     break
                 result = self.execute(line)
+                print("PROCESSED")
                 if result:
                     print(result)
             except (EOFError, KeyboardInterrupt):
