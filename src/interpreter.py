@@ -1,9 +1,10 @@
 from src.error_handler import ErrorHandler, InterpretError
-from src.interpreter_runtime import RuntimeValue, RuntimeOperators
+from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 
 
 class Interpreter:
     def __init__(self):
+        self.environment = Environment()
         self.error_handler = ErrorHandler()
 
     def interpret(self, statements):
@@ -22,7 +23,11 @@ class Interpreter:
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
 
     def visit_var_statement(self, var_statement) -> None:
-        pass
+        if var_statement.initializer:
+            value = self.evaluate_expression(var_statement.initializer)
+        else:
+            value = RuntimeValue(value=None, data_type=RuntimeDataType.NULL)
+        self.environment.define(name=var_statement.name.lexeme, value=value)
 
     def visit_expression_statement(self, expression_statement) -> None:
         self.evaluate_expression(expression_statement.expression)
@@ -71,3 +76,6 @@ class Interpreter:
             operator=binary_expression.operator,
             right=self.evaluate_expression(binary_expression.right_operand)
         )
+
+    def visit_variable_expression(self, variable_expression) -> RuntimeValue:
+        return self.environment.get(variable_expression.name)

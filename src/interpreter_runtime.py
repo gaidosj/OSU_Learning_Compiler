@@ -15,14 +15,6 @@ class RuntimeDataType(Enum):
     OBJECT = 'object'
 
 
-class Environment:
-    """
-    Binding of variable names and their values (for a given scope)
-    """
-    def __init__(self):
-        pass
-
-
 class RuntimeValue:
     """
     Stores values (and associated data types) computed during interpretation of the program
@@ -93,7 +85,7 @@ class RuntimeOperators:
         }
         if token.token_type in LITERAL_TOKENS:
             return LITERAL_TOKENS[token.token_type](token)
-        raise InterpretError(token=token, mesage='Literal value is expected')
+        raise InterpretError(token=token, message='Literal value is expected')
 
     @staticmethod
     def get_runtime_value_for_unary_operator(operator: TokenOsu, operand: RuntimeValue):
@@ -249,3 +241,31 @@ class RuntimeOperators:
     @staticmethod
     def _binary_inequality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(not left.is_strictly_equal(right), RuntimeDataType.BOOL)
+
+
+class Environment:
+    """
+    Binding of variable names and their values (for a given scope)
+    """
+
+    def __init__(self):
+        """
+        Store bindings between variable name and its value
+        """
+        self.bindings = {}
+
+    def define(self, name: str, value: RuntimeValue):
+        # TODO: Should name be TokenOsu ???
+        # TODO: Explore preventing redefinition of existing variables
+        self.bindings[name] = value
+
+    def get(self, name: TokenOsu):
+        if name and (name.lexeme in self.bindings):
+            return self.bindings[name.lexeme]
+
+        raise InterpretError(token=name, message='Undefined variable {}.'.format(name.lexeme))
+
+
+
+
+

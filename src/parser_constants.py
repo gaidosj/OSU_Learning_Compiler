@@ -42,7 +42,6 @@ LITERAL_TOKENS = {
     TokenType.INT,
     TokenType.FLOAT,
     TokenType.STRING,
-    TokenType.IDENTIFIER,
     TokenType.BOOL,
     TokenType.NULL,
 }

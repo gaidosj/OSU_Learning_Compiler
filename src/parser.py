@@ -246,6 +246,8 @@ class Parser:
         self._next_token()
 
         while not self._end_of_code():
-            if self._peek_prev().type in STATEMENT_END_TOKENS or self._peek().type in STATEMENT_START_TOKENS:
+            if self._peek_prev().token_type in STATEMENT_END_TOKENS:
+                return
+            if self._peek().token_type in STATEMENT_START_TOKENS:
                 return
             self._next_token()

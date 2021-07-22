@@ -13,8 +13,6 @@ class Orchestrator:
     #     self.interpreter = Interpreter()
 
     def execute(self, code):
-
-
         lexer = Lexer(code)
         lexer.process_source_code()
         tokens = lexer.get_tokens()
@@ -22,13 +20,15 @@ class Orchestrator:
         parser = Parser(tokens)
         statements = parser.parse()
 
-        print("SOURCE CODE:", code)
-        print("TOKENS:", tokens)
-        print("STATEMENTS:", *[str(AbstractSyntaxTree(st)) for st in statements])
+        # if statements:
+        interpreter = Interpreter()
+        interpreter.interpret(statements)
 
-        if statements:
-            interpreter = Interpreter()
-            interpreter.interpret(statements)
+        if False:
+            print("SOURCE CODE : ", code)
+            print("TOKENS      : ", tokens)
+            print("STATEMENTS  : ", *[str(AbstractSyntaxTree(st)) for st in statements])
+            print("ENVIRONMENT : ", *interpreter.environment.bindings)
 
     def interpret_file(self, filename):
         pass
