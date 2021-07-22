@@ -10,7 +10,7 @@ class Interpreter:
         try:
             for statement in statements:
                 self.execute_statement(statement)
-        except Exception as error:
+        except InterpretError as error:
             self.error_handler.report_error(error)
 
     def execute_statement(self, statement) -> None:

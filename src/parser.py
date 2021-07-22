@@ -26,31 +26,52 @@ class Parser:
         statements = []
         try:
             while not self._end_of_code():
-                statements.append(self._statement())
+                statements.append(self._parse_statement())
         except ParseError as error:
             self.error_handler.report_error(error)
         return statements
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
 
-    def _statement(self):
+    def _parse_statement(self):
         """
         Find next statmemt and return the AST of it
         """
         if self._is_one_of_types(PRINT_STATEMENT_TOKENS):
-            return self._print_statement()
+            return self._parse_print_statement()
 
-        return self._expression_statement()
+        return self._parse_expression_statement()
 
-    def _print_statement(self) -> PrintStatement:
+    def _parse_var_statement(self) -> VarStatement:
+        pass
+
+    def _parse_expression_statement(self) -> ExpressionStatement:
+        expression = self._expression()
+        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after expression')
+        return ExpressionStatement(expression)
+
+    def _parse_print_statement(self) -> PrintStatement:
         print_value = self._expression()
         self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after value')
         return PrintStatement(print_value)
 
-    def _expression_statement(self) -> ExpressionStatement:
-        expression = self._expression()
-        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after expression')
-        return ExpressionStatement(expression)
+    def _parse_block_statement(self) -> BlockStatement:
+        pass
+
+    def _parse_if_statement(self) -> IfStatement:
+        pass
+
+    def _parse_while_statement(self) -> WhileStatement:
+        pass
+
+    def _parse_function_statement(self) -> FunctionStatement:
+        pass
+
+    def _parse_return_statmeent(self) -> ReturnStatement:
+        pass
+
+    def _parse_class_statement(self) -> ClassStatement:
+        pass
 
     # PARSING EXPRESSIONS -----------------------------------------------------------------------------
 
