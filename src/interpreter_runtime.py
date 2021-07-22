@@ -264,8 +264,3 @@ class Environment:
             return self.bindings[name.lexeme]
 
         raise InterpretError(token=name, message='Undefined variable {}.'.format(name.lexeme))
-
-
-
-
-
