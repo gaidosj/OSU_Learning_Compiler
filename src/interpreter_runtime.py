@@ -35,8 +35,7 @@ class RuntimeValue:
         return 'RTV (value={}, type={})'.format(self.value, self.data_type)
 
     def __eq__(self, other):
-        # TODO: Hacky in order to pass tests. Need to change tests
-        return str(self.value) == str(other)
+        return self.value == other
 
     def is_same_type(self, other):
         return other and other.data_type == self.data_type
@@ -59,6 +58,12 @@ class RuntimeValue:
 
     def is_number(self):
         return self.data_type in (RuntimeDataType.INT, RuntimeDataType.FLOAT,)
+
+    def is_int(self):
+        return self.data_type in (RuntimeDataType.INT,)
+
+    def is_float(self):
+        return self.data_type in (RuntimeDataType.FLOAT,)
 
     def is_string(self):
         return self.data_type in (RuntimeDataType.STRING,)
@@ -142,43 +147,100 @@ class RuntimeOperators:
 
     @staticmethod
     def _binary_minus(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value - right.value, left.data_type)  # TODO - remove - here for compatbility
+        """
+        NUM - NUM -> INT (if both nums are INT) | FLOAT
+        INT - BOOL -> INT (BOOL is interpreted as 0 / 1 for TRUE / FALSE)
+        """
+        if left.is_int() and right.is_int():
+            return RuntimeValue(left.value - right.value, RuntimeDataType.INT)
+        if left.is_number() and right.is_number():
+            return RuntimeValue(left.value - right.value, RuntimeDataType.FLOAT)
+        if left.is_int() and right.is_bool():
+            return RuntimeValue(left.value - right.value, RuntimeDataType.INT)
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_asterisk(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value * right.value, left.data_type)   # TODO - remove - here for compatbility
+        """
+        AMY (except NULL) * BOOL -> ANY
+        STRING * INT -> STRING (Python string multiplication)
+        NUM * NUM -> INT (if both nums are INT) | FLOAT
+        NUM * BOOL -> INT (BOOL is interpreted as 0 / 1 for TRUE / FALSE)
+        """
+        # anything (except NULL) * bool -> same | empty, depening on the BOOL
+        if not left.is_null() and right.is_bool():
+            return RuntimeValue(left.value * right.value, left.data_type)
+        if left.is_string() and right.is_int():
+            return RuntimeValue(left.value * right.value, RuntimeDataType.STRING)
+        if left.is_int() and right.is_int():
+            return RuntimeValue(left.value * right.value, RuntimeDataType.INT)
+        if left.is_number() and right.is_number():
+            return RuntimeValue(left.value * right.value, RuntimeDataType.FLOAT)
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_div(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value // right.value, left.data_type)  # TODO - remove - here for compatbility
+        """
+        INT / INT -> INT (// division)
+        NUM / NUM -> FLOAT (/ division)
+        """
+        if left.is_int() and right.is_int():
+            try:
+                return RuntimeValue(left.value // right.value, RuntimeDataType.INT)
+            except Exception:
+                raise InterpretError(token=operator, mesage='Invalid operands for the division')
+
+        if left.is_number() and right.is_number():
+            try:
+                return RuntimeValue(left.value / right.value, RuntimeDataType.FLOAT)
+            except Exception:
+                raise InterpretError(token=operator, mesage='Invalid operands for the division')
+
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_plus(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value + right.value, left.data_type)  # TODO - remove - here for compatbility
+        """
+        STRING + STIRNG -> STRING (string concatenation)
+        NUM + NUM -> INT (if both nums are INT) | FLOAT
+        INT + BOOL -> INT (BOOL is interpreted as 0 / 1 for TRUE / FALSE)
+        """
+        if left.is_string() and right.is_string():
+            return RuntimeValue(left.value + right.value, RuntimeDataType.STRING)
+        if left.is_int() and right.is_int():
+            return RuntimeValue(left.value + right.value, RuntimeDataType.INT)
+        if left.is_number() and right.is_number():
+            return RuntimeValue(left.value + right.value, RuntimeDataType.FLOAT)
+        if left.is_int() and right.is_bool():
+            return RuntimeValue(left.value + right.value, RuntimeDataType.INT)
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+
+    @staticmethod
+    def _compare_helper(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue, comparator):
+        """
+        Strings can only be compared with strings. Numbers and bools can be compared among themselves
+        """
+        if (left.is_string() and right.is_string()):
+            return RuntimeValue(comparator(left.value, right.value), RuntimeDataType.BOOL)
+        if (left.is_number() or left.is_bool()) and (right.is_number() or right.is_bool()):
+            return RuntimeValue(comparator(left.value, right.value), RuntimeDataType.BOOL)
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_gte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value >= right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left >= right)
 
     @staticmethod
     def _binary_gt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value > right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left > right)
 
     @staticmethod
     def _binary_lte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value <= right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left <= right)
 
     @staticmethod
     def _binary_lt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.value < right.value, left.data_type)  # TODO - remove - here for compatbility
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left < right)
 
     @staticmethod
     def _binary_equality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
