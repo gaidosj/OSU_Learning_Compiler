@@ -14,7 +14,7 @@ from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS
 
 class Parser:
     def __init__(self, tokens=None):
-        self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS]  if tokens else []
+        self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS] if tokens else []
         self.index = 0
         self.error_handler = ErrorHandler()
 
