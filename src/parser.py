@@ -46,7 +46,7 @@ class Parser:
             if self._is_one_of_types(VAR_STATEMENT_TOKENS):
                 return self._parse_var_statement()
             return self._parse_nondeclaring_statement()
-        except ParseError as error:
+        except ParseError:
             self._synchronize()
             # TODO: Raise exception again?
 
@@ -160,14 +160,16 @@ class Parser:
 
     def _primary(self):
         """
-        A literal type
-        Grammar: primary → INT | FLOAT | STRING | BOOL | "NULL" | "(" expression ")" ;
+        A primary rule
+        Grammar:
+        primary -> literal | IDENTIFIER | "(" expression ")" ;
+        literal -> INT | FLOAT | STRING | BOOL | "NULL" ;
         """
         if self._is_one_of_types(LITERAL_TOKENS):
             return Literal(self._peek_prev())
+
         if self._is_one_of_types(IDENTIFIER_TOKENS):
             return Variable(self._peek_prev())
-
 
         if self._is_one_of_types(GROUP_OPENING_TOKENS):
             expression = self._expression()
