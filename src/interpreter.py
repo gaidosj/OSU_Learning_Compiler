@@ -62,7 +62,7 @@ class Interpreter:
         )
 
     def visit_group_expression(self, group_expression) -> RuntimeValue:
-        return self.evaluate(group_expression.expression)
+        return self.evaluate_expression(group_expression.expression)
 
     def visit_unary_expression(self, unary_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_unary_operator(
