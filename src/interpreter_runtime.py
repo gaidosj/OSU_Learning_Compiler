@@ -60,10 +60,10 @@ class RuntimeValue:
         return self.data_type in (RuntimeDataType.INT, RuntimeDataType.FLOAT,)
 
     def is_int(self):
-        return self.data_type in  (RuntimeDataType.INT,)
+        return self.data_type in (RuntimeDataType.INT,)
 
     def is_float(self):
-        return self.data_type in  (RuntimeDataType.FLOAT,)
+        return self.data_type in (RuntimeDataType.FLOAT,)
 
     def is_string(self):
         return self.data_type in (RuntimeDataType.STRING,)
@@ -187,13 +187,13 @@ class RuntimeOperators:
         if left.is_int() and right.is_int():
             try:
                 return RuntimeValue(left.value // right.value, RuntimeDataType.INT)
-            except:
+            except Exception:
                 raise InterpretError(token=operator, mesage='Invalid operands for the division')
 
         if left.is_number() and right.is_number():
             try:
                 return RuntimeValue(left.value / right.value, RuntimeDataType.FLOAT)
-            except Exception as e:
+            except Exception:
                 raise InterpretError(token=operator, mesage='Invalid operands for the division')
 
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
