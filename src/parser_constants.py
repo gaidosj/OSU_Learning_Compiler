@@ -1,11 +1,7 @@
 from src.tokens import TokenType
 
-
-STATEMENT_PROCESSORS = {
-    TokenType.PRINT: 1
-}
-
 PRINT_STATEMENT_TOKENS = {TokenType.PRINT}
+VAR_STATEMENT_TOKENS = {TokenType.VAR}
 
 IGNORED_TOKENS = {
     TokenType.EOF,
@@ -51,11 +47,19 @@ LITERAL_TOKENS = {
     TokenType.NULL,
 }
 
-GROUP_OPENING = {
+IDENTIFIER_TOKENS = {
+    TokenType.IDENTIFIER
+}
+
+EQUALS_TOKENS = {
+    TokenType.EQUALS
+}
+
+GROUP_OPENING_TOKENS = {
     TokenType.LEFT_PAREN,
 }
 
-GROUP_CLOSING = {
+GROUP_CLOSING_TOKENS = {
     TokenType.RIGHT_PAREN,
 }
 

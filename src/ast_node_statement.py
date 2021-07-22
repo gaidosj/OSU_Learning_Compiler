@@ -9,6 +9,9 @@ class ParserStatement:
 
 
 class VarStatement(ParserStatement):
+    """
+    Create a binding between variable name and a value
+    """
     def __init__(self, name: TokenOsu, initializer: ParserExpression):
         self.name = name
         self.initializer = initializer

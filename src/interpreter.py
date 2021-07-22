@@ -28,8 +28,8 @@ class Interpreter:
         self.evaluate_expression(expression_statement.expression)
 
     def visit_print_statement(self, print_statement) -> None:
-        print_value = self.evaluate_expression(print_statement.expression)  # TODO: Refactor pretty?
-        print(print_value)
+        print_value = self.evaluate_expression(print_statement.expression)
+        print(print_value.value)
 
     def visit_block_statement(self, block_statement) -> None:
         pass
