@@ -1,1 +1,2 @@
-INT '2' val=2; PLUS '+'; INT '3' val=3; EOF
+INT '2' val=2; PLUS '+'; INT '3' val=3; ASTERISK '*'; INT '4' val=4; SEMICOLON ';'; EOL
+INT '1' val=1; PLUS '+'; INT '2' val=2; PLUS '+'; INT '3' val=3; PLUS '+'; INT '4' val=4; MINUS '-'; MINUS '-'; INT '5' val=5; SEMICOLON ';'; EOF

@@ -14,28 +14,24 @@ from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS
 
 class Parser:
     def __init__(self, tokens=None):
-        self.tokens = [token for token in tokens if token not in IGNORED_TOKENS] if tokens else []
+        self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS]  if tokens else []
         self.index = 0
         self.error_handler = ErrorHandler()
 
     def parse(self):
         """
-        Parses a list of tokens and returns an abstract syntax tree
+        Parse a list of tokens and return a list of statemeent
+        Each statement is an abstract syntax tree
         """
         statements = []
-        while not self._end_of_code():
-            statements.append(self._statement())
-
+        try:
+            while not self._end_of_code():
+                statements.append(self._statement())
+        except ParseError as error:
+            self.error_handler.report_error(error)
         return statements
 
-        # if self.tokens:
-        #     try:
-        #         self.index = 0
-        #         return AbstractSyntaxTree(self._expression())
-        #     except ParseError as error:
-        #         self.error_handler.report_error(error)
-
-    # STATEMENTS -----------------------------------------------------------------------------------
+    # PARSING STATEMENTS -----------------------------------------------------------------------------
 
     def _statement(self):
         """
@@ -45,10 +41,6 @@ class Parser:
             return self._print_statement()
 
         return self._expression_statement()
-
-
-
-
 
     def _print_statement(self) -> PrintStatement:
         print_value = self._expression()
@@ -60,12 +52,7 @@ class Parser:
         self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect ; after expression')
         return ExpressionStatement(expression)
 
-
-
-
-
-
-    # EXPRESSIONS -----------------------------------------------------------------------------------
+    # PARSING EXPRESSIONS -----------------------------------------------------------------------------
 
     def _expression(self):
         """

@@ -5,18 +5,7 @@ STATEMENT_PROCESSORS = {
     TokenType.PRINT: 1
 }
 
-
 PRINT_STATEMENT_TOKENS = {TokenType.PRINT}
-
-
-
-
-
-
-
-
-
-
 
 IGNORED_TOKENS = {
     TokenType.EOF,

@@ -80,7 +80,7 @@ class ReturnStatement(ParserStatement):
 
 
 class ClassStatement(ParserStatement):
-    def __init__(self, name: TokenOsu, super_class: Variable, methods: []):
+    def __init__(self, name: TokenOsu, super_class: Variable, methods: [FunctionStatement]):
         self.name = name
         self.super_class = super_class
         self.methods = methods.copy()  # TODO: copy() or mutable?

@@ -25,6 +25,7 @@ class AstTest(unittest.TestCase):
 
     def test_mult_minus(self):
         self.assertEqual(
+            '[1 + [[-1] * 1]]',
             str(
                 AbstractSyntaxTree(
                     Binary(
@@ -40,12 +41,12 @@ class AstTest(unittest.TestCase):
                         )
                     )
                 )
-            ),
-            '(1 + ((-1) * 1))'
+            )
         )
 
     def test_plus_gt(self):
         self.assertEqual(
+            '[[identifier + 1] > 1]',
             str(
                 AbstractSyntaxTree(
                     Binary(
@@ -58,12 +59,12 @@ class AstTest(unittest.TestCase):
                         Literal(self.tokens[TokenType.INT])
                     )
                 )
-            ),
-            '((identifier + 1) > 1)'
+            )
         )
 
     def test_minus_minuses(self):
         self.assertEqual(
+            '[[-identifier] - [-identifier]]',
             str(
                 AbstractSyntaxTree(
                     Binary(
@@ -78,8 +79,7 @@ class AstTest(unittest.TestCase):
                         )
                     )
                 )
-            ),
-            '((-identifier) - (-identifier))'
+            )
         )
 
 

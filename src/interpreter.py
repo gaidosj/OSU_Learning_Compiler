@@ -13,11 +13,6 @@ class Interpreter:
         except Exception as error:
             self.error_handler.report_error(error)
 
-        # try:
-        #     return self.evaluate_expression(expression)
-        # except InterpretError as error:
-        #     self.error_handler.report_error(error)
-
     def execute_statement(self, statement) -> None:
         statement.accept(self)
 
