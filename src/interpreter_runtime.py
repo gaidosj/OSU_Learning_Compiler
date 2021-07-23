@@ -262,5 +262,10 @@ class Environment:
     def get(self, name: TokenOsu):
         if name and (name.lexeme in self.bindings):
             return self.bindings[name.lexeme]
+        raise InterpretError(token=name, message='Undefined variable {}.'.format(name.lexeme))
 
+    def assign(self, name: TokenOsu, value: RuntimeValue):
+        if name.lexeme in self.bindings:
+            self.bindings[name.lexeme] = value
+            return
         raise InterpretError(token=name, message='Undefined variable {}.'.format(name.lexeme))

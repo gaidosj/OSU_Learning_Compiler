@@ -1,7 +1,7 @@
 from src.tokens import TokenType
 from src.error_handler import ErrorHandler, ParseError
 
-from src.ast_node_expression import Binary, Group, Literal, Unary, Variable
+from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign
 
 from src.ast_node_statement import VarStatement, ExpressionStatement, PrintStatement, \
     BlockStatement, IfStatement, WhileStatement, FunctionStatement, ReturnStatement, \
@@ -96,10 +96,33 @@ class Parser:
     # PARSING EXPRESSIONS -----------------------------------------------------------------------------
 
     def _expression(self):
-        """
-        Any type of expression in the language
-        """
-        return self._equality()
+        return self._assignment()
+
+    def _assignment(self):
+        # expression = self._equality()
+        #
+        # if self._is_one_of_types(EQUALS_TOKENS):
+        #     equals = self._peek_prev()
+        #     value = self._assignment()
+        #
+        #     if isinstance(expression, Variable):
+        #         name = expression.name
+        #         return Assign(name, value)
+        #
+        #     raise ParseError(token=equals, message='Invalid assignment target.')
+        #
+        # return expression
+
+        expression = self._equality()
+        if not self._is_one_of_types(EQUALS_TOKENS):
+            return expression
+
+        if not isinstance(expression, Variable):
+            raise ParseError(token=self._peek_prev(), message='Invalid assignment target.')
+
+        name = expression.name
+        value = self._assignment()
+        return Assign(name, value)
 
     def _equality(self):
         """

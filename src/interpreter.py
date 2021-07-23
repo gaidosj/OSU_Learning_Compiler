@@ -1,6 +1,7 @@
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
-from src.abstract_syntax_tree import AbstractSyntaxTree
+# from src.abstract_syntax_tree import AbstractSyntaxTree
+
 
 class Interpreter:
     def __init__(self):
@@ -80,7 +81,9 @@ class Interpreter:
         )
 
     def visit_assign_expression(self, assign_expression) -> RuntimeValue:
-        pass
+        value = self.evaluate_expression(assign_expression.value)
+        self.environment.assign(assign_expression.name, value)
+        return value;
 
     def visit_variable_expression(self, variable_expression) -> RuntimeValue:
         return self.environment.get(variable_expression.name)
