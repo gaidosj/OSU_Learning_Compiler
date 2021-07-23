@@ -59,7 +59,7 @@ class AbstractSyntaxTree:
 
     def visit_var_statement(self, var_statement) -> str:
         return 'VAR {} = {} ;'.format(
-            var_statement.name, var_statement.initializer
+            var_statement.name.lexeme, var_statement.initializer.accept(self)
         )
 
     def visit_expression_statement(self, expression_statement):

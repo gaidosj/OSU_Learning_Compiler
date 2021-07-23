@@ -1,6 +1,6 @@
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
-
+from src.abstract_syntax_tree import AbstractSyntaxTree
 
 class Interpreter:
     def __init__(self):
@@ -15,9 +15,11 @@ class Interpreter:
             self.error_handler.report_error(error)
 
     def execute_statement(self, statement) -> None:
+        # print("EXECUTING STATEMENT:", AbstractSyntaxTree(statement) if statement else 'NONE')
         statement.accept(self)
 
     def evaluate_expression(self, expression) -> RuntimeValue:
+        # print("   EVALUATING EXPRESSION:", AbstractSyntaxTree(expression) if expression else 'NONE')
         return expression.accept(self)
 
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
@@ -56,20 +58,6 @@ class Interpreter:
 
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
 
-    def visit_literal_expression(self, literal_expression) -> RuntimeValue:
-        return RuntimeOperators.get_runtime_value_for_literal_token(
-            token=literal_expression.value
-        )
-
-    def visit_group_expression(self, group_expression) -> RuntimeValue:
-        return self.evaluate_expression(group_expression.expression)
-
-    def visit_unary_expression(self, unary_expression) -> RuntimeValue:
-        return RuntimeOperators.get_runtime_value_for_unary_operator(
-            operator=unary_expression.operator,
-            operand=self.evaluate_expression(unary_expression.operand)
-        )
-
     def visit_binary_expression(self, binary_expression) -> RuntimeValue:
         return RuntimeOperators.get_runtime_value_for_binary_operator(
             left=self.evaluate_expression(binary_expression.left_operand),
@@ -77,5 +65,37 @@ class Interpreter:
             right=self.evaluate_expression(binary_expression.right_operand)
         )
 
+    def visit_group_expression(self, group_expression) -> RuntimeValue:
+        return self.evaluate_expression(group_expression.expression)
+
+    def visit_literal_expression(self, literal_expression) -> RuntimeValue:
+        return RuntimeOperators.get_runtime_value_for_literal_token(
+            token=literal_expression.value
+        )
+
+    def visit_unary_expression(self, unary_expression) -> RuntimeValue:
+        return RuntimeOperators.get_runtime_value_for_unary_operator(
+            operator=unary_expression.operator,
+            operand=self.evaluate_expression(unary_expression.operand)
+        )
+
+    def visit_assign_expression(self, assign_expression) -> RuntimeValue:
+        pass
+
     def visit_variable_expression(self, variable_expression) -> RuntimeValue:
         return self.environment.get(variable_expression.name)
+
+    def visit_call_expression(self, call_expression) -> RuntimeValue:
+        pass
+
+    def visit_get_expression(self, get_expression) -> RuntimeValue:
+        pass
+
+    def visit_this_expression(self, this_expression) -> RuntimeValue:
+        pass
+
+    def visit_set_expression(self, set_expression) -> RuntimeValue:
+        pass
+
+    def visit_super_expression(self, super_expression) -> RuntimeValue:
+        pass

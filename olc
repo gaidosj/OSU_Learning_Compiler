@@ -22,13 +22,14 @@ class Orchestrator:
 
         # if statements:
         interpreter = Interpreter()
-        interpreter.interpret(statements)
-
-        if False:
-            print("SOURCE CODE : ", code)
-            print("TOKENS      : ", tokens)
-            print("STATEMENTS  : ", *[str(AbstractSyntaxTree(st)) for st in statements])
-            print("ENVIRONMENT : ", *interpreter.environment.bindings)
+        try:
+            interpreter.interpret(statements)
+        except:
+            print("EXCEPTION:")
+            print("   SOURCE CODE : ", code)
+            print("   TOKENS      : ", *parser.tokens)
+            print("   STATEMENTS  : ", *[str(AbstractSyntaxTree(st)) for st in statements])
+            print("  ENVIRONMENT : ", *interpreter.environment.bindings)
 
     def interpret_file(self, filename):
         pass
