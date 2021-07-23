@@ -4,23 +4,32 @@ import sys
 from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
-
+from src.abstract_syntax_tree import AbstractSyntaxTree
 
 class Orchestrator:
-    def __init__(self):
-        self.lexer = Lexer()
-        self.parser = Parser()
-        self.interpreter = Interpreter()
+    # def __init__(self):
+    #     self.lexer = Lexer()
+    #     self.parser = Parser()
+    #     self.interpreter = Interpreter()
 
     def execute(self, code):
-        self.lexer.load_source_code(code)
-        self.lexer.process_source_code()
+        lexer = Lexer(code)
+        lexer.process_source_code()
+        tokens = lexer.get_tokens()
 
-        self.parser.tokens = self.lexer.tokens
-        ast = self.parser.parse()
+        parser = Parser(tokens)
+        statements = parser.parse()
 
-        if ast:
-            return self.interpreter.interpret(ast.root)
+        # if statements:
+        interpreter = Interpreter()
+        try:
+            interpreter.interpret(statements)
+        except:
+            print("EXCEPTION:")
+            print("   SOURCE CODE : ", code)
+            print("   TOKENS      : ", *parser.tokens)
+            print("   STATEMENTS  : ", *[str(AbstractSyntaxTree(st)) for st in statements])
+            print("  ENVIRONMENT : ", *interpreter.environment.bindings)
 
     def interpret_file(self, filename):
         pass
@@ -32,9 +41,7 @@ class Orchestrator:
                 line = input()
                 if line is None:
                     break
-                result = self.execute(line)
-                if result:
-                    print(result)
+                self.execute(line)
             except (EOFError, KeyboardInterrupt):
                 break
 

@@ -16,7 +16,6 @@ class LexerIntegrationTest(unittest.TestCase):
 
         for filename in test_programs:
 
-            # read OLC source code and convert to the list of tokens
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.olc'.format(filename))
             with open(full_name, 'r') as input_handle:
                 source_code = input_handle.read()
@@ -24,7 +23,6 @@ class LexerIntegrationTest(unittest.TestCase):
                 lexer.process_source_code()
                 token_string = lexer.get_tokens_as_string()
 
-            # read expected list of tokens
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.lex'.format(filename))
             with open(full_name, 'r') as input_handle:
                 expected_token_string = input_handle.read()

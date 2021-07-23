@@ -1,5 +1,8 @@
 from src.tokens import TokenType
 
+PRINT_STATEMENT_TOKENS = {TokenType.PRINT}
+VAR_STATEMENT_TOKENS = {TokenType.VAR}
+
 IGNORED_TOKENS = {
     TokenType.EOF,
     TokenType.EOL,
@@ -39,16 +42,23 @@ LITERAL_TOKENS = {
     TokenType.INT,
     TokenType.FLOAT,
     TokenType.STRING,
-    TokenType.IDENTIFIER,
     TokenType.BOOL,
     TokenType.NULL,
 }
 
-GROUP_OPENING = {
+IDENTIFIER_TOKENS = {
+    TokenType.IDENTIFIER
+}
+
+EQUALS_TOKENS = {
+    TokenType.EQUALS
+}
+
+GROUP_OPENING_TOKENS = {
     TokenType.LEFT_PAREN,
 }
 
-GROUP_CLOSING = {
+GROUP_CLOSING_TOKENS = {
     TokenType.RIGHT_PAREN,
 }
 
@@ -73,6 +83,4 @@ UNCLASSIFIED_TOKENS = {
     TokenType.AND,
     TokenType.XOR,
     TokenType.OR,
-    TokenType.NULL,
-    TokenType.BOOL,
 }
