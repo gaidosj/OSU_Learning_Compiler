@@ -99,20 +99,6 @@ class Parser:
         return self._assignment()
 
     def _assignment(self):
-        # expression = self._equality()
-        #
-        # if self._is_one_of_types(EQUALS_TOKENS):
-        #     equals = self._peek_prev()
-        #     value = self._assignment()
-        #
-        #     if isinstance(expression, Variable):
-        #         name = expression.name
-        #         return Assign(name, value)
-        #
-        #     raise ParseError(token=equals, message='Invalid assignment target.')
-        #
-        # return expression
-
         expression = self._equality()
         if not self._is_one_of_types(EQUALS_TOKENS):
             return expression

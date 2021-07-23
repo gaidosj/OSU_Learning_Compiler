@@ -83,7 +83,7 @@ class Interpreter:
     def visit_assign_expression(self, assign_expression) -> RuntimeValue:
         value = self.evaluate_expression(assign_expression.value)
         self.environment.assign(assign_expression.name, value)
-        return value;
+        return value
 
     def visit_variable_expression(self, variable_expression) -> RuntimeValue:
         return self.environment.get(variable_expression.name)
