@@ -2,6 +2,7 @@ from src.tokens import TokenOsu
 from src.ast_node_expression import ParserExpression, Variable
 from src.abstract_syntax_tree import AbstractSyntaxTree
 
+
 class ParserStatement:
     def __eq__(self, other):
         # TODO: Do we need deep compare here?

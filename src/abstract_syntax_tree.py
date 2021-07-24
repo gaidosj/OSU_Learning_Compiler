@@ -1,6 +1,3 @@
-from src.constants import AppType
-from src.logger import Logger as log
-
 class AbstractSyntaxTree:
     def __init__(self, ast_root):
         self.root = ast_root

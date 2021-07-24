@@ -1,8 +1,8 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
-from src.abstract_syntax_tree import AbstractSyntaxTree as AST
 from src.logger import Logger as log
+
 
 class Interpreter:
     def __init__(self):

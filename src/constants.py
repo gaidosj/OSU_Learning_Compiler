@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Color:
     BrightBlack = '\u001b[30;1m'
     BrightRed = '\u001b[31;1m'
@@ -10,6 +11,7 @@ class Color:
     BrightCyan = '\u001b[36;1m'
     BrightWhite = '\u001b[37;1m'
     Reset = '\u001b[0m'
+
 
 class AppType(Enum):
     AST = 'Abstract Syntax Tree class for storing / printing the AST'

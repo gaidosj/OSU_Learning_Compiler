@@ -64,7 +64,6 @@ class Parser:
             return self._parse_print_statement()
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
             return self._parse_block_statement()
-        print ('--- DEFAULT FROM:', self._peek())
         return self._parse_expression_statement()
 
     def _parse_var_statement(self) -> VarStatement:
