@@ -1,9 +1,13 @@
 from src.tokens import TokenOsu
+from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class ParserExpression:
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __str__(self):
+        return str(AbstractSyntaxTree(self))
 
 
 class Binary(ParserExpression):

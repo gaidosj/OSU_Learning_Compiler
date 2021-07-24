@@ -1,3 +1,5 @@
+from src.constants import AppType
+from src.logger import Logger as log
 from src.tokens import TokenType
 from src.error_handler import ErrorHandler, ParseError
 
@@ -9,6 +11,7 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, \
     VAR_STATEMENT_TOKENS, \
     PRINT_STATEMENT_TOKENS
 
@@ -28,6 +31,9 @@ class Parser:
         statement -> ExpressionStatement | PrintStatement
 
         """
+        source_tokens = ' '.join([str(token) for token in self.tokens])
+        log.info(AppType.PARSER, f'Tokens: {source_tokens}')
+
         statements = []
         try:
             while not self._end_of_code():
@@ -56,41 +62,55 @@ class Parser:
         """
         if self._is_one_of_types(PRINT_STATEMENT_TOKENS):
             return self._parse_print_statement()
-
+        if self._is_one_of_types(BLOCK_OPENING_TOKENS):
+            return self._parse_block_statement()
         return self._parse_expression_statement()
 
     def _parse_var_statement(self) -> VarStatement:
+        log.info(AppType.PARSER, 'Started parsing VarStatement')
         name = self._consume_or_raise(IDENTIFIER_TOKENS, 'Expect variable name')
         initializer = self._expression() if self._is_one_of_types(EQUALS_TOKENS) else None
         self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect statement terminator after value')
         return VarStatement(name, initializer)
 
     def _parse_expression_statement(self) -> ExpressionStatement:
+        log.info(AppType.PARSER, 'Started parsing ExpressionStatement')
         expression = self._expression()
         self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect statement terminator after expression')
         return ExpressionStatement(expression)
 
     def _parse_print_statement(self) -> PrintStatement:
+        log.info(AppType.PARSER, 'Started parsing PrintStatement')
         print_value = self._expression()
         self._consume_or_raise(STATEMENT_END_TOKENS, 'Expect statement terminator after value')
         return PrintStatement(print_value)
 
     def _parse_block_statement(self) -> BlockStatement:
-        pass
+        log.info(AppType.PARSER, 'Started parsing BlockStatement')
+        block_content = []
+        while self._peek() and not self._peek().token_type in BLOCK_CLOSING_TOKENS:
+            block_content.append(self._parse_declaring_statement())
+        self._consume_or_raise(BLOCK_CLOSING_TOKENS, 'Expect block closing symbol')
+        return BlockStatement(block_content)
 
     def _parse_if_statement(self) -> IfStatement:
+        log.info(AppType.PARSER, 'Started parsing IfStatement')
         pass
 
     def _parse_while_statement(self) -> WhileStatement:
+        log.info(AppType.PARSER, 'Started parsing WhileStatement')
         pass
 
     def _parse_function_statement(self) -> FunctionStatement:
+        log.info(AppType.PARSER, 'Started parsing FunctionStatement')
         pass
 
     def _parse_return_statmeent(self) -> ReturnStatement:
+        log.info(AppType.PARSER, 'Started parsing ReturnStatement')
         pass
 
     def _parse_class_statement(self) -> ClassStatement:
+        log.info(AppType.PARSER, 'Started parsing ClassStatement')
         pass
 
     # PARSING EXPRESSIONS -----------------------------------------------------------------------------
