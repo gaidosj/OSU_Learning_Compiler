@@ -1,9 +1,12 @@
+from src.constants import AppType
+from src.logger import Logger as log
+
 class AbstractSyntaxTree:
     def __init__(self, ast_root):
         self.root = ast_root
 
     def __str__(self):
-        return self.root.accept(self)
+        return self.root.accept(self) if self.root else ''
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -73,7 +76,8 @@ class AbstractSyntaxTree:
         )
 
     def visit_block_statement(self, block_statement):
-        return 'BLOCK\n[\n(wip)\n]'.format(
+        return 'BLOCK [{}] '.format(
+            ' '.join([statement.accept(self) for statement in block_statement.statements])
         )
 
     def visit_if_statement(self, if_statement):

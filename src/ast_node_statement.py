@@ -1,11 +1,14 @@
 from src.tokens import TokenOsu
 from src.ast_node_expression import ParserExpression, Variable
-
+from src.abstract_syntax_tree import AbstractSyntaxTree
 
 class ParserStatement:
     def __eq__(self, other):
         # TODO: Do we need deep compare here?
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __str__(self):
+        return str(AbstractSyntaxTree(self))
 
 
 class VarStatement(ParserStatement):

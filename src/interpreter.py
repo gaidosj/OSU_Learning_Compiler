@@ -1,7 +1,8 @@
+from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
-# from src.abstract_syntax_tree import AbstractSyntaxTree
-
+from src.abstract_syntax_tree import AbstractSyntaxTree as AST
+from src.logger import Logger as log
 
 class Interpreter:
     def __init__(self):
@@ -26,6 +27,7 @@ class Interpreter:
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
 
     def visit_var_statement(self, var_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_var_statement: {var_statement}')
         if var_statement.initializer:
             value = self.evaluate_expression(var_statement.initializer)
         else:
@@ -33,28 +35,43 @@ class Interpreter:
         self.environment.define(name=var_statement.name.lexeme, value=value)
 
     def visit_expression_statement(self, expression_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_expression_statement: {expression_statement}')
         self.evaluate_expression(expression_statement.expression)
 
     def visit_print_statement(self, print_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_print_statement: {print_statement}')
         print_value = self.evaluate_expression(print_statement.expression)
         print(print_value.value)
 
     def visit_block_statement(self, block_statement) -> None:
-        pass
+        log.info(AppType.INTERPRETER, f'visit_block_statement: {block_statement}')
+        previous_environment = self.environment
+        try:
+            self.environment = Environment(enclosing_environment=previous_environment)
+            for statement in block_statement.statements:
+                self.execute_statement(statement)
+        finally:
+            self.environment = previous_environment
+        log.info(AppType.INTERPRETER, f'finished visit_block_statement {block_statement}')
 
     def visit_if_statement(self, if_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_if_statement: {if_statement}')
         pass
 
     def visit_while_statement(self, while_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_while_statement: {while_statement}')
         pass
 
     def visit_function_statement(self, function_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_function_statement: {function_statement}')
         pass
 
     def visit_return_statement(self, return_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_return_statement: {return_statement}')
         pass
 
     def visit_class_statement(self, class_statement) -> None:
+        log.info(AppType.INTERPRETER, f'visit_class_statement: {class_statement}')
         pass
 
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
