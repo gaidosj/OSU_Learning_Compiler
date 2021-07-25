@@ -3,7 +3,7 @@ from src.logger import Logger as log
 from src.tokens import TokenType
 from src.error_handler import ErrorHandler, ParseError
 
-from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign
+from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign, Call
 
 from src.ast_node_statement import VarStatement, ExpressionStatement, PrintStatement, \
     BlockStatement, IfStatement, WhileStatement, FunctionStatement, ReturnStatement, \
@@ -179,13 +179,30 @@ class Parser:
     def _unary(self):
         """
         Acts on a single operand
-        Grammar: unary → ( "!" | "-" ) unary | primary ;
+        Grammar: unary → ( "!" | "-" ) unary | call ;
         """
         if self._is_one_of_types(UNARY_TOKENS):
             operator = self._peek_prev()
             right_side = self._unary()
             return Unary(operator, right_side)
-        return self._primary()
+        return self._call()
+
+    def _call(self):
+        """
+        A function call
+        Grammar:
+        call → primary ( "(" arguments? ")" )* ;
+        arguments → expression ( "," expression )* ;
+        """
+        expression = self._primary()
+
+        while True:
+            if self._is_one_of_types([TokenType.LEFT_PAREN]):
+                expression = self._function_call(expression)
+            else:
+                break
+
+        return expression
 
     def _primary(self):
         """
@@ -267,6 +284,19 @@ class Parser:
         if any([self._is_same_type(token_type) for token_type in token_types]):
             return self._next_token()
         raise ParseError(token=self._peek(), message=exception_description)
+
+    def _function_call(self, function):
+        arguments = []
+        if not self._is_same_type(TokenType.RIGHT_PAREN):
+            arguments.append(self._expression())
+            while self._is_one_of_types([TokenType.COMMA]):
+                arguments.append(self._expression())
+
+        closing_paren = self._consume_or_raise(
+            TokenType.RIGHT_PAREN,
+            'Expecting ")" after function arguments')
+
+        return Call(function, closing_paren, arguments)
 
     def _synchronize(self):
         """
