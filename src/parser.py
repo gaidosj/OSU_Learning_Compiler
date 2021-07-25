@@ -288,9 +288,6 @@ class Parser:
     def _function_call(self, function):
         """
         Gathers function and all arguments into a Call expression
-
-        Supports sequential function calls, such that a function that
-        is returned from another function can be immediately called
         """
         arguments = []
         if not self._is_same_type(TokenType.RIGHT_PAREN):
