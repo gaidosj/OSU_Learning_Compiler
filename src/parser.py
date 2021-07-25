@@ -285,6 +285,10 @@ class Parser:
             return self._next_token()
         raise ParseError(token=self._peek(), message=exception_description)
 
+    ## Calls a function
+    #
+    # test
+    # test2
     def _function_call(self, function):
         arguments = []
         if not self._is_same_type(TokenType.RIGHT_PAREN):
