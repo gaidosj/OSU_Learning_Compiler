@@ -2,7 +2,6 @@ import unittest
 from src.parser import Parser
 from src.tokens import TokenOsu, TokenType
 from src.ast_node_expression import Literal, Unary, Binary, Variable
-from src.abstract_syntax_tree import AbstractSyntaxTree
 from src.ast_node_statement import ExpressionStatement
 
 
