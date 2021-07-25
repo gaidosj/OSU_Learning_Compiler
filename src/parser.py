@@ -285,11 +285,13 @@ class Parser:
             return self._next_token()
         raise ParseError(token=self._peek(), message=exception_description)
 
-    ## Calls a function
-    #
-    # test
-    # test2
     def _function_call(self, function):
+        """
+        Gathers function and all arguments into a Call expression
+
+        Supports sequential function calls, such that a function that
+        is returned from another function can be immediately called
+        """
         arguments = []
         if not self._is_same_type(TokenType.RIGHT_PAREN):
             arguments.append(self._expression())
@@ -298,7 +300,7 @@ class Parser:
 
         closing_paren = self._consume_or_raise(
             TokenType.RIGHT_PAREN,
-            'Expecting ")" after function arguments')
+            'Expected closing paren ")" at end of function call')
 
         return Call(function, closing_paren, arguments)
 
