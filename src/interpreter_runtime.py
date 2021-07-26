@@ -225,7 +225,7 @@ class RuntimeOperators:
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
-    def _binary_reminder(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+    def _binary_remainder(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         """
         INT % INT -> INT
         """
