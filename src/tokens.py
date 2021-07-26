@@ -57,8 +57,10 @@ class TokenType(Enum):
     EQUALS = '='            # double with EQUALITY
     PLUS = '+'              # single
     MINUS = '-'             # single
-    ASTERISK = '*'          # single
+    ASTERISK = '*'          # double with EXPONENT
     DIV = '/'               # double with COMMENT
+    EXPONENT = '**'         # double with ASTERISK
+    REMAINDER = '%'         # single
 
     # Logic operators
     LT = '<'                # double with LTE
@@ -110,4 +112,3 @@ class TokenType(Enum):
     EOF = 'EOF'
     ERROR = 'ERROR'
     COMMENT = '//'          # double with DIV
-    BLOCK_COMMENT = '/*'

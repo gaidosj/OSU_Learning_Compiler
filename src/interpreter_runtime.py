@@ -48,7 +48,7 @@ class RuntimeValue:
             return False
         if self.data_type == RuntimeDataType.BOOL:
             return self.value
-        return True
+        return True if self.value else False
 
     def is_number(self):
         return self.data_type in (RuntimeDataType.INT, RuntimeDataType.FLOAT,)
@@ -112,12 +112,17 @@ class RuntimeOperators:
             TokenType.ASTERISK: RuntimeOperators._binary_asterisk,
             TokenType.DIV: RuntimeOperators._binary_div,
             TokenType.PLUS: RuntimeOperators._binary_plus,
+            TokenType.EXPONENT: RuntimeOperators._binary_exponent,
+            TokenType.REMAINDER: RuntimeOperators._binary_remainder,
             TokenType.GTE: RuntimeOperators._binary_gte,
             TokenType.GT: RuntimeOperators._binary_gt,
             TokenType.LTE: RuntimeOperators._binary_lte,
             TokenType.LT: RuntimeOperators._binary_lt,
             TokenType.EQUALITY: RuntimeOperators._binary_equality,
             TokenType.INEQUALITY: RuntimeOperators._binary_inequality,
+            TokenType.OR: RuntimeOperators._binary_logical_or,
+            TokenType.AND: RuntimeOperators._binary_logical_and,
+            TokenType.XOR: RuntimeOperators._binary_logical_xor,
         }
         if operator.token_type in BINARY_OPERATORS:
             return BINARY_OPERATORS[operator.token_type](left, operator, right)
@@ -210,6 +215,25 @@ class RuntimeOperators:
         raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
 
     @staticmethod
+    def _binary_exponent(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        """
+        INT ** INT -> INT
+        FLOAT ** INT -> FLOAT
+        """
+        if left.is_number() and right.is_int():
+            return RuntimeValue(left.value ** right.value, left.data_type)
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+
+    @staticmethod
+    def _binary_remainder(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        """
+        INT % INT -> INT
+        """
+        if left.is_int() and right.is_int():
+            return RuntimeValue(left.value % right.value, RuntimeDataType.INT)
+        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+
+    @staticmethod
     def _compare_helper(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue, comparator):
         """
         Strings can only be compared with strings. Numbers and bools can be compared among themselves
@@ -243,6 +267,20 @@ class RuntimeOperators:
     @staticmethod
     def _binary_inequality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
         return RuntimeValue(not left.is_strictly_equal(right), RuntimeDataType.BOOL)
+
+    @staticmethod
+    def _binary_logical_or(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        return RuntimeValue(left.is_truthy() or right.is_truthy(), RuntimeDataType.BOOL)
+
+    @staticmethod
+    def _binary_logical_and(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        return RuntimeValue(left.is_truthy() and right.is_truthy(), RuntimeDataType.BOOL)
+
+    @staticmethod
+    def _binary_logical_xor(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        a = left.is_truthy()
+        b = right.is_truthy()
+        return RuntimeValue(a and not b or not a and b, RuntimeDataType.BOOL)
 
 
 class Environment:

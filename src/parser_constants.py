@@ -9,7 +9,6 @@ IGNORED_TOKENS = {
     TokenType.EOL,
     TokenType.ERROR,
     TokenType.COMMENT,
-    TokenType.BLOCK_COMMENT,
 }
 
 EQUALITY_TOKENS = {
@@ -32,6 +31,7 @@ TERM_TOKENS = {
 FACTOR_TOKENS = {
     TokenType.ASTERISK,
     TokenType.DIV,
+    TokenType.REMAINDER,
 }
 
 UNARY_TOKENS = {
@@ -83,13 +83,4 @@ STATEMENT_START_TOKENS = {
     TokenType.WHILE,
     TokenType.PRINT,
     TokenType.RETURN,
-}
-
-# TODO: Classify and / or implement later
-UNCLASSIFIED_TOKENS = {
-    'exponent **',
-    'mod %',
-    TokenType.AND,
-    TokenType.XOR,
-    TokenType.OR,
 }
