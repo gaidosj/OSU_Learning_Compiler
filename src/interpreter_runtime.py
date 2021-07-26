@@ -69,7 +69,7 @@ class RuntimeValue:
         return self.data_type in (RuntimeDataType.NULL,)
 
 
-class InterpreterOperators:
+class RuntimeOperators:
     """
     Collection of methods implementing behavior of operators on RuntimeValue objects
     """
@@ -95,8 +95,8 @@ class InterpreterOperators:
         Return RuntimeValue object for a unary operator
         """
         UNARY_OPERATORS = {
-            TokenType.MINUS: InterpreterOperators._unary_minus,
-            TokenType.NOT: InterpreterOperators._unary_not,
+            TokenType.MINUS: RuntimeOperators._unary_minus,
+            TokenType.NOT: RuntimeOperators._unary_not,
         }
         if operator.token_type in UNARY_OPERATORS:
             return UNARY_OPERATORS[operator.token_type](operator, operand)
@@ -108,21 +108,21 @@ class InterpreterOperators:
         Return RuntimeValue object for a binary operator
         """
         BINARY_OPERATORS = {
-            TokenType.MINUS: InterpreterOperators._binary_minus,
-            TokenType.ASTERISK: InterpreterOperators._binary_asterisk,
-            TokenType.DIV: InterpreterOperators._binary_div,
-            TokenType.PLUS: InterpreterOperators._binary_plus,
-            TokenType.EXPONENT: InterpreterOperators._binary_exponent,
-            TokenType.REMAINDER: InterpreterOperators._binary_remainder,
-            TokenType.GTE: InterpreterOperators._binary_gte,
-            TokenType.GT: InterpreterOperators._binary_gt,
-            TokenType.LTE: InterpreterOperators._binary_lte,
-            TokenType.LT: InterpreterOperators._binary_lt,
-            TokenType.EQUALITY: InterpreterOperators._binary_equality,
-            TokenType.INEQUALITY: InterpreterOperators._binary_inequality,
-            TokenType.OR: InterpreterOperators._binary_logical_or,
-            TokenType.AND: InterpreterOperators._binary_logical_and,
-            TokenType.XOR: InterpreterOperators._binary_logical_xor,
+            TokenType.MINUS: RuntimeOperators._binary_minus,
+            TokenType.ASTERISK: RuntimeOperators._binary_asterisk,
+            TokenType.DIV: RuntimeOperators._binary_div,
+            TokenType.PLUS: RuntimeOperators._binary_plus,
+            TokenType.EXPONENT: RuntimeOperators._binary_exponent,
+            TokenType.REMAINDER: RuntimeOperators._binary_remainder,
+            TokenType.GTE: RuntimeOperators._binary_gte,
+            TokenType.GT: RuntimeOperators._binary_gt,
+            TokenType.LTE: RuntimeOperators._binary_lte,
+            TokenType.LT: RuntimeOperators._binary_lt,
+            TokenType.EQUALITY: RuntimeOperators._binary_equality,
+            TokenType.INEQUALITY: RuntimeOperators._binary_inequality,
+            TokenType.OR: RuntimeOperators._binary_logical_or,
+            TokenType.AND: RuntimeOperators._binary_logical_and,
+            TokenType.XOR: RuntimeOperators._binary_logical_xor,
         }
         if operator.token_type in BINARY_OPERATORS:
             return BINARY_OPERATORS[operator.token_type](left, operator, right)
@@ -246,19 +246,19 @@ class InterpreterOperators:
 
     @staticmethod
     def _binary_gte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return InterpreterOperators._compare_helper(left, operator, right, lambda left, right: left >= right)
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left >= right)
 
     @staticmethod
     def _binary_gt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return InterpreterOperators._compare_helper(left, operator, right, lambda left, right: left > right)
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left > right)
 
     @staticmethod
     def _binary_lte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return InterpreterOperators._compare_helper(left, operator, right, lambda left, right: left <= right)
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left <= right)
 
     @staticmethod
     def _binary_lt(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return InterpreterOperators._compare_helper(left, operator, right, lambda left, right: left < right)
+        return RuntimeOperators._compare_helper(left, operator, right, lambda left, right: left < right)
 
     @staticmethod
     def _binary_equality(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):

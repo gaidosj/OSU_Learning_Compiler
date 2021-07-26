@@ -1,7 +1,6 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
-from src.interpreter_runtime import RuntimeValue, RuntimeDataType, Environment
-from src.interpreter_operators import InterpreterOperators
+from src.interpreter_runtime import RuntimeValue, RuntimeDataType, Environment, RuntimeOperators
 from src.logger import Logger as log
 
 
@@ -78,7 +77,7 @@ class Interpreter:
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
 
     def visit_binary_expression(self, binary_expression) -> RuntimeValue:
-        return InterpreterOperators.get_runtime_value_for_binary_operator(
+        return RuntimeOperators.get_runtime_value_for_binary_operator(
             left=self.evaluate_expression(binary_expression.left_operand),
             operator=binary_expression.operator,
             right=self.evaluate_expression(binary_expression.right_operand)
@@ -88,12 +87,12 @@ class Interpreter:
         return self.evaluate_expression(group_expression.expression)
 
     def visit_literal_expression(self, literal_expression) -> RuntimeValue:
-        return InterpreterOperators.get_runtime_value_for_literal_token(
+        return RuntimeOperators.get_runtime_value_for_literal_token(
             token=literal_expression.value
         )
 
     def visit_unary_expression(self, unary_expression) -> RuntimeValue:
-        return InterpreterOperators.get_runtime_value_for_unary_operator(
+        return RuntimeOperators.get_runtime_value_for_unary_operator(
             operator=unary_expression.operator,
             operand=self.evaluate_expression(unary_expression.operand)
         )
