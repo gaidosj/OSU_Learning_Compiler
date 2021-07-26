@@ -29,12 +29,13 @@ SINGLE_TOKENS = {
     '-': TokenType.MINUS,
     '+': TokenType.PLUS,
     ';': TokenType.SEMICOLON,
-    '*': TokenType.ASTERISK,
     '^': TokenType.NOT,
     '\n': TokenType.EOL,
+    '%': TokenType.REMAINDER
 }
 
 DOUBLE_TOKENS = {
+    '*': {'match': '*', 'yes': TokenType.EXPONENT, 'no': TokenType.ASTERISK},
     '=': {'match': '=', 'yes': TokenType.EQUALITY, 'no': TokenType.EQUALS},
     '!': {'match': '=', 'yes': TokenType.INEQUALITY, 'no': TokenType.NOT},
     '>': {'match': '=', 'yes': TokenType.GTE, 'no': TokenType.GT},

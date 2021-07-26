@@ -119,7 +119,7 @@ class Parser:
         return self._assignment()
 
     def _assignment(self):
-        expression = self._equality()
+        expression = self._logic_or()
         if not self._is_one_of_types(EQUALS_TOKENS):
             return expression
 
@@ -129,6 +129,30 @@ class Parser:
         name = expression.name
         value = self._assignment()
         return Assign(name, value)
+
+    def _logic_or(self):
+        left_side = self._logic_xor()
+        while self._is_one_of_types({TokenType.OR}):
+            operator = self._peek_prev()
+            right_side = self._logic_xor()
+            left_side = Binary(left_side, operator, right_side)
+        return left_side
+
+    def _logic_xor(self):
+        left_side = self._logic_and()
+        while self._is_one_of_types({TokenType.XOR}):
+            operator = self._peek_prev()
+            right_side = self._logic_and()
+            left_side = Binary(left_side, operator, right_side)
+        return left_side
+
+    def _logic_and(self):
+        left_side = self._equality()
+        while self._is_one_of_types({TokenType.AND}):
+            operator = self._peek_prev()
+            right_side = self._equality()
+            left_side = Binary(left_side, operator, right_side)
+        return left_side
 
     def _equality(self):
         """
@@ -169,8 +193,19 @@ class Parser:
         """
         Multiplies or divides operands
         """
-        left_side = self._unary()
+        left_side = self._exponent()
         while self._is_one_of_types(FACTOR_TOKENS):
+            operator = self._peek_prev()
+            right_side = self._exponent()
+            left_side = Binary(left_side, operator, right_side)
+        return left_side
+
+    def _exponent(self):
+        """
+        Exponentiation
+        """
+        left_side = self._unary()
+        while self._is_one_of_types({TokenType.EXPONENT}):
             operator = self._peek_prev()
             right_side = self._unary()
             left_side = Binary(left_side, operator, right_side)
