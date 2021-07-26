@@ -1,6 +1,6 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
-from src.interpreter_runtime import RuntimeValue, RuntimeDataType, Environment, RuntimeOperators
+from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
 
 
