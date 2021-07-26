@@ -2,7 +2,7 @@ from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
-from src.abstract_syntax_tree import AbstractSyntaxTree
+
 
 class Interpreter:
     def __init__(self):
@@ -17,6 +17,7 @@ class Interpreter:
             self.error_handler.report_error(error)
 
     def execute_statement(self, statement) -> None:
+        # from src.abstract_syntax_tree import AbstractSyntaxTree
         # print("EXECUTING STATEMENT:", AbstractSyntaxTree(statement) if statement else 'NONE')
         statement.accept(self)
 
