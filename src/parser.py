@@ -11,9 +11,7 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
-    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, \
-    VAR_STATEMENT_TOKENS, \
-    PRINT_STATEMENT_TOKENS
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS
 
 
 class Parser:
@@ -37,30 +35,37 @@ class Parser:
         statements = []
         try:
             while not self._end_of_code():
-                statements.append(self._parse_declaring_statement())
+                statements.append(self._parse_statement())
         except ParseError as error:
             self.error_handler.report_error(error)  # TODO: refactor for the right place?
         return statements
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
 
+    def _parse_statement(self):
+        try:
+            return self._parse_declaring_statement()
+        except ParseError:
+            self._synchronize()
+            # TODO: Raise exception again?
+
     def _parse_declaring_statement(self):
         """
         Find next declaring statmemt and return its AST
         """
-        try:
-            if self._is_one_of_types(VAR_STATEMENT_TOKENS):
-                return self._parse_var_statement()
-            return self._parse_nondeclaring_statement()
-        except ParseError:
-            self._synchronize()
-            # TODO: Raise exception again?
+        if self._is_one_of_types(VAR_STATEMENT_TOKENS):
+            return self._parse_var_statement()
+        return self._parse_nondeclaring_statement()
 
     def _parse_nondeclaring_statement(self):
         """
         Find next non-declaring statmemt and return its AST
         """
-        if self._is_one_of_types(PRINT_STATEMENT_TOKENS):
+        if self._is_one_of_types({TokenType.IF}):
+            return self._parse_if_statement()
+        if self._is_one_of_types({TokenType.WHILE}):
+            return self._parse_while_statement()
+        if self._is_one_of_types({TokenType.PRINT}):
             return self._parse_print_statement()
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
             return self._parse_block_statement()
@@ -89,17 +94,28 @@ class Parser:
         log.info(AppType.PARSER, 'Started parsing BlockStatement')
         block_content = []
         while self._peek() and not self._peek().token_type in BLOCK_CLOSING_TOKENS:
-            block_content.append(self._parse_declaring_statement())
+            block_content.append(self._parse_statement())
         self._consume_or_raise(BLOCK_CLOSING_TOKENS, 'Expect block closing symbol')
         return BlockStatement(block_content)
 
     def _parse_if_statement(self) -> IfStatement:
         log.info(AppType.PARSER, 'Started parsing IfStatement')
-        pass
+        self._consume_or_raise({TokenType.LEFT_PAREN}, "Expect ( after 'if'")
+        condition = self._expression()
+        self._consume_or_raise({TokenType.RIGHT_PAREN}, "Expect ) after 'if' condition")
+
+        then_branch = self._parse_statement()
+        else_branch = self._parse_statement() if self._is_one_of_types({TokenType.ELSE}) else None
+        return IfStatement(condition, then_branch, else_branch)
 
     def _parse_while_statement(self) -> WhileStatement:
         log.info(AppType.PARSER, 'Started parsing WhileStatement')
-        pass
+        self._consume_or_raise({TokenType.LEFT_PAREN}, "Expect ( after 'while'")
+        condition = self._expression()
+        self._consume_or_raise({TokenType.RIGHT_PAREN}, "Expect ) after 'while' condition")
+
+        loop_body = self._parse_statement()
+        return WhileStatement(condition, loop_body)
 
     def _parse_function_statement(self) -> FunctionStatement:
         log.info(AppType.PARSER, 'Started parsing FunctionStatement')

@@ -1,7 +1,8 @@
 from src.tokens import TokenType
 
-PRINT_STATEMENT_TOKENS = {TokenType.PRINT}
-VAR_STATEMENT_TOKENS = {TokenType.VAR}
+VAR_STATEMENT_TOKENS = {
+    TokenType.VAR
+}
 
 IGNORED_TOKENS = {
     TokenType.EOF,

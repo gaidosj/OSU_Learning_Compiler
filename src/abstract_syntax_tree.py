@@ -78,14 +78,18 @@ class AbstractSyntaxTree:
         )
 
     def visit_if_statement(self, if_statement):
-        return 'IF {}\n  THEN {}\n  ELSE {}'.format(
+        out = 'IF [{}] THEN [{}]'.format(
             if_statement.condition.accept(self),
             if_statement.then_branch.accept(self),
-            if_statement.else_branch.accept(self),
         )
+        if if_statement.else_branch:
+            out += ' ELSE [{}]'.format(
+                if_statement.else_branch.accept(self),
+            )
+        return out
 
     def visit_while_statement(self, while_statement):
-        return 'WHILE {}\n[\n{}\n]'.format(
+        return 'WHILE [{}] DO [{}]'.format(
             while_statement.condition.accept(self),
             while_statement.body.accept(self),
         )
