@@ -120,8 +120,8 @@ class RuntimeOperators:
             TokenType.LT: RuntimeOperators._binary_lt,
             TokenType.EQUALITY: RuntimeOperators._binary_equality,
             TokenType.INEQUALITY: RuntimeOperators._binary_inequality,
-            TokenType.OR: RuntimeOperators._binary_logical_or,
-            TokenType.AND: RuntimeOperators._binary_logical_and,
+            TokenType.OR: RuntimeOperators._binary_logical_and_or,
+            TokenType.AND: RuntimeOperators._binary_logical_and_or,
             TokenType.XOR: RuntimeOperators._binary_logical_xor,
         }
         if operator.token_type in BINARY_OPERATORS:
@@ -134,7 +134,7 @@ class RuntimeOperators:
     def _unary_minus(operator: TokenOsu, operand: RuntimeValue):
         if operand.is_number():
             return RuntimeValue(-operand.value, operand.data_type)
-        raise InterpretError(token=operator, mesage='Minus operator is only implemented for numbers')
+        raise InterpretError(token=operator, message='Minus operator is only implemented for numbers')
 
     @staticmethod
     def _unary_not(operator: TokenOsu, operand: RuntimeValue):
@@ -156,7 +156,7 @@ class RuntimeOperators:
             return RuntimeValue(left.value - right.value, RuntimeDataType.FLOAT)
         if left.is_int() and right.is_bool():
             return RuntimeValue(left.value - right.value, RuntimeDataType.INT)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_asterisk(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -175,7 +175,7 @@ class RuntimeOperators:
             return RuntimeValue(left.value * right.value, RuntimeDataType.INT)
         if left.is_number() and right.is_number():
             return RuntimeValue(left.value * right.value, RuntimeDataType.FLOAT)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_div(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -187,15 +187,15 @@ class RuntimeOperators:
             try:
                 return RuntimeValue(left.value // right.value, RuntimeDataType.INT)
             except Exception:
-                raise InterpretError(token=operator, mesage='Invalid operands for the division')
+                raise InterpretError(token=operator, message='Invalid operands for the division')
 
         if left.is_number() and right.is_number():
             try:
                 return RuntimeValue(left.value / right.value, RuntimeDataType.FLOAT)
             except Exception:
-                raise InterpretError(token=operator, mesage='Invalid operands for the division')
+                raise InterpretError(token=operator, message='Invalid operands for the division')
 
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_plus(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -212,7 +212,7 @@ class RuntimeOperators:
             return RuntimeValue(left.value + right.value, RuntimeDataType.FLOAT)
         if left.is_int() and right.is_bool():
             return RuntimeValue(left.value + right.value, RuntimeDataType.INT)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_exponent(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -222,7 +222,7 @@ class RuntimeOperators:
         """
         if left.is_number() and right.is_int():
             return RuntimeValue(left.value ** right.value, left.data_type)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_remainder(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -231,7 +231,7 @@ class RuntimeOperators:
         """
         if left.is_int() and right.is_int():
             return RuntimeValue(left.value % right.value, RuntimeDataType.INT)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _compare_helper(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue, comparator):
@@ -242,7 +242,7 @@ class RuntimeOperators:
             return RuntimeValue(comparator(left.value, right.value), RuntimeDataType.BOOL)
         if (left.is_number() or left.is_bool()) and (right.is_number() or right.is_bool()):
             return RuntimeValue(comparator(left.value, right.value), RuntimeDataType.BOOL)
-        raise InterpretError(token=operator, mesage='Not implemented for given datatypes')
+        raise InterpretError(token=operator, message='Not implemented for given datatypes')
 
     @staticmethod
     def _binary_gte(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
@@ -269,12 +269,12 @@ class RuntimeOperators:
         return RuntimeValue(not left.is_strictly_equal(right), RuntimeDataType.BOOL)
 
     @staticmethod
-    def _binary_logical_or(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.is_truthy() or right.is_truthy(), RuntimeDataType.BOOL)
-
-    @staticmethod
-    def _binary_logical_and(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
-        return RuntimeValue(left.is_truthy() and right.is_truthy(), RuntimeDataType.BOOL)
+    def _binary_logical_and_or(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
+        """
+        Logical AND and OR evaluation are short-circuited. This is done in the interpreter's visitor method
+        At this point left_operand has already evaluated to TRUE for logical AND and to FALSE for logical OR
+        """
+        return RuntimeValue(right.is_truthy(), RuntimeDataType.BOOL)
 
     @staticmethod
     def _binary_logical_xor(left: RuntimeValue, operator: TokenOsu, right: RuntimeValue):
