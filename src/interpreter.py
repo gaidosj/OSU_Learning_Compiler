@@ -82,21 +82,21 @@ class Interpreter:
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
 
     def visit_binary_expression(self, binary_expression) -> RuntimeValue:
-        left_operand = self.evaluate_expression(binary_expression.left_operand)
+        left = self.evaluate_expression(binary_expression.left_operand)
         operator = binary_expression.operator
 
         # short-circuit of the logical AND operator
-        if operator.token_type == TokenType.AND and not left_operand.is_truthy():
-            log.info(AppType.INTERPRETER, 'Logical AND short-circuited. Returning FALSE')
+        if operator.token_type == TokenType.AND and not left.is_truthy():
+            log.info(AppType.INTERPRETER, 'Logical AND evaluation short-circuited. Returning FALSE')
             return RuntimeValue(False, RuntimeDataType.BOOL)
 
         # short-circuit of the logical OR operator
-        if operator.token_type == TokenType.OR and left_operand.is_truthy():
-            log.info(AppType.INTERPRETER, 'Logical OR short-circuited. Returning TRUE')
+        if operator.token_type == TokenType.OR and left.is_truthy():
+            log.info(AppType.INTERPRETER, 'Logical OR evaluation short-circuited. Returning TRUE')
             return RuntimeValue(True, RuntimeDataType.BOOL)
 
         return RuntimeOperators.get_runtime_value_for_binary_operator(
-            left=left_operand,
+            left=left,
             operator=operator,
             right=self.evaluate_expression(binary_expression.right_operand)
         )
