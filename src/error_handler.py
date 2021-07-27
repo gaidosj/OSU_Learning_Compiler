@@ -1,37 +1,37 @@
 from sys import stderr
+from src.logger import Logger as log
+from src.constants import AppType
 
 
 class ErrorHandler:
-    def __init__(self, output=stderr):
-        self.output = output
+    def __init__(self):
+        self.errors = []
+
+    def has_errors(self):
+        return len(self.errors) > 0
 
     def report_error(self, error):
-        if type(error) == type(ParseError):
-            self.output.write(
-                "Parse error on line "
-                + error.token.source_file_line_number
-                + " for token type "
-                + error.token.type
-                + " literal "
-                + error.token.literal
-                + " lexeme "
-                + error.token.lexeme
-                + ": "
-                + error.message
-            )
-        elif type(error) == type(InterpretError):
-            self.output.write(
-                "Runtime error on line "
-                + error.token.source_file_line_number
-                + " for token type "
-                + error.token.type
-                + " literal "
-                + error.token.literal
-                + " lexeme "
-                + error.token.lexeme
-                + ": "
-                + error.message
-            )
+        self.errors.append(error)
+
+    def log_errors(self):
+        for error in self.errors:
+            print('ERROR:', error.token, '\n\n')
+            # if isinstance(error, ParseError):
+            #     message = "Parse error on line {} for token {}: {}".format(
+            #         error.token.source_file_line_number,
+            #         error.token,
+            #         error.message,
+            #     )
+            #     log.info(AppType.PARSER, message)
+            # elif isinstance(error, InterpretError):
+            #     message = "Runtime error on line {} for token {}: {}".format(
+            #         error.token.source_file_line_number,
+            #         error.token,
+            #         error.message,
+            #     )
+            #     log.info(AppType.INTERPRETER, message)
+            # else:
+            #     log.info(AppType.INTERPRETER, f'generic exception {error}')
 
 
 class ParseError(Exception):

@@ -19,25 +19,19 @@ class Parser:
         self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS] if tokens else []
         self.index = 0
         self.error_handler = ErrorHandler()
+        self.with_errors = False
 
     def parse(self):
         """
         Parse a list of tokens and return a list of statemeent
         Each statement is an abstract syntax tree
-        Grammar:
-        declaration -> VarStatement | statement
-        statement -> ExpressionStatement | PrintStatement
-
         """
         source_tokens = ' '.join([str(token) for token in self.tokens])
         log.info(AppType.PARSER, f'Tokens: {source_tokens}')
 
         statements = []
-        try:
-            while not self._end_of_code():
-                statements.append(self._parse_statement())
-        except ParseError as error:
-            self.error_handler.report_error(error)  # TODO: refactor for the right place?
+        while not self._end_of_code():
+            statements.append(self._parse_statement())
         return statements
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
@@ -45,13 +39,15 @@ class Parser:
     def _parse_statement(self):
         try:
             return self._parse_declaring_statement()
-        except ParseError:
+        except ParseError as error:
+            self.with_errors = True
+            self.error_handler.report_error(error)
             self._synchronize()
-            # TODO: Raise exception again?
 
     def _parse_declaring_statement(self):
         """
-        Find next declaring statmemt and return its AST
+        Find next declaring statememt and return its AST
+        (VAR, FUNCTION and CLASS are declaring statements)
         """
         if self._is_one_of_types(VAR_STATEMENT_TOKENS):
             return self._parse_var_statement()
@@ -59,7 +55,8 @@ class Parser:
 
     def _parse_nondeclaring_statement(self):
         """
-        Find next non-declaring statmemt and return its AST
+        Find next non-declaring statememt and return its AST
+        (IF, WHILE, PRINT, BLOCK are non-declaring statements)
         """
         if self._is_one_of_types({TokenType.IF}):
             return self._parse_if_statement()

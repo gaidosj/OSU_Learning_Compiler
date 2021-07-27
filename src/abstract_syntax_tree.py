@@ -100,5 +100,5 @@ class AbstractSyntaxTree:
     def visit_return_statement(self, return_statement):
         pass
 
-    def visit_class_stateement(self, class_statement):
+    def visit_class_statement(self, class_statement):
         pass
