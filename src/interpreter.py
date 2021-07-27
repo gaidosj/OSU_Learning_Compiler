@@ -17,6 +17,7 @@ class Interpreter:
             self.error_handler.report_error(error)
 
     def execute_statement(self, statement) -> None:
+        # from src.abstract_syntax_tree import AbstractSyntaxTree
         # print("EXECUTING STATEMENT:", AbstractSyntaxTree(statement) if statement else 'NONE')
         statement.accept(self)
 
@@ -56,11 +57,15 @@ class Interpreter:
 
     def visit_if_statement(self, if_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_if_statement: {if_statement}')
-        pass
+        if self.evaluate_expression(if_statement.condition).is_truthy():
+            self.execute_statement(if_statement.then_branch)
+        elif if_statement.else_branch:
+            self.execute_statement(if_statement.else_branch)
 
     def visit_while_statement(self, while_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_while_statement: {while_statement}')
-        pass
+        while self.evaluate_expression(while_statement.condition).is_truthy():
+            self.execute_statement(while_statement.body)
 
     def visit_function_statement(self, function_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_function_statement: {function_statement}')

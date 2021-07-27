@@ -14,6 +14,8 @@ class TokenTestCase(unittest.TestCase):
             (TokenOsu(TokenType.MINUS, '-'), "MINUS '-'"),
             (TokenOsu(TokenType.ASTERISK, '*'), "ASTERISK '*'"),
             (TokenOsu(TokenType.DIV, '/'), "DIV '/'"),
+            (TokenOsu(TokenType.EXPONENT, '**'), "EXPONENT '**'"),
+            (TokenOsu(TokenType.REMAINDER, '%'), "REMAINDER '%'"),
 
             (TokenOsu(TokenType.LT, '<'), "LT '<'"),
             (TokenOsu(TokenType.LTE, '<='), "LTE '<='"),
@@ -69,7 +71,6 @@ class TokenTestCase(unittest.TestCase):
             (TokenOsu(TokenType.EOF, ''), "EOF"),
             (TokenOsu(TokenType.ERROR, ''), "ERROR ''"),
             (TokenOsu(TokenType.COMMENT, '// my comment'), "COMMENT '// my comment'"),
-            (TokenOsu(TokenType.BLOCK_COMMENT, '/* block cmnt */'), "BLOCK_COMMENT '/* block cmnt */'"),
         )
         for token, expected_string_representation in test_cases:
             self.assertEqual('{}'.format(token), expected_string_representation)
