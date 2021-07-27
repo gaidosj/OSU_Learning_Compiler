@@ -347,7 +347,7 @@ class Parser:
                 if len(arguments) > 255:
                     self.error_handler.report_error(ParseError(
                         self._peek(), 'Too many function arguments, max is 255'))
-                arguments.append(self._expression())qq
+                arguments.append(self._expression())
 
         closing_paren = self._consume_or_raise(
             TokenType.RIGHT_PAREN,
