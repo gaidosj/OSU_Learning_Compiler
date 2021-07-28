@@ -2,7 +2,6 @@ import unittest
 import os
 from src.lexer import Lexer
 from src.parser import Parser
-from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class ParserIntegrationTest(unittest.TestCase):
@@ -23,21 +22,15 @@ class ParserIntegrationTest(unittest.TestCase):
                 source_code = input_handle.read()
 
                 lexer = Lexer(source_code)
-                lexer.process_source_code()
-                tokens = lexer.get_tokens()
+                tokens = lexer.scan()
 
                 parser = Parser(tokens)
-                actual_parsed_code = '\n'.join(
-                    [str(AbstractSyntaxTree(statement)) for statement in parser.parse()]
-                ) + '\n'
+                actual_parsed_code = '\n'.join([str(statement) for statement in parser.parse()]) + '\n'
 
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.ast'.format(filename))
             with open(full_name, 'r') as input_handle:
                 expected_parsed_code = input_handle.read()
 
-            # print(source_code)
-            # print(tokens)
-            # print(actual_parsed_code)
             self.assertEqual(expected_parsed_code, actual_parsed_code)
 
 

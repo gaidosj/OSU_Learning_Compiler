@@ -16,42 +16,47 @@ from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS
 
 class Parser:
     def __init__(self, tokens=None):
+        self.upload_tokens(tokens)
+
+    def upload_tokens(self, tokens):
         self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS] if tokens else []
+        # TODO: May need deep copy to avoid side effects
         self.index = 0
         self.error_handler = ErrorHandler()
+        self.statements = []
 
-    def parse(self):
+    def get_statements(self):
+        return self.statements
+
+    def parse(self, tokens=None):
         """
         Parse a list of tokens and return a list of statemeent
         Each statement is an abstract syntax tree
-        Grammar:
-        declaration -> VarStatement | statement
-        statement -> ExpressionStatement | PrintStatement
-
         """
+        if tokens:
+            self.upload_tokens(tokens)
+
         source_tokens = ' '.join([str(token) for token in self.tokens])
         log.info(AppType.PARSER, f'Tokens: {source_tokens}')
 
-        statements = []
-        try:
-            while not self._end_of_code():
-                statements.append(self._parse_statement())
-        except ParseError as error:
-            self.error_handler.report_error(error)  # TODO: refactor for the right place?
-        return statements
+        self.statements = []
+        while not self._end_of_code():
+            self.statements.append(self._parse_statement())
+        return self.statements
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
 
     def _parse_statement(self):
         try:
             return self._parse_declaring_statement()
-        except ParseError:
+        except ParseError as error:
+            self.error_handler.add_error(error)
             self._synchronize()
-            # TODO: Raise exception again?
 
     def _parse_declaring_statement(self):
         """
-        Find next declaring statmemt and return its AST
+        Find next declaring statememt and return its AST
+        (VAR, FUNCTION and CLASS are declaring statements)
         """
         if self._is_one_of_types(VAR_STATEMENT_TOKENS):
             return self._parse_var_statement()
@@ -59,7 +64,8 @@ class Parser:
 
     def _parse_nondeclaring_statement(self):
         """
-        Find next non-declaring statmemt and return its AST
+        Find next non-declaring statememt and return its AST
+        (IF, WHILE, PRINT, BLOCK are non-declaring statements)
         """
         if self._is_one_of_types({TokenType.IF}):
             return self._parse_if_statement()
@@ -92,10 +98,18 @@ class Parser:
 
     def _parse_block_statement(self) -> BlockStatement:
         log.info(AppType.PARSER, 'Started parsing BlockStatement')
+        block_start_token = self._peek()
         block_content = []
         while self._peek() and not self._peek().token_type in BLOCK_CLOSING_TOKENS:
-            block_content.append(self._parse_statement())
-        self._consume_or_raise(BLOCK_CLOSING_TOKENS, 'Expect block closing symbol')
+            try:
+                block_content.append(self._parse_statement())
+            except ParseError as error:
+                self.error_handler.add_error(error)
+                self._synchronize()
+        self._consume_or_raise(
+            BLOCK_CLOSING_TOKENS,
+            f'Expect block closing symbol for block started on line {block_start_token.source_file_line_number}',
+        )
         return BlockStatement(block_content)
 
     def _parse_if_statement(self) -> IfStatement:

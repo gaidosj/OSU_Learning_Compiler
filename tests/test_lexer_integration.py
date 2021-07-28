@@ -20,7 +20,7 @@ class LexerIntegrationTest(unittest.TestCase):
             with open(full_name, 'r') as input_handle:
                 source_code = input_handle.read()
                 lexer = Lexer(source_code)
-                lexer.process_source_code()
+                lexer.scan()
                 token_string = lexer.get_tokens_as_string()
 
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.lex'.format(filename))
