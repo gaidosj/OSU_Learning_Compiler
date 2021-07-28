@@ -10,14 +10,15 @@ class Interpreter:
         self.upload_statements(statements)
 
     def upload_statements(self, statements):
-        self.statements = statements or []  # TODO: May need deep copy to avoid side effects
+        self.statements = statements or []
+        # TODO: May need deep copy to avoid side effects
         self.environment = Environment()
         self.error_handler = ErrorHandler()
 
-    def get_statements(self):
-        return self.statements
+    def interpret(self, statements=None):
+        if statements:
+            self.upload_statements(statements)
 
-    def interpret(self, statements):
         try:
             for statement in statements:
                 self.execute_statement(statement)

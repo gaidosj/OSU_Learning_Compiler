@@ -23,21 +23,26 @@ class Parser:
         # TODO: May need deep copy to avoid side effects
         self.index = 0
         self.error_handler = ErrorHandler()
+        self.statements = []
 
     def get_statements(self):
         return self.statements
 
-    def parse(self):
+    def parse(self, tokens=None):
         """
         Parse a list of tokens and return a list of statemeent
         Each statement is an abstract syntax tree
         """
+        if tokens:
+            self.upload_tokens(tokens)
+
         source_tokens = ' '.join([str(token) for token in self.tokens])
         log.info(AppType.PARSER, f'Tokens: {source_tokens}')
 
         self.statements = []
         while not self._end_of_code():
             self.statements.append(self._parse_statement())
+        return self.statements
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
 

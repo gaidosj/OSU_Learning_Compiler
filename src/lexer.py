@@ -20,13 +20,18 @@ class Lexer:
     def get_tokens_as_string(self):
         return ''.join([str(tkn) + '; ' * (tkn.token_type not in (TokenType.EOL, TokenType.EOF)) for tkn in self.tokens])
 
-    def scan(self):
+    def scan(self, source_code=None):
+        if source_code:
+            self.upload_source_code(source_code)
+
         self.start = self.current = 0
         while not self._is_at_end():
             self.start = self.current
             self._scan_token()
         self.start = self.current
         self._add_token(TokenType.EOF)
+
+        return self.tokens
 
     def _scan_token(self):
         char = self._advance()
