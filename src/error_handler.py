@@ -2,8 +2,7 @@ from src.logger import Logger as log
 
 
 class ErrorHandler:
-    def __init__(self, app_name=''):
-        self.app_name=app_name
+    def __init__(self):
         self.errors = []
 
     def has_errors(self):
@@ -24,11 +23,6 @@ class ErrorHandler:
                     error.token.lexeme,
                 )
             log.error(msg)
-
-class ScanError(Exception):
-    def __init__(self, token, message):
-        self.token = token
-        self.message = message
 
 
 class ParseError(Exception):
