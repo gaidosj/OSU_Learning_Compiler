@@ -16,9 +16,16 @@ from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS
 
 class Parser:
     def __init__(self, tokens=None):
+        self.upload_tokens(tokens)
+
+    def upload_tokens(self, tokens):
         self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS] if tokens else []
+        # TODO: May need deep copy to avoid side effects
         self.index = 0
         self.error_handler = ErrorHandler()
+
+    def get_statements(self):
+        return self.statements
 
     def parse(self):
         """
@@ -28,10 +35,9 @@ class Parser:
         source_tokens = ' '.join([str(token) for token in self.tokens])
         log.info(AppType.PARSER, f'Tokens: {source_tokens}')
 
-        statements = []
+        self.statements = []
         while not self._end_of_code():
-            statements.append(self._parse_statement())
-        return statements
+            self.statements.append(self._parse_statement())
 
     # PARSING STATEMENTS -----------------------------------------------------------------------------
 
@@ -87,6 +93,7 @@ class Parser:
 
     def _parse_block_statement(self) -> BlockStatement:
         log.info(AppType.PARSER, 'Started parsing BlockStatement')
+        block_start_token = self._peek()
         block_content = []
         while self._peek() and not self._peek().token_type in BLOCK_CLOSING_TOKENS:
             try:
@@ -94,7 +101,10 @@ class Parser:
             except ParseError as error:
                 self.error_handler.add_error(error)
                 self._synchronize()
-        self._consume_or_raise(BLOCK_CLOSING_TOKENS, 'Expect block closing symbol')
+        self._consume_or_raise(
+            BLOCK_CLOSING_TOKENS,
+            f'Expect block closing symbol for block started on line {block_start_token.source_file_line_number}',
+        )
         return BlockStatement(block_content)
 
     def _parse_if_statement(self) -> IfStatement:

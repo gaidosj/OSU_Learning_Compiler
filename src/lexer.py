@@ -5,14 +5,14 @@ from src.lexer_constants import SINGLE_TOKENS, DOUBLE_TOKENS, DISREGARDED_WHITES
 
 class Lexer:
     def __init__(self, source_code=None):
+        self.upload_source_code(source_code)
+
+    def upload_source_code(self, source_code):
         self.source = source_code
         self.tokens = []
         self.current_source_line = 1
         self.start = 0
         self.current = 0
-
-    def get_source_code(self):
-        return self.source
 
     def get_tokens(self):
         return self.tokens
@@ -20,14 +20,7 @@ class Lexer:
     def get_tokens_as_string(self):
         return ''.join([str(tkn) + '; ' * (tkn.token_type not in (TokenType.EOL, TokenType.EOF)) for tkn in self.tokens])
 
-    def load_source_code(self, source_code):
-        self.source = source_code
-        self.tokens = []
-        self.current_source_line = 1
-        self.start = 0
-        self.current = 0
-
-    def process_source_code(self):
+    def scan(self):
         self.start = self.current = 0
         while not self._is_at_end():
             self.start = self.current

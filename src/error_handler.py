@@ -19,8 +19,16 @@ class ErrorHandler:
                 error.message,
             )
             if error.token:
-                msg += ' (line {})'.format(error.token.source_file_line_number)
+                msg += ' (line {}, around {})'.format(
+                    error.token.source_file_line_number,
+                    error.token.lexeme,
+                )
             log.error(msg)
+
+class ScanError(Exception):
+    def __init__(self, token, message):
+        self.token = token
+        self.message = message
 
 
 class ParseError(Exception):

@@ -6,9 +6,16 @@ from src.tokens import TokenType
 
 
 class Interpreter:
-    def __init__(self):
+    def __init__(self, statements=None):
+        self.upload_statements(statements)
+
+    def upload_statements(self, statements):
+        self.statements = statements or []  # TODO: May need deep copy to avoid side effects
         self.environment = Environment()
         self.error_handler = ErrorHandler()
+
+    def get_statements(self):
+        return self.statements
 
     def interpret(self, statements):
         try:

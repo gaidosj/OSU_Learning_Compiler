@@ -9,16 +9,17 @@ from src.interpreter import Interpreter
 class Orchestrator:
     def execute(self, code):
         lexer = Lexer(code)
-        lexer.process_source_code()
+        lexer.scan()
         tokens = lexer.get_tokens()
 
         parser = Parser(tokens)
-        statements = parser.parse()
+        parser.parse()
         if parser.error_handler.has_errors():
             parser.error_handler.log_errors()
             return
+        statements = parser.get_statements()
 
-        interpreter = Interpreter()
+        interpreter = Interpreter(statements)
         interpreter.interpret(statements)
         if interpreter.error_handler.has_errors():
             interpreter.error_handler.log_errors()
