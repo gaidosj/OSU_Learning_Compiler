@@ -2,7 +2,6 @@ import unittest
 import os
 from src.lexer import Lexer
 from src.parser import Parser
-from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class ParserIntegrationTest(unittest.TestCase):
