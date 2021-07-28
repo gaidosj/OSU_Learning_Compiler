@@ -7,7 +7,7 @@ class Lexer:
     def __init__(self, source_code=None):
         self.source = source_code
         self.tokens = []
-        self.current_source_line = 0
+        self.current_source_line = 1
         self.start = 0
         self.current = 0
 
@@ -23,7 +23,7 @@ class Lexer:
     def load_source_code(self, source_code):
         self.source = source_code
         self.tokens = []
-        self.current_source_line = 0
+        self.current_source_line = 1
         self.start = 0
         self.current = 0
 
@@ -58,7 +58,7 @@ class Lexer:
 
     def _add_token(self, token_type, literal=None):
         lexeme = self.source[self.start: self.current]
-        self.tokens.append(TokenOsu(token_type, lexeme, literal))
+        self.tokens.append(TokenOsu(token_type, lexeme, literal, self.current_source_line))
 
     def _add_unexpected_token_error(self):
         if self.tokens and self.tokens[-1].token_type == TokenType.ERROR:

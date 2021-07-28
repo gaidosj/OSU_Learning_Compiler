@@ -19,7 +19,6 @@ class Parser:
         self.tokens = [token for token in tokens if token.token_type not in IGNORED_TOKENS] if tokens else []
         self.index = 0
         self.error_handler = ErrorHandler()
-        self.with_errors = False
 
     def parse(self):
         """
@@ -40,8 +39,7 @@ class Parser:
         try:
             return self._parse_declaring_statement()
         except ParseError as error:
-            self.with_errors = True
-            self.error_handler.report_error(error)
+            self.error_handler.add_error(error)
             self._synchronize()
 
     def _parse_declaring_statement(self):
@@ -91,7 +89,11 @@ class Parser:
         log.info(AppType.PARSER, 'Started parsing BlockStatement')
         block_content = []
         while self._peek() and not self._peek().token_type in BLOCK_CLOSING_TOKENS:
-            block_content.append(self._parse_statement())
+            try:
+                block_content.append(self._parse_statement())
+            except ParseError as error:
+                self.error_handler.add_error(error)
+                self._synchronize()
         self._consume_or_raise(BLOCK_CLOSING_TOKENS, 'Expect block closing symbol')
         return BlockStatement(block_content)
 

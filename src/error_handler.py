@@ -1,37 +1,26 @@
-from sys import stderr
 from src.logger import Logger as log
-from src.constants import AppType
 
 
 class ErrorHandler:
-    def __init__(self):
+    def __init__(self, app_name=''):
+        self.app_name=app_name
         self.errors = []
 
     def has_errors(self):
         return len(self.errors) > 0
 
-    def report_error(self, error):
+    def add_error(self, error):
         self.errors.append(error)
 
     def log_errors(self):
         for error in self.errors:
-            print('ERROR:', error.token, '\n\n')
-            # if isinstance(error, ParseError):
-            #     message = "Parse error on line {} for token {}: {}".format(
-            #         error.token.source_file_line_number,
-            #         error.token,
-            #         error.message,
-            #     )
-            #     log.info(AppType.PARSER, message)
-            # elif isinstance(error, InterpretError):
-            #     message = "Runtime error on line {} for token {}: {}".format(
-            #         error.token.source_file_line_number,
-            #         error.token,
-            #         error.message,
-            #     )
-            #     log.info(AppType.INTERPRETER, message)
-            # else:
-            #     log.info(AppType.INTERPRETER, f'generic exception {error}')
+            msg = '{}: {}'.format(
+                type(error).__name__,
+                error.message,
+            )
+            if error.token:
+                msg += ' (line {})'.format(error.token.source_file_line_number)
+            log.error(msg)
 
 
 class ParseError(Exception):

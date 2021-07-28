@@ -15,7 +15,7 @@ class Interpreter:
             for statement in statements:
                 self.execute_statement(statement)
         except InterpretError as error:
-            self.error_handler.report_error(error)
+            self.error_handler.add_error(error)
 
     def execute_statement(self, statement) -> None:
         log.info(AppType.INTERPRETER, f'Executing statement: {statement}')
