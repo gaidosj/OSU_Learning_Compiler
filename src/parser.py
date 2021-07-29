@@ -380,7 +380,7 @@ class Parser:
                 arguments.append(self._expression())
 
         closing_paren = self._consume_or_raise(
-            TokenType.RIGHT_PAREN,
+            GROUP_CLOSING_TOKENS,
             'Expected closing paren ")" at end of function call')
 
         return Call(function, closing_paren, arguments)
