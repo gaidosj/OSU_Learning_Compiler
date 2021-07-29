@@ -97,8 +97,12 @@ class AbstractSyntaxTree:
         )
 
     def visit_function_statement(self, function_statement):
-        return 'FUNCTION [{}]'.format(
-            function_statement.name.lexeme
+        args = map(lambda x: x.lexeme, function_statement.parameters)
+        args = ', '.join(args)
+        return 'FUNCTION DEFINITION [{}({}) [{}]]'.format(
+            function_statement.name.lexeme,
+            args,
+            function_statement.body.accept(self)
         )
 
     def visit_return_statement(self, return_statement):
