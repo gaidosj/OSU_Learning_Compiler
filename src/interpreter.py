@@ -143,14 +143,13 @@ class Interpreter:
         if not isinstance(callee, Function):
             raise InterpretError("Expected function name to be an identifier token")
 
-        function = Function(callee)
-        if len(arguments) != function.get_arity():
+        if len(arguments) != callee.get_arity():
             raise InterpretError(
                 call_expression.callee,
-                "Expected " + function.get_arity() + " arguments but got " + len(arguments)
+                "Expected " + callee.get_arity() + " arguments but got " + len(arguments)
             )
 
-        return function.call(self, arguments)
+        return callee.call(self, arguments)
 
     def visit_get_expression(self, get_expression) -> RuntimeValue:
         pass
