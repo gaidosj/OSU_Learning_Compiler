@@ -140,7 +140,7 @@ class Interpreter:
         callee = self.evaluate_expression(call_expression.callee)
         arguments = [self.evaluate_expression(arg) for arg in call_expression.arguments]
 
-        if call_expression.callee.name.token_type != TokenType.IDENTIFIER:
+        if not isinstance(callee, Function):
             raise InterpretError("Expected function name to be an identifier token")
 
         function = Function(callee)
