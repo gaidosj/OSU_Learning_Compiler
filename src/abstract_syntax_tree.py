@@ -95,7 +95,9 @@ class AbstractSyntaxTree:
         )
 
     def visit_function_statement(self, function_statement):
-        pass
+        return 'FUNCTION [{}]'.format(
+            function_statement.name.lexeme
+        )
 
     def visit_return_statement(self, return_statement):
         pass
