@@ -21,7 +21,7 @@ class Interpreter:
             self.upload_statements(statements)
 
         try:
-            for statement in statements:
+            for statement in self.statements:
                 self.execute_statement(statement)
         except InterpretError as error:
             self.error_handler.add_error(error)
