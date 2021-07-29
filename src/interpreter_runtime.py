@@ -83,7 +83,7 @@ class Function(RuntimeValue):
         for i in range(len(self.declaration.parameters)):
             environment.define(self.declaration.parameters[i].lexeme, arguments[i])
 
-        interpreter.execute_block(self.declaration.body, environment)
+        interpreter.execute_block(self.declaration.body.statements, environment)
 
     def __str__(self):
         return '<function ' + self.declaration.name.lexeme + '>'
