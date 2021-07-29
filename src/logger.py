@@ -7,6 +7,11 @@ class Logger:
     ENVIRONEMNT_LOGGER_ENABLED = True
 
     @staticmethod
+    def error(message, color=None):
+        color = color or Color.BrightRed
+        print(f'{color}{message}{Color.Reset}')
+
+    @staticmethod
     def info(caller, message, color=None):
         if caller == AppType.PARSER and not Logger.PARSER_LOGGER_ENABLED:
             return

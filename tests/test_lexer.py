@@ -34,7 +34,7 @@ class LexerTest(unittest.TestCase):
 
         for source_code, expected_token_string in test_cases:
             lexer = Lexer(source_code)
-            lexer.process_source_code()
+            lexer.scan()
             token_string = lexer.get_tokens_as_string()
             # print(token_string)
             self.assertEqual(token_string, expected_token_string)

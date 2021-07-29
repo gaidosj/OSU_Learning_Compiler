@@ -5,14 +5,14 @@ from src.lexer_constants import SINGLE_TOKENS, DOUBLE_TOKENS, DISREGARDED_WHITES
 
 class Lexer:
     def __init__(self, source_code=None):
+        self.upload_source_code(source_code)
+
+    def upload_source_code(self, source_code):
         self.source = source_code
         self.tokens = []
-        self.current_source_line = 0
+        self.current_source_line = 1
         self.start = 0
         self.current = 0
-
-    def get_source_code(self):
-        return self.source
 
     def get_tokens(self):
         return self.tokens
@@ -20,20 +20,18 @@ class Lexer:
     def get_tokens_as_string(self):
         return ''.join([str(tkn) + '; ' * (tkn.token_type not in (TokenType.EOL, TokenType.EOF)) for tkn in self.tokens])
 
-    def load_source_code(self, source_code):
-        self.source = source_code
-        self.tokens = []
-        self.current_source_line = 0
-        self.start = 0
-        self.current = 0
+    def scan(self, source_code=None):
+        if source_code:
+            self.upload_source_code(source_code)
 
-    def process_source_code(self):
         self.start = self.current = 0
         while not self._is_at_end():
             self.start = self.current
             self._scan_token()
         self.start = self.current
         self._add_token(TokenType.EOF)
+
+        return self.tokens
 
     def _scan_token(self):
         char = self._advance()
@@ -58,7 +56,7 @@ class Lexer:
 
     def _add_token(self, token_type, literal=None):
         lexeme = self.source[self.start: self.current]
-        self.tokens.append(TokenOsu(token_type, lexeme, literal))
+        self.tokens.append(TokenOsu(token_type, lexeme, literal, self.current_source_line))
 
     def _add_unexpected_token_error(self):
         if self.tokens and self.tokens[-1].token_type == TokenType.ERROR:

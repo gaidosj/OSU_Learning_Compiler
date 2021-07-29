@@ -3,19 +3,28 @@ from src.error_handler import ErrorHandler, InterpretError
 from src.function import Function
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
+from src.tokens import TokenType
 
 
 class Interpreter:
-    def __init__(self):
+    def __init__(self, statements=None):
+        self.upload_statements(statements)
+
+    def upload_statements(self, statements):
+        self.statements = statements or []
+        # TODO: May need deep copy to avoid side effects
         self.environment = Environment()
         self.error_handler = ErrorHandler()
 
-    def interpret(self, statements):
+    def interpret(self, statements=None):
+        if statements:
+            self.upload_statements(statements)
+
         try:
             for statement in statements:
                 self.execute_statement(statement)
         except InterpretError as error:
-            self.error_handler.report_error(error)
+            self.error_handler.add_error(error)
 
     def execute_block(self, statements, environment):
         old_environment = self.environment
@@ -27,12 +36,11 @@ class Interpreter:
             self.environment = old_environment
 
     def execute_statement(self, statement) -> None:
-        # from src.abstract_syntax_tree import AbstractSyntaxTree
-        # print("EXECUTING STATEMENT:", AbstractSyntaxTree(statement) if statement else 'NONE')
+        log.info(AppType.INTERPRETER, f'Executing statement: {statement}')
         statement.accept(self)
 
     def evaluate_expression(self, expression) -> RuntimeValue:
-        # print("   EVALUATING EXPRESSION:", AbstractSyntaxTree(expression) if expression else 'NONE')
+        log.info(AppType.INTERPRETER, f'Evaluating expression: {expression}')
         return expression.accept(self)
 
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
@@ -86,9 +94,22 @@ class Interpreter:
     # VISITOR INTERFACE FOR EXPRESSIONS ---------------------------------------------
 
     def visit_binary_expression(self, binary_expression) -> RuntimeValue:
+        left = self.evaluate_expression(binary_expression.left_operand)
+        operator = binary_expression.operator
+
+        # short-circuit of the logical AND operator
+        if operator.token_type == TokenType.AND and not left.is_truthy():
+            log.info(AppType.INTERPRETER, 'Logical AND evaluation short-circuited. Returning FALSE')
+            return RuntimeValue(False, RuntimeDataType.BOOL)
+
+        # short-circuit of the logical OR operator
+        if operator.token_type == TokenType.OR and left.is_truthy():
+            log.info(AppType.INTERPRETER, 'Logical OR evaluation short-circuited. Returning TRUE')
+            return RuntimeValue(True, RuntimeDataType.BOOL)
+
         return RuntimeOperators.get_runtime_value_for_binary_operator(
-            left=self.evaluate_expression(binary_expression.left_operand),
-            operator=binary_expression.operator,
+            left=left,
+            operator=operator,
             right=self.evaluate_expression(binary_expression.right_operand)
         )
 

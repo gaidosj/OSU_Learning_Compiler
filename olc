@@ -4,27 +4,25 @@ import sys
 from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
-from src.abstract_syntax_tree import AbstractSyntaxTree
 
 
 class Orchestrator:
     def execute(self, code):
         lexer = Lexer(code)
-        lexer.process_source_code()
+        lexer.scan()
         tokens = lexer.get_tokens()
 
         parser = Parser(tokens)
-        statements = parser.parse()
+        parser.parse()
+        if parser.error_handler.has_errors():
+            parser.error_handler.log_errors()
+            return
+        statements = parser.get_statements()
 
-        interpreter = Interpreter()
-        try:
-            interpreter.interpret(statements)
-        except Exception as error:
-            print("EXCEPTION:", error)
-            print("   SOURCE CODE : ", code)
-            print("   TOKENS      : ", *parser.tokens)
-            print("   STATEMENTS  : ", *[str(AbstractSyntaxTree(st)) for st in statements])
-            print("   ENVIRONMENT : ", *interpreter.environment.bindings)
+        interpreter = Interpreter(statements)
+        interpreter.interpret(statements)
+        if interpreter.error_handler.has_errors():
+            interpreter.error_handler.log_errors()
 
     def interpret_file(self, filename):
         pass
