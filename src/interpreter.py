@@ -81,7 +81,8 @@ class Interpreter:
 
     def visit_function_statement(self, function_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_function_statement: {function_statement}')
-        pass
+        function = Function(function_statement)
+        self.environment.define(function_statement.name.lexeme, function)
 
     def visit_return_statement(self, return_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_return_statement: {return_statement}')

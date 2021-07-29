@@ -15,6 +15,7 @@ class RuntimeDataType(Enum):
     NULL = 'NULL'
     BOOL = 'bool'
     OBJECT = 'object'
+    FUNCTION = 'function'
 
 
 class RuntimeValue:
@@ -67,6 +68,25 @@ class RuntimeValue:
 
     def is_null(self):
         return self.data_type in (RuntimeDataType.NULL,)
+
+
+class Function(RuntimeValue):
+    def __init__(self, declaration):
+        super().__init__(data_type=RuntimeDataType.FUNCTION)
+        self.declaration = declaration
+
+    def get_arity(self):
+        return len(self.declaration.parameters)
+
+    def call(self, interpreter, arguments):
+        environment = Environment(interpreter.environment)
+        for i in range(len(self.declaration.parameters)):
+            environment.define(self.declaration.parameters[i].lexeme, arguments[i])
+
+        interpreter.execute_block(self.declaration.body, environment)
+
+    def __str__(self):
+        return '<function ' + self.declaration.name.lexeme + '>'
 
 
 class RuntimeOperators:
