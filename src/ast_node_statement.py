@@ -71,7 +71,7 @@ class FunctionStatement(ParserStatement):
     def __init__(self, name: TokenOsu, parameters: [TokenOsu], body: [ParserStatement]):
         self.name = name
         self.parameters = parameters.copy()  # TODO: Need copy?
-        self.body = body.copy()  # TODO: Need list of single stm?
+        self.body = body
 
     def accept(self, visitor):
         return visitor.visit_function_statement(self)
