@@ -11,7 +11,7 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
-    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS
 
 
 class Parser:
@@ -22,12 +22,8 @@ class Parser:
 
     def parse(self):
         """
-        Parse a list of tokens and return a list of statemeent
+        Parse a list of tokens and return a list of statement
         Each statement is an abstract syntax tree
-        Grammar:
-        declaration -> VarStatement | statement
-        statement -> ExpressionStatement | PrintStatement
-
         """
         source_tokens = ' '.join([str(token) for token in self.tokens])
         log.info(AppType.PARSER, f'Tokens: {source_tokens}')
@@ -36,6 +32,7 @@ class Parser:
         try:
             while not self._end_of_code():
                 statements.append(self._parse_statement())
+                log.info(AppType.PARSER, 'AST: ' + str(statements[-1]))
         except ParseError as error:
             self.error_handler.report_error(error)  # TODO: refactor for the right place?
         return statements
@@ -53,7 +50,9 @@ class Parser:
         """
         Find next declaring statmemt and return its AST
         """
-        if self._is_one_of_types(VAR_STATEMENT_TOKENS):
+        if self._is_one_of_types(FUNCTION_STATEMENT_TOKENS):
+            return self._parse_function_statement()
+        elif self._is_one_of_types(VAR_STATEMENT_TOKENS):
             return self._parse_var_statement()
         return self._parse_nondeclaring_statement()
 
@@ -119,7 +118,30 @@ class Parser:
 
     def _parse_function_statement(self) -> FunctionStatement:
         log.info(AppType.PARSER, 'Started parsing FunctionStatement')
-        pass
+
+        # name
+        name = self._consume_or_raise(IDENTIFIER_TOKENS, "Expected a function name")
+
+        # parameters
+        parameters = []
+        self._consume_or_raise(GROUP_OPENING_TOKENS, "Expected open paren after function name")
+        if not self._is_same_type(TokenType.RIGHT_PAREN):
+            parameters.append(self._consume_or_raise(IDENTIFIER_TOKENS, "Expected parameter name"))
+            while self._is_one_of_types(DELIMITER_TOKENS):
+                if len(parameters) > 254:
+                    self.error_handler.report_error(ParseError(
+                        self._peek(), "Max allowed function parameters is 255")
+                    )
+                parameters.append(self._consume_or_raise(
+                    IDENTIFIER_TOKENS, "Expected a name at parameter " + str(len(parameters) + 1))
+                )
+        self._consume_or_raise(GROUP_CLOSING_TOKENS, "Expected close paren after function parameters")
+
+        # body
+        self._consume_or_raise(BLOCK_OPENING_TOKENS, "Expected opening curly brace before function body")
+        body = self._parse_block_statement()
+
+        return FunctionStatement(name, parameters, body)
 
     def _parse_return_statmeent(self) -> ReturnStatement:
         log.info(AppType.PARSER, 'Started parsing ReturnStatement')
@@ -173,7 +195,6 @@ class Parser:
     def _equality(self):
         """
         Checks for equality between two operands
-        Grammar: equality → comparison ( ( "!=" | "==" ) comparison )* ;
         """
         left_side = self._comparison()
         while self._is_one_of_types(EQUALITY_TOKENS):
@@ -185,7 +206,6 @@ class Parser:
     def _comparison(self):
         """
         Compares two operands
-        Grammar: comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
         """
         left_side = self._term()
         while self._is_one_of_types(COMPARISON_TOKENS):
@@ -230,7 +250,6 @@ class Parser:
     def _unary(self):
         """
         Acts on a single operand
-        Grammar: unary → ( "!" | "-" ) unary | call ;
         """
         if self._is_one_of_types(UNARY_TOKENS):
             operator = self._peek_prev()
@@ -241,9 +260,6 @@ class Parser:
     def _call(self):
         """
         A function call
-        Grammar:
-        call → primary ( "(" arguments? ")" )* ;
-        arguments → expression ( "," expression )* ;
         """
         expression = self._primary()
 
@@ -258,9 +274,6 @@ class Parser:
     def _primary(self):
         """
         A primary rule
-        Grammar:
-        primary -> literal | IDENTIFIER | "(" expression ")" ;
-        literal -> INT | FLOAT | STRING | BOOL | "NULL" ;
         """
         if self._is_one_of_types(LITERAL_TOKENS):
             return Literal(self._peek_prev())
