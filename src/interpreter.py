@@ -1,5 +1,6 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
+from src.function import Function
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
 
@@ -15,6 +16,15 @@ class Interpreter:
                 self.execute_statement(statement)
         except InterpretError as error:
             self.error_handler.report_error(error)
+
+    def execute_block(self, statements, environment):
+        old_environment = self.environment
+        try:
+            self.environment = environment
+            for statement in statements:
+                self.execute_statement(statement)
+        finally:
+            self.environment = old_environment
 
     def execute_statement(self, statement) -> None:
         # from src.abstract_syntax_tree import AbstractSyntaxTree
@@ -46,13 +56,7 @@ class Interpreter:
 
     def visit_block_statement(self, block_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_block_statement: {block_statement}')
-        previous_environment = self.environment
-        try:
-            self.environment = Environment(enclosing_environment=previous_environment)
-            for statement in block_statement.statements:
-                self.execute_statement(statement)
-        finally:
-            self.environment = previous_environment
+        self.execute_block(block_statement.statements, Environment(enclosing_environment=self.environment))
         log.info(AppType.INTERPRETER, f'finished visit_block_statement {block_statement}')
 
     def visit_if_statement(self, if_statement) -> None:
@@ -111,7 +115,10 @@ class Interpreter:
         return self.environment.get(variable_expression.name)
 
     def visit_call_expression(self, call_expression) -> RuntimeValue:
-        pass
+        callee = self.evaluate_expression(call_expression.callee)
+        arguments = [self.evaluate_expression(arg) for arg in call_expression.arguments]
+        function = Function(callee)
+        return function.call(self, arguments)
 
     def visit_get_expression(self, get_expression) -> RuntimeValue:
         pass
