@@ -139,12 +139,17 @@ class Interpreter:
     def visit_call_expression(self, call_expression) -> RuntimeValue:
         callee = self.evaluate_expression(call_expression.callee)
         arguments = [self.evaluate_expression(arg) for arg in call_expression.arguments]
+
+        if call_expression.callee.name.token_type != TokenType.IDENTIFIER:
+            raise InterpretError("Expected function name to be an identifier token")
+
         function = Function(callee)
         if len(arguments) != function.get_arity():
             raise InterpretError(
                 call_expression.callee,
                 "Expected " + function.get_arity() + " arguments but got " + len(arguments)
             )
+
         return function.call(self, arguments)
 
     def visit_get_expression(self, get_expression) -> RuntimeValue:

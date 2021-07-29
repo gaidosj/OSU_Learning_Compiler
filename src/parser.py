@@ -300,7 +300,7 @@ class Parser:
 
         if self._is_one_of_types(GROUP_OPENING_TOKENS):
             expression = self._expression()
-            self._consume_or_raise(GROUP_CLOSING_TOKENS, 'Expected closing parenthese')
+            self._consume_or_raise(GROUP_CLOSING_TOKENS, 'Expected closing paren')
             return Group(expression)
 
         raise ParseError(self._peek(), 'Expected start of expression')
