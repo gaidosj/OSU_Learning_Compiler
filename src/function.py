@@ -5,7 +5,7 @@ class Function:
     def __init__(self, declaration):
         self.declaration = declaration
 
-    def arity(self):
+    def get_arity(self):
         return len(self.declaration.parameters)
 
     def call(self, interpreter, arguments):
