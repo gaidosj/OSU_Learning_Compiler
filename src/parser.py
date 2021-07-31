@@ -11,7 +11,8 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
-    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS, \
+    RETURN_TOKENS
 
 
 class Parser:
@@ -77,6 +78,8 @@ class Parser:
             return self._parse_print_statement()
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
             return self._parse_block_statement()
+        if self._is_one_of_types(RETURN_TOKENS):
+            return self._parse_return_statmeent()
         return self._parse_expression_statement()
 
     def _parse_var_statement(self) -> VarStatement:
