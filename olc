@@ -25,7 +25,8 @@ class Orchestrator:
             interpreter.error_handler.log_errors()
 
     def interpret_file(self, filename):
-        pass
+        with open(filename) as file:
+            self.execute(file.read())
 
     def run_repl(self):
         while True:
