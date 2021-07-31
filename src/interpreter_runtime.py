@@ -86,10 +86,18 @@ class Function(RuntimeValue):
         for i in range(len(self.declaration.parameters)):
             environment.define(self.declaration.parameters[i].lexeme, arguments[i])
 
-        interpreter.execute_block(self.declaration.body.statements, environment)
+        try:
+            interpreter.execute_block(self.declaration.body.statements, environment)
+        except Return as _return:
+            return _return.value
 
     def __str__(self):
         return '<function ' + self.declaration.name.lexeme + '>'
+
+
+class Return(Exception):
+    def __init__(self, value):
+        self.value = value
 
 
 class RuntimeOperators:

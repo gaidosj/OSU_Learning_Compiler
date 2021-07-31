@@ -83,6 +83,10 @@ STATEMENT_END_TOKENS = {
     TokenType.SEMICOLON
 }
 
+RETURN_TOKENS = {
+    TokenType.RETURN
+}
+
 STATEMENT_START_TOKENS = {
     TokenType.CLASS,
     TokenType.FUNCTION,

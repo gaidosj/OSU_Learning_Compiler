@@ -11,7 +11,8 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
-    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS, \
+    RETURN_TOKENS
 
 
 class Parser:
@@ -77,6 +78,8 @@ class Parser:
             return self._parse_print_statement()
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
             return self._parse_block_statement()
+        if self._is_one_of_types(RETURN_TOKENS):
+            return self._parse_return_statement()
         return self._parse_expression_statement()
 
     def _parse_var_statement(self) -> VarStatement:
@@ -172,9 +175,14 @@ class Parser:
 
         return FunctionStatement(name, parameters, body)
 
-    def _parse_return_statmeent(self) -> ReturnStatement:
+    def _parse_return_statement(self) -> ReturnStatement:
         log.info(AppType.PARSER, 'Started parsing ReturnStatement')
-        pass
+        keyword = self._peek_prev()
+        value = None
+        if not self._is_same_type(TokenType.SEMICOLON):
+            value = self._expression()
+        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expected semicolon at end of return statement')
+        return ReturnStatement(keyword, value)
 
     def _parse_class_statement(self) -> ClassStatement:
         log.info(AppType.PARSER, 'Started parsing ClassStatement')
