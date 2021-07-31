@@ -43,7 +43,7 @@ class AbstractSyntaxTree:
         )
 
     def visit_call_expression(self, call_expression):
-        args = map(lambda x: x.value.lexeme, call_expression.arguments)
+        args = map(lambda x: str(x), call_expression.arguments)
         args = ', '.join(args)
         return str(call_expression.callee.name) + '(' + args + ')'
 
@@ -106,7 +106,7 @@ class AbstractSyntaxTree:
         )
 
     def visit_return_statement(self, return_statement):
-        pass
+        return 'RETURN [{}]'.format(return_statement.value)
 
     def visit_class_statement(self, class_statement):
         pass
