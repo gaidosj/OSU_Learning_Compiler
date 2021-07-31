@@ -3,7 +3,7 @@ from src.logger import Logger as log
 from src.tokens import TokenType
 from src.error_handler import ErrorHandler, ParseError
 
-from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign
+from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign, Call
 
 from src.ast_node_statement import VarStatement, ExpressionStatement, PrintStatement, \
     BlockStatement, IfStatement, WhileStatement, FunctionStatement, ReturnStatement, \
@@ -11,7 +11,7 @@ from src.ast_node_statement import VarStatement, ExpressionStatement, PrintState
 from src.parser_constants import EQUALITY_TOKENS, COMPARISON_TOKENS, TERM_TOKENS, FACTOR_TOKENS, \
     UNARY_TOKENS, LITERAL_TOKENS, IGNORED_TOKENS, GROUP_OPENING_TOKENS, GROUP_CLOSING_TOKENS, \
     STATEMENT_START_TOKENS, STATEMENT_END_TOKENS, IDENTIFIER_TOKENS, EQUALS_TOKENS, \
-    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS
+    BLOCK_OPENING_TOKENS, BLOCK_CLOSING_TOKENS, VAR_STATEMENT_TOKENS, FUNCTION_STATEMENT_TOKENS, DELIMITER_TOKENS
 
 
 class Parser:
@@ -30,7 +30,7 @@ class Parser:
 
     def parse(self, tokens=None):
         """
-        Parse a list of tokens and return a list of statemeent
+        Parse a list of tokens and return a list of statement
         Each statement is an abstract syntax tree
         """
         if tokens:
@@ -58,7 +58,9 @@ class Parser:
         Find next declaring statememt and return its AST
         (VAR, FUNCTION and CLASS are declaring statements)
         """
-        if self._is_one_of_types(VAR_STATEMENT_TOKENS):
+        if self._is_one_of_types(FUNCTION_STATEMENT_TOKENS):
+            return self._parse_function_statement()
+        elif self._is_one_of_types(VAR_STATEMENT_TOKENS):
             return self._parse_var_statement()
         return self._parse_nondeclaring_statement()
 
@@ -133,7 +135,42 @@ class Parser:
 
     def _parse_function_statement(self) -> FunctionStatement:
         log.info(AppType.PARSER, 'Started parsing FunctionStatement')
-        pass
+
+        # name
+        name = self._consume_or_raise(IDENTIFIER_TOKENS, "Expected a function name")
+
+        # parameters
+        parameters = []
+        self._consume_or_raise(GROUP_OPENING_TOKENS, "Expected open paren after function name")
+        if not self._is_same_type(TokenType.RIGHT_PAREN):
+            parameters.append(self._consume_or_raise(IDENTIFIER_TOKENS, "Expected parameter name"))
+            error_message = 'Expected an identifier at parameter {} of function ' + str(name)
+            while self._is_one_of_types(DELIMITER_TOKENS):
+                if len(parameters) > 255:
+                    self._consume_or_raise(
+                        IDENTIFIER_TOKENS,
+                        error_message.format(len(parameters))
+                    )
+                    while self._is_one_of_types(DELIMITER_TOKENS):
+                        self._consume_or_raise(
+                            IDENTIFIER_TOKENS,
+                            error_message.format(len(parameters))
+                        )
+                    self.error_handler.add_error(ParseError(
+                        self._peek(), "Max allowed function parameters is 255, rest were truncated")
+                    )
+                    break
+                parameters.append(self._consume_or_raise(
+                    IDENTIFIER_TOKENS,
+                    error_message.format(len(parameters))
+                ))
+        self._consume_or_raise(GROUP_CLOSING_TOKENS, "Expected close paren after function parameters")
+
+        # body
+        self._consume_or_raise(BLOCK_OPENING_TOKENS, "Expected opening curly brace before function body")
+        body = self._parse_block_statement()
+
+        return FunctionStatement(name, parameters, body)
 
     def _parse_return_statmeent(self) -> ReturnStatement:
         log.info(AppType.PARSER, 'Started parsing ReturnStatement')
@@ -187,7 +224,6 @@ class Parser:
     def _equality(self):
         """
         Checks for equality between two operands
-        Grammar: equality → comparison ( ( "!=" | "==" ) comparison )* ;
         """
         left_side = self._comparison()
         while self._is_one_of_types(EQUALITY_TOKENS):
@@ -199,7 +235,6 @@ class Parser:
     def _comparison(self):
         """
         Compares two operands
-        Grammar: comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
         """
         left_side = self._term()
         while self._is_one_of_types(COMPARISON_TOKENS):
@@ -244,20 +279,30 @@ class Parser:
     def _unary(self):
         """
         Acts on a single operand
-        Grammar: unary → ( "!" | "-" ) unary | primary ;
         """
         if self._is_one_of_types(UNARY_TOKENS):
             operator = self._peek_prev()
             right_side = self._unary()
             return Unary(operator, right_side)
-        return self._primary()
+        return self._call()
+
+    def _call(self):
+        """
+        A function call
+        """
+        expression = self._primary()
+
+        while True:
+            if self._is_one_of_types([TokenType.LEFT_PAREN]):
+                expression = self._function_call(expression)
+            else:
+                break
+
+        return expression
 
     def _primary(self):
         """
         A primary rule
-        Grammar:
-        primary -> literal | IDENTIFIER | "(" expression ")" ;
-        literal -> INT | FLOAT | STRING | BOOL | "NULL" ;
         """
         if self._is_one_of_types(LITERAL_TOKENS):
             return Literal(self._peek_prev())
@@ -267,7 +312,7 @@ class Parser:
 
         if self._is_one_of_types(GROUP_OPENING_TOKENS):
             expression = self._expression()
-            self._consume_or_raise(GROUP_CLOSING_TOKENS, 'Expected closing parenthese')
+            self._consume_or_raise(GROUP_CLOSING_TOKENS, 'Expected closing paren')
             return Group(expression)
 
         raise ParseError(self._peek(), 'Expected start of expression')
@@ -332,6 +377,31 @@ class Parser:
         if any([self._is_same_type(token_type) for token_type in token_types]):
             return self._next_token()
         raise ParseError(token=self._peek(), message=exception_description)
+
+    def _function_call(self, function):
+        """
+        Gathers function and all arguments into a Call expression
+        """
+        arguments = []
+        if not self._is_same_type(TokenType.RIGHT_PAREN):
+            arguments.append(self._expression())
+            while self._is_one_of_types(DELIMITER_TOKENS):
+                if len(arguments) > 255:
+                    self._expression
+                    while self._is_one_of_types(DELIMITER_TOKENS):
+                        self._expression
+                    self.error_handler.add_error(ParseError(
+                        self._peek(),
+                        'Too many function arguments, max is 255, rest were truncated')
+                    )
+                    break
+                arguments.append(self._expression())
+
+        closing_paren = self._consume_or_raise(
+            GROUP_CLOSING_TOKENS,
+            'Expected closing paren ")" at end of function call')
+
+        return Call(function, closing_paren, arguments)
 
     def _synchronize(self):
         """

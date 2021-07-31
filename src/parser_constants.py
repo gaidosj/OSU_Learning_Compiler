@@ -1,5 +1,9 @@
 from src.tokens import TokenType
 
+FUNCTION_STATEMENT_TOKENS = {
+    TokenType.FUNCTION
+}
+
 VAR_STATEMENT_TOKENS = {
     TokenType.VAR
 }
@@ -69,6 +73,10 @@ BLOCK_OPENING_TOKENS = {
 
 BLOCK_CLOSING_TOKENS = {
     TokenType.RIGHT_CURLY,
+}
+
+DELIMITER_TOKENS = {
+    TokenType.COMMA
 }
 
 STATEMENT_END_TOKENS = {

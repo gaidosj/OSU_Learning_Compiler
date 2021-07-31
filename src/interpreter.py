@@ -1,5 +1,6 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
+from src.interpreter_runtime import Function
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
 from src.tokens import TokenType
@@ -20,10 +21,19 @@ class Interpreter:
             self.upload_statements(statements)
 
         try:
-            for statement in statements:
+            for statement in self.statements:
                 self.execute_statement(statement)
         except InterpretError as error:
             self.error_handler.add_error(error)
+
+    def execute_block(self, statements, environment):
+        old_environment = self.environment
+        try:
+            self.environment = environment
+            for statement in statements:
+                self.execute_statement(statement)
+        finally:
+            self.environment = old_environment
 
     def execute_statement(self, statement) -> None:
         log.info(AppType.INTERPRETER, f'Executing statement: {statement}')
@@ -54,13 +64,7 @@ class Interpreter:
 
     def visit_block_statement(self, block_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_block_statement: {block_statement}')
-        previous_environment = self.environment
-        try:
-            self.environment = Environment(enclosing_environment=previous_environment)
-            for statement in block_statement.statements:
-                self.execute_statement(statement)
-        finally:
-            self.environment = previous_environment
+        self.execute_block(block_statement.statements, Environment(enclosing_environment=self.environment))
         log.info(AppType.INTERPRETER, f'finished visit_block_statement {block_statement}')
 
     def visit_if_statement(self, if_statement) -> None:
@@ -77,7 +81,8 @@ class Interpreter:
 
     def visit_function_statement(self, function_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_function_statement: {function_statement}')
-        pass
+        function = Function(function_statement)
+        self.environment.define(function_statement.name.lexeme, function)
 
     def visit_return_statement(self, return_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_return_statement: {return_statement}')
@@ -132,7 +137,19 @@ class Interpreter:
         return self.environment.get(variable_expression.name)
 
     def visit_call_expression(self, call_expression) -> RuntimeValue:
-        pass
+        callee = self.evaluate_expression(call_expression.callee)
+        arguments = [self.evaluate_expression(arg) for arg in call_expression.arguments]
+
+        if not callee.is_function():
+            raise InterpretError(callee, "Expected the callee to be callable")
+
+        if len(arguments) != callee.get_arity():
+            raise InterpretError(
+                call_expression.callee,
+                'Expected {} arguments but got {}'.format(callee.get_arity(), len(arguments))
+            )
+
+        return callee.call(self, arguments)
 
     def visit_get_expression(self, get_expression) -> RuntimeValue:
         pass
