@@ -79,7 +79,7 @@ class Parser:
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
             return self._parse_block_statement()
         if self._is_one_of_types(RETURN_TOKENS):
-            return self._parse_return_statmeent()
+            return self._parse_return_statement()
         return self._parse_expression_statement()
 
     def _parse_var_statement(self) -> VarStatement:

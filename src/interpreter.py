@@ -1,6 +1,6 @@
 from src.constants import AppType
 from src.error_handler import ErrorHandler, InterpretError
-from src.interpreter_runtime import Function
+from src.interpreter_runtime import Function, Return
 from src.interpreter_runtime import RuntimeValue, RuntimeDataType, RuntimeOperators, Environment
 from src.logger import Logger as log
 from src.tokens import TokenType
@@ -86,7 +86,11 @@ class Interpreter:
 
     def visit_return_statement(self, return_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_return_statement: {return_statement}')
-        pass
+        value = None
+        if return_statement.value:
+            value = self.evaluate_expression(return_statement.value)
+
+        raise Return(value)
 
     def visit_class_statement(self, class_statement) -> None:
         log.info(AppType.INTERPRETER, f'visit_class_statement: {class_statement}')
