@@ -175,9 +175,14 @@ class Parser:
 
         return FunctionStatement(name, parameters, body)
 
-    def _parse_return_statmeent(self) -> ReturnStatement:
+    def _parse_return_statement(self) -> ReturnStatement:
         log.info(AppType.PARSER, 'Started parsing ReturnStatement')
-        pass
+        keyword = self._peek_prev()
+        value = None
+        if not self._is_same_type(TokenType.SEMICOLON):
+            value = self._expression()
+        self._consume_or_raise(STATEMENT_END_TOKENS, 'Expected semicolon at end of return statement')
+        return ReturnStatement(keyword, value)
 
     def _parse_class_statement(self) -> ClassStatement:
         log.info(AppType.PARSER, 'Started parsing ClassStatement')
