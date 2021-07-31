@@ -140,8 +140,8 @@ class Interpreter:
         callee = self.evaluate_expression(call_expression.callee)
         arguments = [self.evaluate_expression(arg) for arg in call_expression.arguments]
 
-        if not isinstance(callee, Function):
-            raise InterpretError("Expected function name to be an identifier token")
+        if not callee.is_function():
+            raise InterpretError(callee, "Expected the callee to be callable")
 
         if len(arguments) != callee.get_arity():
             raise InterpretError(

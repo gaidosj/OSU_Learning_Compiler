@@ -69,6 +69,9 @@ class RuntimeValue:
     def is_null(self):
         return self.data_type in (RuntimeDataType.NULL,)
 
+    def is_function(self):
+        return self.data_type in (RuntimeDataType.FUNCTION,)
+
 
 class Function(RuntimeValue):
     def __init__(self, declaration):
