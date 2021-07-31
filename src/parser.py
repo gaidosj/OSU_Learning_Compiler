@@ -144,14 +144,26 @@ class Parser:
         self._consume_or_raise(GROUP_OPENING_TOKENS, "Expected open paren after function name")
         if not self._is_same_type(TokenType.RIGHT_PAREN):
             parameters.append(self._consume_or_raise(IDENTIFIER_TOKENS, "Expected parameter name"))
+            error_message = 'Expected an identifier at parameter {} of function ' + str(name)
             while self._is_one_of_types(DELIMITER_TOKENS):
-                if len(parameters) > 254:
-                    self.error_handler.report_error(ParseError(
-                        self._peek(), "Max allowed function parameters is 255")
+                if len(parameters) > 255:
+                    self._consume_or_raise(
+                        IDENTIFIER_TOKENS,
+                        error_message.format(len(parameters))
                     )
+                    while self._is_one_of_types(DELIMITER_TOKENS):
+                        self._consume_or_raise(
+                            IDENTIFIER_TOKENS,
+                            error_message.format(len(parameters))
+                        )
+                    self.error_handler.add_error(ParseError(
+                        self._peek(), "Max allowed function parameters is 255, rest were truncated")
+                    )
+                    break
                 parameters.append(self._consume_or_raise(
-                    IDENTIFIER_TOKENS, "Expected a name at parameter " + str(len(parameters) + 1))
-                )
+                    IDENTIFIER_TOKENS,
+                    error_message.format(len(parameters))
+                ))
         self._consume_or_raise(GROUP_CLOSING_TOKENS, "Expected close paren after function parameters")
 
         # body
@@ -382,6 +394,7 @@ class Parser:
                         self._peek(),
                         'Too many function arguments, max is 255, rest were truncated')
                     )
+                    break
                 arguments.append(self._expression())
 
         closing_paren = self._consume_or_raise(
