@@ -146,7 +146,7 @@ class Interpreter:
         if len(arguments) != callee.get_arity():
             raise InterpretError(
                 call_expression.callee,
-                "Expected " + callee.get_arity() + " arguments but got " + len(arguments)
+                'Expected {} arguments but got {}'.format(callee.get_arity(), len(arguments))
             )
 
         return callee.call(self, arguments)
