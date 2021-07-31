@@ -373,10 +373,15 @@ class Parser:
         arguments = []
         if not self._is_same_type(TokenType.RIGHT_PAREN):
             arguments.append(self._expression())
-            while self._is_one_of_types([TokenType.COMMA]):
+            while self._is_one_of_types(DELIMITER_TOKENS):
                 if len(arguments) > 255:
-                    self.error_handler.report_error(ParseError(
-                        self._peek(), 'Too many function arguments, max is 255'))
+                    self._expression
+                    while self._is_one_of_types(DELIMITER_TOKENS):
+                        self._expression
+                    self.error_handler.add_error(ParseError(
+                        self._peek(),
+                        'Too many function arguments, max is 255, rest were truncated')
+                    )
                 arguments.append(self._expression())
 
         closing_paren = self._consume_or_raise(
