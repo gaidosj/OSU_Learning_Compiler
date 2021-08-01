@@ -74,15 +74,16 @@ class RuntimeValue:
 
 
 class Function(RuntimeValue):
-    def __init__(self, declaration):
+    def __init__(self, declaration, closure):
         super().__init__(data_type=RuntimeDataType.FUNCTION)
         self.declaration = declaration
+        self.closure = closure
 
     def get_arity(self):
         return len(self.declaration.parameters)
 
     def call(self, interpreter, arguments):
-        environment = Environment(interpreter.environment)
+        environment = Environment(self.closure)
         for i in range(len(self.declaration.parameters)):
             environment.define(self.declaration.parameters[i].lexeme, arguments[i])
 
