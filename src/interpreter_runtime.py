@@ -1,3 +1,4 @@
+from copy import deepcopy
 from enum import Enum
 from src.constants import Color, AppType
 from src.logger import Logger as log
@@ -77,7 +78,7 @@ class Function(RuntimeValue):
     def __init__(self, declaration, closure):
         super().__init__(data_type=RuntimeDataType.FUNCTION)
         self.declaration = declaration
-        self.closure = closure
+        self.closure = deepcopy(closure)
 
     def get_arity(self):
         return len(self.declaration.parameters)
