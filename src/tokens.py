@@ -103,6 +103,7 @@ class TokenType(Enum):
     ELSE = 'else'
     ELIF = 'elif'
     WHILE = 'while'
+    FOR = 'for'
     PRINT = 'print'
     INCLUDE = 'include'
     CLASS = 'class'

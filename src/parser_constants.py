@@ -93,6 +93,7 @@ STATEMENT_START_TOKENS = {
     TokenType.VAR,
     TokenType.IF,
     TokenType.WHILE,
+    TokenType.FOR,
     TokenType.PRINT,
     TokenType.RETURN,
 }
