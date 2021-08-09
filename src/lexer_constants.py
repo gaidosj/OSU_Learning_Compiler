@@ -9,6 +9,7 @@ RESERVED_WORDS = {
     'else': TokenType.ELSE,
     'elif': TokenType.ELIF,
     'while': TokenType.WHILE,
+    'for': TokenType.FOR,
     'print': TokenType.PRINT,
     'include': TokenType.INCLUDE,
     'class': TokenType.CLASS,
