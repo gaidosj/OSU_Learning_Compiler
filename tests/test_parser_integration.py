@@ -13,6 +13,7 @@ class ParserIntegrationTest(unittest.TestCase):
             'program_01',
             'program_02',
             'program_03',
+            'program_04',
         )
 
         for filename in test_programs:
@@ -26,6 +27,8 @@ class ParserIntegrationTest(unittest.TestCase):
 
                 parser = Parser(tokens)
                 actual_parsed_code = '\n'.join([str(statement) for statement in parser.parse()]) + '\n'
+
+                # print(actual_parsed_code)
 
             full_name = os.path.join(os.path.dirname(__file__), 'olc_programs/{}.ast'.format(filename))
             with open(full_name, 'r') as input_handle:

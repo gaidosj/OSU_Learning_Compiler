@@ -1,0 +1,5 @@
+FUNCTION DEFINITION [fib(n) [BLOCK [IF [[n < 0]] THEN [RETURN [THERE IS NO NEGATIVE FIBONACCI NUMBER]] IF [[n < 2]] THEN [RETURN [n]] VAR first_number = 0 ; VAR second_number = 1 ; VAR third_number = 0 ; VAR counter = 0 ; WHILE [[[counter + 1] < n]] DO [BLOCK [EXPRESSION [third_number = [first_number + second_number]] ; EXPRESSION [first_number = second_number] ; EXPRESSION [second_number = third_number] ; EXPRESSION [counter = [counter + 1]] ;] ] RETURN [third_number]] ]]
+FUNCTION DEFINITION [generic_compute_function() [BLOCK [RETURN [fib]] ]]
+VAR fib_index = [-1] ;
+VAR fib_function = IDENTIFIER 'generic_compute_function'() ;
+WHILE [[fib_index < 24]] DO [BLOCK [PRINT IDENTIFIER 'fib_function'(fib_index) ; EXPRESSION [fib_index = [fib_index + 3]] ;] ]

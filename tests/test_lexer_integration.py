@@ -12,6 +12,7 @@ class LexerIntegrationTest(unittest.TestCase):
             'program_01',
             'program_02',
             'program_03',
+            'program_04',
         )
 
         for filename in test_programs:
