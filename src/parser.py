@@ -1,6 +1,6 @@
 from src.constants import AppType
 from src.logger import Logger as log
-from src.tokens import TokenType
+from src.tokens import TokenType, TokenOsu
 from src.error_handler import ErrorHandler, ParseError
 
 from src.ast_node_expression import Binary, Group, Literal, Unary, Variable, Assign, Call
@@ -74,6 +74,8 @@ class Parser:
             return self._parse_if_statement()
         if self._is_one_of_types({TokenType.WHILE}):
             return self._parse_while_statement()
+        if self._is_one_of_types(({TokenType.FOR})):
+            return self._parse_for_statement()
         if self._is_one_of_types({TokenType.PRINT}):
             return self._parse_print_statement()
         if self._is_one_of_types(BLOCK_OPENING_TOKENS):
@@ -135,6 +137,45 @@ class Parser:
 
         loop_body = self._parse_statement()
         return WhileStatement(condition, loop_body)
+
+    def _parse_for_statement(self):
+        log.info(AppType.PARSER, 'Started parsing ForStatement')
+        self._consume_or_raise({TokenType.LEFT_PAREN}, "Expected open paren after for keyword")
+
+        initializer = None
+        if self._is_one_of_types(STATEMENT_END_TOKENS):
+            pass
+        elif self._is_one_of_types(VAR_STATEMENT_TOKENS):
+            initializer = self._parse_var_statement()
+        else:
+            initializer = self._parse_expression_statement()
+
+        condition = None
+        if not self._is_same_type(TokenType.SEMICOLON):
+            condition = self._expression()
+        condition_semicolon = self._consume_or_raise(
+            {TokenType.SEMICOLON}, 'Expected semicolon after loop condition')
+
+        increment = None
+        if not self._is_same_type(TokenType.SEMICOLON):
+            increment = self._expression()
+        self._consume_or_raise({TokenType.RIGHT_PAREN}, 'Expected closing paren in for loop')
+
+        body = self._parse_statement()
+
+        if increment:
+            body.statements.append(ExpressionStatement(increment))
+
+        if condition is None:
+            condition = Literal(TokenOsu(
+                TokenType.BOOL, 'TRUE', True, condition_semicolon.source_file_line_number))
+
+        body = WhileStatement(condition, body)
+
+        if initializer:
+            return BlockStatement([initializer, body])
+
+        return body
 
     def _parse_function_statement(self) -> FunctionStatement:
         log.info(AppType.PARSER, 'Started parsing FunctionStatement')
