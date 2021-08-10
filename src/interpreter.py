@@ -36,11 +36,9 @@ class Interpreter:
             self.environment = old_environment
 
     def execute_statement(self, statement) -> None:
-        log.info(AppType.INTERPRETER, f'Executing statement: {statement}')
         statement.accept(self)
 
     def evaluate_expression(self, expression) -> RuntimeValue:
-        log.info(AppType.INTERPRETER, f'Evaluating expression: {expression}')
         return expression.accept(self)
 
     # VISITOR INTERFACE FOR STATEMENTS ----------------------------------------------
