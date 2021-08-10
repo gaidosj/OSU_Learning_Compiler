@@ -3,7 +3,7 @@ function is_leap_year(year) {
 }
 
 if (is_leap_year(2021)) {
-    print '2021 is a leap year!';
+    print 'it is a leap year!';
 } else {
-    print '2021 is not a leap year!';
+    print 'it is not a leap year!';
 }
