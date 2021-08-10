@@ -1,0 +1,39 @@
+// DEMO PROGRAM FOR OSU LEARNING COMPILER PROJECT
+// This program demonstrates implementation of:
+// - built-in sttements (print)
+// - variables (lexically scoped) of int, string and function types
+// - flow control, using if statements and loops
+// - functions (as first-class citizens)
+
+function fib(n) {
+   // Function to return N-th Fibonacci number
+
+    if (n < 0) return 'THERE IS NO NEGATIVE FIBONACCI NUMBER';
+    if (n < 2) return n;
+
+    var first_number = 0;
+    var second_number = 1;
+    var third_number = 0;
+    var counter = 0;
+
+    while (counter + 1 < n) {
+        third_number = first_number + second_number;
+        first_number = second_number;
+        second_number = third_number;
+        counter = counter + 1;
+    }
+    return third_number;
+}
+
+function generic_compute_function() {
+    // Functions can be returned as values
+    return fib;
+}
+
+var fib_index = -1;
+var fib_function = generic_compute_function();
+
+while (fib_index < 24) {
+    print fib_function(fib_index);
+    fib_index = fib_index + 3;
+}
